@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/register.dart';
 
 void initApp() {
   _initGetX();
+  register();
 }
 
 void _initGetX() {
