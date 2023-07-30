@@ -12,6 +12,9 @@ dependencies:
   sqflite: 2.2.8+4
   path: 1.8.3
   path_provider: 2.0.15
+  dart_rss: 3.0.1
+  adaptive_dialog: 1.9.0
+  fluttertoast: 8.2.2
   flutter: 
     sdk: flutter
 
@@ -21,5 +24,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter: 
+  assets: 
+    - assets/images/
   uses-material-design: true
 

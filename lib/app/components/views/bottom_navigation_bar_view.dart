@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 
 class BottomNavigationBarView extends GetView<BottomNavigationBarController> {

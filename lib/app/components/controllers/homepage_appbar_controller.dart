@@ -1,10 +1,24 @@
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarController extends GetxController {
-  final _titles = ['热点新闻', '我的'];
-  final _currentIndex = 0.obs;
+  String get title => '新闻';
+  var rssService = Get.find<RssService>();
 
-  void changeIndex(int index) => _currentIndex.value = index;
+  void reload() {
+  }
 
-  String get title => _titles[_currentIndex.value];
+  Future<void> add(String url, String name) async {
+    try {
+      await rssService.add(url, name);
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "添加网站错误 ${e.toString()}",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.TOP
+      );
+    }
+  }
 }

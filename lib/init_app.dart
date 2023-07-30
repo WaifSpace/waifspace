@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/register.dart';
 
@@ -15,7 +16,7 @@ void _initGetX() {
 }
 
 void _localLogWriter(String text, {bool isError = false}) {
-  if(isError) {
+  if (isError) {
     logger.e("[GETX] $text");
   } else {
     logger.d("[GETX] $text");
