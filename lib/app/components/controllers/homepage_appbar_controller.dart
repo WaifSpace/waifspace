@@ -8,11 +8,12 @@ class HomepageAppbarController extends GetxController {
   var rssService = Get.find<RssService>();
 
   void reload() {
+    rssService.fetchArticles(1);
   }
 
   Future<void> add(String url, String name) async {
     try {
-      await rssService.add(url, name);
+      await rssService.addSource(url, name);
     } catch (e) {
       Fluttertoast.showToast(
         msg: "添加网站错误 ${e.toString()}",

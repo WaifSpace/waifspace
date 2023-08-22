@@ -27,5 +27,16 @@ class ArticleSourceProvider {
       return ArticleSource.fromJson(maps.first);
     }
   }
+
+  Future<ArticleSource?> findByID(int id) async {
+    List<Map<String, dynamic>> maps = await db.query(_table,
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+    if(maps.isNotEmpty) {
+      return ArticleSource.fromJson(maps.first);
+    }
+    return null;
+  }
 }
 

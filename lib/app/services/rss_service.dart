@@ -5,14 +5,14 @@ import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/rss_provider.dart';
+import 'package:waifspace/app/global.dart';
 
 class RssService extends GetxService {
   var articleProvider = Get.find<ArticleProvider>();
   var articleSourceProvider = Get.find<ArticleSourceProvider>();
 
-  add(String url, String name) async {
-    String xmlString = await RssProvider().getRssXmlString(url);
-    RssFeed rssFeed = RssFeed.parse(xmlString);
+  addSource(String url, String name) async {
+    var rssFeed = await _getRssFeedByUrl(url);
 
     // TODO: 判断 URL 不能重复，另外name可以修改
     articleSourceProvider.create(ArticleSource(
@@ -23,16 +23,30 @@ class RssService extends GetxService {
       type: 'rss',
       image: rssFeed.image?.link,
     ));
+  }
 
-    // for(var item in rssFeed.items) {
-    //   logger.i(item.title);
-    //   articleProvider.create(Article(
-    //     title: item.title,
-    //     content: item.description,
-    //     url: item.link,
-    //     sourceId: 1,
-    //     sourceUid: item.guid,
-    //   ));
-    // }
+  fetchArticles(int id) async {
+    ArticleSource? articleSource = await articleSourceProvider.findByID(id);
+    if(articleSource != null && articleSource.url != null) {
+      var rssFeed = await _getRssFeedByUrl(articleSource.url!);
+
+      for(var item in rssFeed.items) {
+        logger.i(item.title);
+        await articleProvider.create(Article(
+          title: item.title,
+          content: item.description,
+          url: item.link,
+          sourceId: id,
+          sourceUid: item.guid,
+          pubDate: item.pubDate,
+        ));
+      }
+    }
+  }
+
+  Future<RssFeed> _getRssFeedByUrl(String url) async {
+    String xmlString = await RssProvider().getRssXmlString(url);
+    RssFeed rssFeed = RssFeed.parse(xmlString);
+    return rssFeed;
   }
 }
