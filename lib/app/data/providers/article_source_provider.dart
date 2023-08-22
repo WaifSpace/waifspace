@@ -7,6 +7,7 @@ class ArticleSourceProvider {
   final String _table = "article_sources";
   final Database db = Get.find<DatabaseService>().db;
 
+  // ArticleSource 添加 lang 字段，用来判断这个rss的语言, 例如 feed.language
   Future<ArticleSource> create(ArticleSource articleSource) async {
 
     // 判断数据库里面是否已经存在这个URL的订阅

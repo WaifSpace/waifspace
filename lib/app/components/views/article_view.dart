@@ -45,7 +45,7 @@ class ArticleView extends GetView<ArticleController> {
           children: [
             RawChip(label: Text('test')),
             const SizedBox(width: 10),
-            RawChip(label: Text(article.createdAt ?? '')),
+            RawChip(label: Text(article.pubDate ?? '')),
           ],
         ),
         Container(
