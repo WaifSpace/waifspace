@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/database_service.dart';
 
 import '../models/article_model.dart';
@@ -36,9 +37,9 @@ class ArticleProvider {
 
     // 如果数据库里面没有重复的这条记录，才创建并写入
     if (maps.isEmpty) {
-      article.createdAt ??= DateTime.now().toString();
-      article.updatedAt ??= DateTime.now().toString();
-      _db.insert(_table, article.toJson());
+      article.createdAt ??= AppTime.now().format();;
+      article.updatedAt ??= AppTime.now().format();;
+      await _db.insert(_table, article.toJson());
     }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/database_service.dart';
 
 class ArticleSourceProvider {
@@ -20,8 +21,8 @@ class ArticleSourceProvider {
 
     // 只有数据库里面不存在的时候才保存
     if(maps.isEmpty) {
-      articleSource.createdAt ??= DateTime.now().toString();
-      articleSource.updatedAt ??= DateTime.now().toString();
+      articleSource.createdAt ??= AppTime.now().format();;
+      articleSource.updatedAt ??= AppTime.now().format();;
       articleSource.id = await db.insert(_table, articleSource.toJson());
       return articleSource;
     } else {

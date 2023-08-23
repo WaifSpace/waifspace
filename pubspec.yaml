@@ -15,6 +15,7 @@ dependencies:
   dart_rss: 3.0.1
   adaptive_dialog: 1.9.0
   fluttertoast: 8.2.2
+  jiffy: 6.2.1
   flutter: 
     sdk: flutter
 

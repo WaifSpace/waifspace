@@ -6,6 +6,7 @@ import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/rss_provider.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 
 class RssService extends GetxService {
   var articleProvider = Get.find<ArticleProvider>();
@@ -31,14 +32,14 @@ class RssService extends GetxService {
       var rssFeed = await _getRssFeedByUrl(articleSource.url!);
 
       for(var item in rssFeed.items) {
-        logger.i(item.title);
+        logger.i(item.title, item.pubDate);
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,
           url: item.link,
           sourceId: id,
           sourceUid: item.guid,
-          pubDate: item.pubDate,
+          pubDate: AppTime.parseGMT(item.pubDate ?? "").format(),
         ));
       }
     }
