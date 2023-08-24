@@ -26,13 +26,17 @@ class RssService extends GetxService {
     ));
   }
 
+  fetchAllArticles() {
+
+  }
+
   fetchArticles(int id) async {
     ArticleSource? articleSource = await articleSourceProvider.findByID(id);
     if(articleSource != null && articleSource.url != null) {
       var rssFeed = await _getRssFeedByUrl(articleSource.url!);
 
       for(var item in rssFeed.items) {
-        logger.i(item.title, item.pubDate);
+        logger.i(item.title);
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,
