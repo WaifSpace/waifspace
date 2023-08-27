@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:waifspace/app/components/controllers/article_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
-import 'package:waifspace/app/helper/app_time.dart';
+import 'package:waifspace/app/global.dart';
 
 class ArticleView extends GetView<ArticleController> {
   final Article article;
@@ -28,12 +28,14 @@ class ArticleView extends GetView<ArticleController> {
                 ),
         ),
         Container(
-            padding: const EdgeInsets.fromLTRB(10, 15, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
             child: GestureDetector(
               onTap: () {},
               child: Text(
                 article.title ?? "",
-                maxLines: 2,
+                softWrap: false,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -46,14 +48,16 @@ class ArticleView extends GetView<ArticleController> {
           children: [
             RawChip(label: Text(article.sourceName ?? '')),
             const SizedBox(width: 10),
-            RawChip(label: Text(AppTime.parse(article.pubDate ?? '').viewFormat())),
+            RawChip(label: Text(controller.articleTime(article))),
           ],
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(5, 10, 5, 10),
+          margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+          alignment: Alignment.topLeft,
           child: SelectableText(
-            article.content?.replaceAll("\n", " ") ?? "",
+            htmlToText(article.content ?? "").trim(),
             // maxLines: 10,
+            textAlign: TextAlign.left,
             scrollPhysics: const NeverScrollableScrollPhysics(),
             style: const TextStyle(
               letterSpacing: 0.5,
@@ -67,7 +71,7 @@ class ArticleView extends GetView<ArticleController> {
           thickness: 2,
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+          margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
         ),
       ],
     );

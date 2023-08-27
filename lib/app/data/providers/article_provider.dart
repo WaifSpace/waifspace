@@ -1,7 +1,6 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
-import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/database_service.dart';
 
@@ -53,7 +52,10 @@ class ArticleProvider {
     if (maps.isEmpty) {
       article.createdAt ??= AppTime.now().dbFormat();
       article.updatedAt ??= AppTime.now().dbFormat();
-      await _db.insert(table, article.toJson());
+      // source_name 是链表查询获得的字段，保存的时候要删除
+      var articleJson = article.toJson();
+      articleJson.remove('source_name');
+      await _db.insert(table, articleJson);
     }
   }
 }

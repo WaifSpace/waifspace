@@ -1,13 +1,12 @@
 import 'package:get/get.dart';
-import 'package:jiffy/jiffy.dart';
-
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/register.dart';
 
 Future<void> initApp() async {
   _initGetX();
   register();
-  await _initJiffy();
+  _initTimeago();
 }
 
 void _initGetX() {
@@ -25,6 +24,6 @@ void _localLogWriter(String text, {bool isError = false}) {
   }
 }
 
-Future<void> _initJiffy() async {
-  await Jiffy.setLocale('zh_cn');
+void _initTimeago() {
+  timeago.setLocaleMessages('zh_CN', timeago.ZhCnMessages());
 }

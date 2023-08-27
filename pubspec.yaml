@@ -17,9 +17,11 @@ dependencies:
   fluttertoast: 8.2.2
   jiffy: 6.2.1
   flutter_inappwebview: ^6.0.0-beta.24+1
+  timeago: 3.5.0
+  intl: 0.18.1
+  html: 0.15.4
   flutter: 
     sdk: flutter
-
 
 dev_dependencies: 
   flutter_lints: ^2.0.0

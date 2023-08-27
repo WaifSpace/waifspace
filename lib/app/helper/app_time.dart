@@ -1,3 +1,4 @@
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:jiffy/jiffy.dart';
 
 class AppTime {
@@ -21,6 +22,6 @@ class AppTime {
   }
 
   String viewFormat() {
-    return _datetime.fromNow();
+    return timeago.format(_datetime.dateTime, locale: 'zh_CN');
   }
 }

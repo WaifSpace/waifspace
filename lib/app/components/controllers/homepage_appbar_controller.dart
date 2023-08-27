@@ -7,8 +7,9 @@ class HomepageAppbarController extends GetxController {
   String get title => '新闻';
   var rssService = Get.find<RssService>();
 
-  void reload() {
-    rssService.fetchArticles(1);
+  Future<void> reload() async {
+    await rssService.fetchAllArticles();
+    // await rssService.fetchArticles(2);
   }
 
   Future<void> add(String url, String name) async {

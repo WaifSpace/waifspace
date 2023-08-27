@@ -30,6 +30,16 @@ class ArticleSourceProvider {
     }
   }
 
+  Future<List<ArticleSource>> findAll() async {
+    List<ArticleSource> articleSources = [];
+
+    var articleSourcesMap = await db.query(table);
+    for (var map in articleSourcesMap) {
+      articleSources.add(ArticleSource.fromJson(map));
+    }
+    return articleSources;
+  }
+
   Future<ArticleSource?> findByID(int id) async {
     List<Map<String, dynamic>> maps = await db.query(table,
       where: 'id = ?',
