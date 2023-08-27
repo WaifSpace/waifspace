@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import 'package:waifspace/app/components/controllers/article_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 
 class ArticleView extends GetView<ArticleController> {
   final Article article;
@@ -43,9 +44,9 @@ class ArticleView extends GetView<ArticleController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            RawChip(label: Text('test')),
+            RawChip(label: Text(article.sourceName ?? '')),
             const SizedBox(width: 10),
-            RawChip(label: Text(article.pubDate ?? '')),
+            RawChip(label: Text(AppTime.parse(article.pubDate ?? '').viewFormat())),
           ],
         ),
         Container(

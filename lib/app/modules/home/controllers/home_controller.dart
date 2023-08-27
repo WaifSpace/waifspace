@@ -1,23 +1,14 @@
 import 'package:get/get.dart';
+import 'package:waifspace/app/components/controllers/article_list_controller.dart';
+import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
+  BottomNavigationBarController navController = Get.find<BottomNavigationBarController>();
+  ArticleListController articleListController = Get.find<ArticleListController>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  int get currentNavIndex => navController.currentIndex;
+
+  void onDoubleTap() {
+    articleListController.jumpToTop();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

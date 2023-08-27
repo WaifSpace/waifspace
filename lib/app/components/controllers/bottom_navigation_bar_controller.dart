@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+
 class BottomNavigationBarController extends GetxController {
   final _currentIndex = 0.obs;
 

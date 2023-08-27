@@ -10,7 +10,7 @@ class ArticleListView extends GetView<ArticleListController> {
 
   @override
   Widget build(BuildContext context) {
-    var listView = ListView.builder(
+    var listView = Obx(() => ListView.builder(
       padding: const EdgeInsets.all(16.0),
       physics: const BouncingScrollPhysics(),
       controller: controller.scrollController,
@@ -20,7 +20,7 @@ class ArticleListView extends GetView<ArticleListController> {
             article: controller.getArticle(index)
         );
       },
-    );
+    ));
 
     return RefreshIndicator(
       onRefresh: controller.reloadData,

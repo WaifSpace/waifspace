@@ -1,11 +1,13 @@
 import 'package:get/get.dart';
+import 'package:jiffy/jiffy.dart';
 
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/register.dart';
 
-void initApp() {
+Future<void> initApp() async {
   _initGetX();
   register();
+  await _initJiffy();
 }
 
 void _initGetX() {
@@ -21,4 +23,8 @@ void _localLogWriter(String text, {bool isError = false}) {
   } else {
     logger.d("[GETX] $text");
   }
+}
+
+Future<void> _initJiffy() async {
+  await Jiffy.setLocale('zh_cn');
 }

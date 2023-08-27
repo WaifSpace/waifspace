@@ -8,11 +8,19 @@ class AppTime {
     _datetime = Jiffy.parse(datetimeStr, pattern: _gmtFormat);
   }
 
+  AppTime.parse(String datetimeStr) {
+    _datetime = Jiffy.parse(datetimeStr);
+  }
+
   AppTime.now() {
     _datetime = Jiffy.now();
   }
 
-  String format() {
+  String dbFormat() {
     return _datetime.format();
+  }
+
+  String viewFormat() {
+    return _datetime.fromNow();
   }
 }

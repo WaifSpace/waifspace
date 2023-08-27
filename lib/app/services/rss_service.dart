@@ -43,7 +43,7 @@ class RssService extends GetxService {
           url: item.link,
           sourceId: id,
           sourceUid: item.guid,
-          pubDate: AppTime.parseGMT(item.pubDate ?? "").format(),
+          pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),
         ));
       }
     }

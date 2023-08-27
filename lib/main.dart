@@ -9,7 +9,7 @@ import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  initApp();
+  await initApp();
   await initServices();
   runApp(
     GetMaterialApp(
