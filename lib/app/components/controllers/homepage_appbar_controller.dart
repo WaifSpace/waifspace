@@ -1,10 +1,10 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarController extends GetxController {
-  String get title => '新闻';
+  final title = "新闻".obs;
+
   var rssService = Get.find<RssService>();
 
   Future<void> reload() async {

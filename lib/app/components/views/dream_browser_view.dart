@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
-import 'package:waifspace/app/global.dart';
 
 class DreamBrowserView extends GetView<DreamBrowserController> {
   const DreamBrowserView({Key? key}) : super(key: key);
@@ -13,15 +12,15 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
 
     return InAppWebView(
       key: webViewKey,
-      initialSettings: controller.settings,
-      initialUrlRequest: URLRequest(url: WebUri(controller.initUrl)),
+      initialOptions: controller.options,
+      initialUrlRequest: URLRequest(url: Uri.parse(controller.initUrl)),
       onWebViewCreated: (c) {
         controller.webViewController = c;
       },
-      onPermissionRequest: (controller, request) async {
-        return PermissionResponse(
-            resources: request.resources,
-            action: PermissionResponseAction.GRANT);
+      androidOnPermissionRequest: (controller, origin, resources) async {
+        return PermissionRequestResponse(
+            resources: resources,
+            action: PermissionRequestResponseAction.GRANT);
       },
     );
   }

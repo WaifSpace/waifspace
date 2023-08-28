@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 import 'package:waifspace/app/components/controllers/article_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/global.dart';
@@ -15,7 +13,7 @@ class ArticleView extends GetView<ArticleController> {
     return Column(
       children: [
         GestureDetector(
-          onTap: () {},
+          onTap: () { controller.openBrowser(article.url); },
           child: article.imageUrl == null
               ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
               : Image.network(
@@ -30,12 +28,12 @@ class ArticleView extends GetView<ArticleController> {
         Container(
             padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
             child: GestureDetector(
-              onTap: () {},
+              onTap: () { controller.openBrowser(article.url); },
               child: Text(
                 article.title ?? "",
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 1,
+                maxLines: 2,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -56,7 +54,8 @@ class ArticleView extends GetView<ArticleController> {
           alignment: Alignment.topLeft,
           child: SelectableText(
             htmlToText(article.content ?? "").trim(),
-            // maxLines: 10,
+            maxLines: 10,
+            minLines: 2,
             textAlign: TextAlign.left,
             scrollPhysics: const NeverScrollableScrollPhysics(),
             style: const TextStyle(

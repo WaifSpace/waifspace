@@ -1,23 +1,11 @@
 import 'package:get/get.dart';
+import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 
 class AppsController extends GetxController {
-  //TODO: Implement AppsController
+  DreamBrowserController dreamBrowserController = Get.find<DreamBrowserController>();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+  Future<bool> onWillPop() async {
+    dreamBrowserController.goBack();
+    return false;
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

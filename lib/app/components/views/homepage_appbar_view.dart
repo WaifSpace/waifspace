@@ -1,10 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
-
 import 'package:waifspace/app/components/controllers/homepage_appbar_controller.dart';
-import 'package:waifspace/app/global.dart';
 
 class HomepageAppbarView extends GetView<HomepageAppbarController>
     implements PreferredSizeWidget {
@@ -19,7 +16,7 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
     return GestureDetector(
       onDoubleTap: onDoubleTap,
       child: AppBar(
-        title: const Text("新闻"),
+        title: Obx(() => Text("${controller.title}")),
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.refresh),
