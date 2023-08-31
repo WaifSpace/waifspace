@@ -3,20 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/homepage_appbar_controller.dart';
 
+
 class HomepageAppbarView extends GetView<HomepageAppbarController>
     implements PreferredSizeWidget {
-
   final VoidCallback onDoubleTap;
-
   const HomepageAppbarView({Key? key, required this.onDoubleTap})
       : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    var titleInfo = Obx(() {
+      if(controller.rssService.progress <= 0) {
+        return Text("${controller.title}");
+      } else {
+        return LinearProgressIndicator(
+          backgroundColor: Colors.blue,
+          valueColor: const AlwaysStoppedAnimation(Colors.white),
+          value: controller.rssService.progress.value,
+        );
+      }
+    });
+
+
     return GestureDetector(
       onDoubleTap: onDoubleTap,
       child: AppBar(
-        title: Obx(() => Text("${controller.title}")),
+        title: titleInfo,
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.refresh),

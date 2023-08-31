@@ -13,6 +13,7 @@ class RssProvider extends GetConnect {
     if(response.status.isOk) {
       return response.body.toString();
     }
+    // 这个地方网络错误，可以加上一次retry
     logger.i("[$url] 获取错误");
     response.printError();
     return null;

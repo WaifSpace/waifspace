@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dart_rss/dart_rss.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
@@ -10,6 +12,9 @@ import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 
 class RssService extends GetxService {
+  var _isFetchAll = false;
+  var progress = 0.0.obs; // 获取全部文章的进度
+
   var articleProvider = Get.find<ArticleProvider>();
   var articleSourceProvider = Get.find<ArticleSourceProvider>();
 
@@ -32,9 +37,30 @@ class RssService extends GetxService {
   }
 
   Future<void> fetchAllArticles() async {
-    for(var articleSource in await ArticleSourceProvider().findAll()) {
-      await _fetchArticles(articleSource);
+    if(_isFetchAll) {
+      logger.i("正在全量获取新闻，请稍后");
+      return;
     }
+
+    _isFetchAll = true; // 设置标志位，表明开始批量处理，避免调用多次后的重复执行
+    progress.value = 0; // 初始化进度条为 0
+    var articleSources = await ArticleSourceProvider().findAll();
+
+    var sourceCount = articleSources.length;
+    var index = 0;
+
+    for(var articleSource in articleSources) {
+      index += 1;
+      progress.value = index / sourceCount;
+      logger.i("处理进度 ${progress.value}");
+      try {
+        await _fetchArticles(articleSource);
+      } catch (e, stack) {
+        logger.i("获取文章错误 ${e.toString()}");
+      }
+    }
+    _isFetchAll = false;
+    progress.value = 0.0;
   }
 
   Future<void> fetchArticles(int id) async {
