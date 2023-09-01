@@ -13,20 +13,20 @@ import 'package:waifspace/app/helper/app_time.dart';
 
 class RssService extends GetxService {
   var _isFetchAll = false;
-  var progress = 0.0.obs; // 获取全部文章的进度
+  var progress = 0.0.obs; // 获取全部文章的进度, 用于对外暴露处理进度
 
   var articleProvider = Get.find<ArticleProvider>();
   var articleSourceProvider = Get.find<ArticleSourceProvider>();
 
-  Future<void> addSource(String url, String name) async {
+  Future<ArticleSource?> addSource(String url, String name) async {
     var rssFeed = await _getRssFeedByUrl(url);
 
     if(rssFeed == null) {
-      return;
+      return null;
     }
 
     // TODO: 判断 URL 不能重复，另外name可以修改
-    articleSourceProvider.create(ArticleSource(
+    return await articleSourceProvider.create(ArticleSource(
       name: name.isEmpty ? rssFeed.title : name,
       description: rssFeed.description,
       url: url,

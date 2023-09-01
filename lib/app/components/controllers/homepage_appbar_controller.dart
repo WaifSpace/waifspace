@@ -14,13 +14,22 @@ class HomepageAppbarController extends GetxController {
 
   Future<void> add(String url, String name) async {
     try {
-      await rssService.addSource(url, name);
+      var article = await rssService.addSource(url, name);
+      if(article != null) {
+        showMsg("添加网站成功 ${article.name}");
+      } else {
+        showMsg("添加网站错误 $url");
+      }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "添加网站错误 ${e.toString()}",
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP
-      );
+      showMsg("添加网站错误 ${e.toString()}");
     }
+  }
+
+  void showMsg(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_LONG,
+      gravity: ToastGravity.TOP
+    );
   }
 }
