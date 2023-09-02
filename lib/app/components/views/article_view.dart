@@ -44,7 +44,10 @@ class ArticleView extends GetView<ArticleController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            RawChip(label: Text(article.sourceName ?? '')),
+            RawChip(label: GestureDetector(
+              onTap: () => controller.filterSource(article.sourceId!, article.sourceName ?? ''),
+              child: Text(article.sourceName ?? ''),
+            )),
             const SizedBox(width: 10),
             RawChip(label: Text(controller.articleTime(article))),
           ],

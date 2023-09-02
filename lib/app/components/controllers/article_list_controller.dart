@@ -32,6 +32,7 @@ class ArticleListController extends GetxController {
 
   Future<void> reloadData() async {
     _articles.assignAll(await articleProvider.latestArticles(-1));
+    jumpToTop();
   }
 
   Article getArticle(index) {

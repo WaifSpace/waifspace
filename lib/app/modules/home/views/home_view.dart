@@ -11,18 +11,96 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => Scaffold(
-      appBar: HomepageAppbarView(
-        onDoubleTap: controller.onDoubleTap,
-      ),
-      bottomNavigationBar: const BottomNavigationBarView(),
-      body: IndexedStack(
-        alignment: Alignment.center,
-        index: controller.currentNavIndex,
-        children: const [
-          ArticleListView(),
-          AppsView(),
+    var drawer = Drawer(
+      child: Column(
+        children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Center(
+              child: SizedBox(
+                width: 60,
+                height: 60,
+                child: CircleAvatar(
+                  child: Text(
+                    'W',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('设置'),
+              onTap: () {},
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: ListTile(
+              leading: const Icon(Icons.refresh),
+              title: const Text('获取所有新闻'),
+              onTap: () {
+                controller.fetchAllArticles();
+                Get.back();
+              },
+            ),
+          ),
+          const Divider(
+            thickness: 2,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+            child: ListTile(
+              leading: const Icon(Icons.home_filled),
+              title: const Text('所有新闻'),
+              onTap: () {
+                controller.articleProvider.updateSourceIDFilter(null, '');
+                controller.articleListController.reloadData();
+                Get.back();
+              },
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              children: controller.cacheArticleSources.map((e) {
+                return ListTile(
+                  leading: const Icon(Icons.web_stories),
+                  title: Text(e.name!),
+                  onTap: () {
+                    controller.articleProvider.updateSourceIDFilter(e.id, e.name!);
+                    controller.articleListController.reloadData();
+                    Get.back();
+                  },
+                );
+              }).toList(),
+            ),
+          ),
         ],
+      ),
+    );
+
+    return Obx(() => WillPopScope(
+      onWillPop: controller.onWillPop,
+      child: Scaffold(
+        appBar: HomepageAppbarView(
+          onDoubleTap: controller.onDoubleTap,
+        ),
+        drawer: drawer,
+        bottomNavigationBar: const BottomNavigationBarView(),
+        body: IndexedStack(
+          alignment: Alignment.center,
+          index: controller.currentNavIndex,
+          children: const [
+            ArticleListView(),
+            AppsView(),
+          ],
+        ),
       ),
     ));// return const Scaffold(
   }

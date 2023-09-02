@@ -4,14 +4,16 @@ import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/helper/sql_builder.dart';
 import 'package:waifspace/app/services/database_service.dart';
-
 import '../models/article_model.dart';
 
 class ArticleProvider {
   static String table = "articles";
   static int queryLimit = 20;
 
-  String _searchCondition = ''; // 用于搜索的条件，会根据 title 和 content 字段查询
+  var filterSourceName = "".obs; // 用于显示过滤的source的名字
+
+  String? _searchCondition; // 用于搜索的条件，会根据 title 和 content 字段查询
+  int? _sourceIDCondition; // 用于根据数据源来显示
 
   final Database _db = Get.find<DatabaseService>().db;
 
@@ -20,7 +22,10 @@ class ArticleProvider {
     List<Article> articles = [];
 
     var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
-    sqlBuilder.limit(queryLimit).orderBy("a.id", desc: true).like('(a.title like ? or a.content like ?)', [_searchCondition, _searchCondition]);
+    sqlBuilder.limit(queryLimit)
+        .where("source_id = ?", [_sourceIDCondition])
+        .orderBy("a.id", desc: true)
+        .like('(a.title like ? or a.content like ?)', [_searchCondition, _searchCondition]);
     if(id > 0) {
       sqlBuilder.where("a.id < ?", [id]);
     }
@@ -35,6 +40,11 @@ class ArticleProvider {
       articles.add(Article.fromJson(map));
     }
     return articles;
+  }
+
+  void updateSourceIDFilter(int? sourceID, String sourceName) {
+    _sourceIDCondition = sourceID;
+    filterSourceName.value = sourceName;
   }
 
   void updateSearchFilter(String text) {

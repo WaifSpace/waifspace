@@ -13,7 +13,7 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
   Widget build(BuildContext context) {
     var titleInfo = Obx(() {
       if(controller.rssService.progress <= 0) {
-        return Text("${controller.title}");
+        return Text(controller.title());
       } else {
         return LinearProgressIndicator(
           backgroundColor: Colors.blue,
@@ -29,10 +29,10 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
       child: AppBar(
         title: titleInfo,
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.refresh),
-          onPressed: controller.reload,
-        ),
+        // leading: IconButton(
+        //   icon: const Icon(Icons.refresh),
+        //   onPressed: controller.reload,
+        // ),
         actions: [
           IconButton(
             onPressed: () async {
