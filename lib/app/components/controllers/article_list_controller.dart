@@ -16,19 +16,18 @@ class ArticleListController extends GetxController {
 
   @override
   void onInit() {
-    reloadData().then((value) => scrollController.addListener(_loadMore));
+    reloadData();
     super.onInit();
   }
 
   @override
   void onClose() {
-    scrollController.removeListener(_loadMore);
     super.onClose();
   }
 
   Future<void> searchData(String value) async {
-      articleProvider.updateSearchFilter(value);
-      await reloadData();
+    articleProvider.updateSearchFilter(value);
+    await reloadData();
   }
 
   Future<void> reloadData() async {
@@ -47,13 +46,13 @@ class ArticleListController extends GetxController {
     scrollController.jumpTo(0);
   }
 
-  Future<void> _loadMore() async {
-    // 暂停1秒，避免重复触发事件
-    await Future.delayed(const Duration(seconds: 1));
-    if (_isLoadMore == false && scrollController.position.extentAfter <= 300) {
-      _isLoadMore = true;
-      _articles.addAll(await articleProvider.latestArticles(_articles.last.id ?? -1));
-      _isLoadMore = false;
+  Future<void> loadMore() async {
+    if (_isLoadMore == true) {
+      return;
     }
+    _isLoadMore = true;
+    _articles
+        .addAll(await articleProvider.latestArticles(_articles.last.id ?? -1));
+    _isLoadMore = false;
   }
 }

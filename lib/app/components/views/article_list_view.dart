@@ -16,6 +16,9 @@ class ArticleListView extends GetView<ArticleListController> {
       controller: controller.scrollController,
       itemCount: controller.articleCount(),
       itemBuilder: (_, index) {
+        if(index == controller.articleCount() - 1) {
+          controller.loadMore();
+        }
         return ArticleView(
             article: controller.getArticle(index)
         );
