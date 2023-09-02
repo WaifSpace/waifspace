@@ -1,11 +1,13 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarController extends GetxController {
   final title = "新闻".obs;
 
   var rssService = Get.find<RssService>();
+  ArticleListController articleListController = Get.find<ArticleListController>();
 
   Future<void> reload() async {
     await rssService.fetchAllArticles();

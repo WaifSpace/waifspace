@@ -44,7 +44,13 @@ class ArticleListView extends GetView<ArticleListController> {
 
     return Column(
       children: [
-        searchInput,
+        Obx(() {
+          if(controller.showSearch.value) {
+            return searchInput;
+          } else {
+            return Container();
+          }
+        }),
         Expanded(
           child: refreshIndicator,
         ),

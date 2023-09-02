@@ -52,7 +52,9 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
             icon: const Icon(Icons.add),
           ),
           IconButton(
-              onPressed: (){},
+              onPressed: (){
+                controller.articleListController.showSearch.value = !controller.articleListController.showSearch.value;
+              },
               icon: const Icon(Icons.search),
           ),
         ],

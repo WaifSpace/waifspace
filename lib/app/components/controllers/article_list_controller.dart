@@ -6,6 +6,7 @@ import 'package:waifspace/app/data/providers/article_provider.dart';
 
 class ArticleListController extends GetxController {
   bool _isLoadMore = false;
+  var showSearch = false.obs;
 
   final ScrollController scrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
