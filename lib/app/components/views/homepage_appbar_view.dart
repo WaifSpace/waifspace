@@ -50,7 +50,11 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
               }
             },
             icon: const Icon(Icons.add),
-          )
+          ),
+          IconButton(
+              onPressed: (){},
+              icon: const Icon(Icons.search),
+          ),
         ],
       ),
     );

@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
-import 'package:waifspace/app/global.dart';
 
 class ArticleListController extends GetxController {
   bool _isLoadMore = false;
 
   final ScrollController scrollController = ScrollController();
+  final TextEditingController textEditingController = TextEditingController();
+
   final List<Article> _articles = <Article>[].obs;
   ArticleProvider articleProvider = Get.find<ArticleProvider>();
 
@@ -18,11 +19,15 @@ class ArticleListController extends GetxController {
     super.onInit();
   }
 
-
   @override
   void onClose() {
     scrollController.removeListener(_loadMore);
     super.onClose();
+  }
+
+  Future<void> searchData(String value) async {
+      articleProvider.updateSearchFilter(value);
+      await reloadData();
   }
 
   Future<void> reloadData() async {

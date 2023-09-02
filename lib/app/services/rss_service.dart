@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:dart_rss/dart_rss.dart';
 import 'package:get/get.dart';
 import 'package:html/parser.dart';

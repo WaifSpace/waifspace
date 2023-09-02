@@ -22,9 +22,33 @@ class ArticleListView extends GetView<ArticleListController> {
       },
     ));
 
-    return RefreshIndicator(
+    var refreshIndicator = RefreshIndicator(
       onRefresh: controller.reloadData,
       child: listView,
+    );
+
+    var searchInput = Padding(
+      padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
+      child: TextField(
+        controller: controller.textEditingController,
+        onSubmitted: controller.searchData,
+        decoration: const InputDecoration(
+            hintText: "Search",
+            prefixIcon: Icon(Icons.search),
+            border: OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(15.0))
+            )
+        ),
+      ),
+    );
+
+    return Column(
+      children: [
+        searchInput,
+        Expanded(
+          child: refreshIndicator,
+        ),
+      ],
     );
   }
 }
