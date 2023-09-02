@@ -2,12 +2,14 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarController extends GetxController {
 
   RssService rssService = Get.find<RssService>();
   ArticleListController articleListController = Get.find<ArticleListController>();
+  HomeController homeController = Get.find<HomeController>();
   ArticleProvider articleProvider = Get.find<ArticleProvider>();
 
   Future<void> reload() async {
@@ -23,6 +25,7 @@ class HomepageAppbarController extends GetxController {
       var article = await rssService.addSource(url, name);
       if(article != null) {
         _showMsg("添加网站成功 ${article.name}");
+        await homeController.reloadArticleSources();
       } else {
         _showMsg("添加网站错误 $url");
       }
