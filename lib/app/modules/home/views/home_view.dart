@@ -66,26 +66,28 @@ class HomeView extends GetView<HomeController> {
             ),
           ),
           Expanded(
-            child: ListView(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              children: controller.cacheArticleSources.map((e) {
-                return ListTile(
-                  leading: const Icon(Icons.web_stories),
-                  title: Text(e.name!),
-                  onTap: () {
-                    controller.articleProvider.updateSourceIDFilter(e.id, e.name!);
-                    controller.articleListController.reloadData();
-                    Get.back();
-                  },
-                );
-              }).toList(),
-            ),
+            child: Obx(() {
+              return ListView(
+                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                children: controller.cacheArticleSources.value.map((e) {
+                  return ListTile(
+                    leading: const Icon(Icons.web_stories),
+                    title: Text(e.name!),
+                    onTap: () {
+                      controller.articleProvider.updateSourceIDFilter(e.id, e.name!);
+                      controller.articleListController.reloadData();
+                      Get.back();
+                    },
+                  );
+                }).toList(),
+              );
+            }),
           ),
         ],
       ),
     );
 
-    return Obx(() => WillPopScope(
+    return WillPopScope(
       onWillPop: controller.onWillPop,
       child: Scaffold(
         appBar: HomepageAppbarView(
@@ -93,15 +95,15 @@ class HomeView extends GetView<HomeController> {
         ),
         drawer: drawer,
         bottomNavigationBar: const BottomNavigationBarView(),
-        body: IndexedStack(
+        body: Obx(() => IndexedStack(
           alignment: Alignment.center,
           index: controller.currentNavIndex,
           children: const [
             ArticleListView(),
             AppsView(),
           ],
-        ),
+        )),
       ),
-    ));// return const Scaffold(
+    );// return const Scaffold(
   }
 }

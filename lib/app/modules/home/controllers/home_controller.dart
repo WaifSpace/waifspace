@@ -18,16 +18,16 @@ class HomeController extends GetxController {
 
   int get currentNavIndex => navController.currentIndex;
 
-  List<ArticleSource> cacheArticleSources = [];
+  var cacheArticleSources = [].obs;
 
   @override
-  Future<void> onInit() async {
-    await reloadArticleSources();
+  onInit() {
+    reloadArticleSources();
     super.onInit();
   }
 
   Future<void> reloadArticleSources() async {
-    cacheArticleSources = await articleSourceProvider.findAll();
+    cacheArticleSources.assignAll(await articleSourceProvider.findAll());
   }
 
   void onDoubleTap() {
