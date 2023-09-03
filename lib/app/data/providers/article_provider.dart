@@ -22,7 +22,9 @@ class ArticleProvider {
   var filterSourceName = "".obs; // 用于显示过滤的source的名字
 
   String? _searchCondition; // 用于搜索的条件，会根据 title 和 content 字段查询
+
   int? _sourceIDCondition; // 用于根据数据源来显示
+  int? get sourceIDCondition => _sourceIDCondition;
 
   final Database _db = Get.find<DatabaseService>().db;
 

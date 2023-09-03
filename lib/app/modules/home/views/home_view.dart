@@ -17,6 +17,7 @@ class HomeView extends GetView<HomeController> {
     return WillPopScope(
       onWillPop: controller.onWillPop,
       child: Scaffold(
+        key: controller.scaffoldKey,
         appBar: HomepageAppbarView(
           onDoubleTap: controller.onDoubleTap,
         ),

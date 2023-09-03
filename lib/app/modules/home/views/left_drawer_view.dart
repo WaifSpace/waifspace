@@ -5,7 +5,6 @@ import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/modules/home/controllers/left_drawer_controller.dart';
 
 class LeftDrawerView extends GetView<LeftDrawerController> {
-
   const LeftDrawerView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -48,27 +47,29 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
           const Divider(
             thickness: 2,
           ),
+
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: ListTile(
               leading: const Icon(Icons.home_filled),
               title: const Text('所有新闻'),
               onTap: controller.showAllArticles,
+              selected: controller.selectedArticle == -1,
             ),
           ),
+
           Expanded(
-            child: Obx(() {
-              return ListView(
-                padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-                children: ArticleSourceProvider.to.cacheArticleSources.map((e) {
-                  return ListTile(
-                    leading: const Icon(Icons.web_stories),
-                    title: Text(e.name!),
-                    onTap: () => controller.showArticlesFromSource(e),
-                  );
-                }).toList(),
-              );
-            }),
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+              children: ArticleSourceProvider.to.cacheArticleSources.map((e) {
+                return ListTile(
+                  leading: const Icon(Icons.web_stories),
+                  title: Text(e.name!),
+                  onTap: () => controller.showArticlesFromSource(e),
+                  selected: controller.selectedArticle == e.id,
+                );
+              }).toList(),
+            ),
           ),
         ],
       ),

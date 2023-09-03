@@ -20,8 +20,8 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
         );
       } else {
         return LinearProgressIndicator(
-          backgroundColor: Colors.blue,
-          valueColor: const AlwaysStoppedAnimation(Colors.white),
+          backgroundColor: Colors.white,
+          valueColor: const AlwaysStoppedAnimation(Colors.blue),
           value: RssService.to.progress.value,
         );
       }

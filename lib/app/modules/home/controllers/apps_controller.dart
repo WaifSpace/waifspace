@@ -9,6 +9,6 @@ class AppsController extends GetxController {
 
   Future<bool> onWillPop() async {
     dreamBrowserController.goBack();
-    return false;
+    return true; // 等于true的时候会把事件持续往下传, 确保每个组件都能做出自己正确的响应
   }
 }

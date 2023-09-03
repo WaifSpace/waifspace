@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
@@ -10,6 +11,16 @@ class HomeController extends GetxController {
   static HomeController get to => Get.find<HomeController>();
 
   int get currentNavIndex => BottomNavigationBarController.to.currentIndex;
+
+  var scaffoldKey = GlobalKey<ScaffoldState>();
+
+  void openDrawer() {
+    scaffoldKey.currentState?.openDrawer();
+  }
+
+  void closeDrawer() {
+    scaffoldKey.currentState?.openEndDrawer();
+  }
 
   void onDoubleTap() {
     switch(BottomNavigationBarController.to.currentIndex) {
@@ -28,6 +39,6 @@ class HomeController extends GetxController {
       ArticleProvider.to.updateSourceIDFilter(null, '');
       ArticleListController.to.reloadData();
     }
-    return false;
+    return true;
   }
 }
