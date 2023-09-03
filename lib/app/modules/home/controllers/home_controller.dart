@@ -18,8 +18,12 @@ class HomeController extends GetxController {
     scaffoldKey.currentState?.openDrawer();
   }
 
-  void closeDrawer() {
-    scaffoldKey.currentState?.openEndDrawer();
+  bool closeDrawer() {
+    if(scaffoldKey.currentState != null && scaffoldKey.currentState!.isDrawerOpen) {
+      scaffoldKey.currentState?.openEndDrawer();
+      return true;
+    }
+    return false;
   }
 
   void onDoubleTap() {
@@ -35,10 +39,26 @@ class HomeController extends GetxController {
   }
 
   Future<bool> onWillPop() async {
-    if(ArticleProvider.to.filterSourceName.isNotEmpty) {
-      ArticleProvider.to.updateSourceIDFilter(null, '');
-      ArticleListController.to.reloadData();
+    // 先关闭左侧的划窗
+    if(HomeController.to.closeDrawer()) {
+      return false;
     }
-    return true;
+
+    switch(BottomNavigationBarController.to.currentIndex) {
+      case 0: { // 如果是新闻页面的时候，是去掉筛选标签
+        if(ArticleProvider.to.filterSourceName.isNotEmpty) {
+          ArticleProvider.to.updateSourceIDFilter(null, '');
+          ArticleListController.to.reloadData();
+          return false;
+        }
+      }
+      break;
+      case 1: { // 如果是应用页，目前主要是定位到浏览器的后退
+        DreamBrowserController.to.goBack();
+        return false;
+      }
+      break;
+    }
+    return false;
   }
 }

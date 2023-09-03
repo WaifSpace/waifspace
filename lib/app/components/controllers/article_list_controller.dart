@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 
 class ArticleListController extends GetxController {
 
@@ -59,4 +60,6 @@ class ArticleListController extends GetxController {
         .addAll(await articleProvider.latestArticles(_articles.last.id ?? -1));
     _isLoadMore = false;
   }
+
+
 }

@@ -1,9 +1,10 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
+import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
-import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
+import 'package:waifspace/app/modules/home/controllers/apps_controller.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarController extends GetxController {
@@ -15,7 +16,16 @@ class HomepageAppbarController extends GetxController {
   }
 
   String title() {
-    return ArticleProvider.to.filterSourceName.isEmpty ? "新闻" : ArticleProvider.to.filterSourceName.value;
+    switch(BottomNavigationBarController.to.currentIndex) {
+      case 0: {
+        return ArticleProvider.to.filterSourceName.isEmpty ? "新闻" : ArticleProvider.to.filterSourceName.value;
+      }
+      break;
+      case 1: {
+        return "应用";
+      }
+    }
+    return 'WaifSpace';
   }
 
   Future<void> add(String url, String name) async {
