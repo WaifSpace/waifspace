@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/views/article_list_view.dart';
 import 'package:waifspace/app/components/views/bottom_navigation_bar_view.dart';
 import 'package:waifspace/app/components/views/homepage_appbar_view.dart';
-import 'package:waifspace/app/modules/apps/views/apps_view.dart';
+import 'package:waifspace/app/modules/home/views/apps_view.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {

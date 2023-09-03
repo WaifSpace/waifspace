@@ -1,27 +1,20 @@
 import 'package:get/get.dart';
 
-import 'package:waifspace/app/components/controllers/article_controller.dart';
-import 'package:waifspace/app/components/controllers/article_list_controller.dart';
-import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
-import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
-import 'package:waifspace/app/components/controllers/homepage_appbar_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
-import 'package:waifspace/app/modules/apps/controllers/apps_controller.dart';
+import 'package:waifspace/app/services/database_service.dart';
+import 'package:waifspace/app/services/rss_service.dart';
 
 // 用于注册Getx用到的一些依赖
-void register() {
-  // components
-  Get.lazyPut(() => HomepageAppbarController());
-  Get.lazyPut(() => BottomNavigationBarController());
-  Get.lazyPut(() => ArticleListController());
-  Get.lazyPut(() => ArticleController());
-  Get.lazyPut(() => DreamBrowserController());
+Future<void> register() async {
 
-  // 奇怪，这个地方应该是不用注册才对的，不知道为什么
-  Get.lazyPut(() => AppsController());
+  // 初始化数据库服务
+  Get.put(await DatabaseService().init());
 
-  // data/providers
-  Get.lazyPut(() => ArticleProvider());
-  Get.lazyPut(() => ArticleSourceProvider());
+  // 初始化数据提供类
+  Get.put(ArticleProvider());
+  Get.put(ArticleSourceProvider());
+
+  // 初始化一些具体的应用功能服务
+  Get.put<RssService>(RssService());
 }

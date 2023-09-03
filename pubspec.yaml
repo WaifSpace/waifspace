@@ -7,7 +7,10 @@ environment:
 
 dependencies: 
   cupertino_icons: ^1.0.2
-  get: 4.6.5
+  get:
+    git:
+      url: https://github.com/jonataslaw/getx.git
+      ref: master
   logger: 2.0.1
   sqflite: 2.3.0
   path: 1.8.3
