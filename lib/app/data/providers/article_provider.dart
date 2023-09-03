@@ -8,7 +8,16 @@ import '../models/article_model.dart';
 
 class ArticleProvider {
   static String table = "articles";
-  static int queryLimit = 20;
+  static const int _queryLimit = 20;
+
+  ArticleProvider._build();
+
+  static Future<ArticleProvider> build() async {
+    var articleProvider = ArticleProvider._build();
+    return articleProvider;
+  }
+
+  static ArticleProvider get to => Get.find<ArticleProvider>();
 
   var filterSourceName = "".obs; // 用于显示过滤的source的名字
 
@@ -22,7 +31,7 @@ class ArticleProvider {
     List<Article> articles = [];
 
     var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
-    sqlBuilder.limit(queryLimit)
+    sqlBuilder.limit(_queryLimit)
         .where("source_id = ?", [_sourceIDCondition])
         .orderBy("a.id", desc: true)
         .like('(a.title like ? or a.content like ?)', [_searchCondition, _searchCondition]);

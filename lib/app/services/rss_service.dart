@@ -10,6 +10,9 @@ import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 
 class RssService extends GetxService {
+
+  static RssService get to => Get.find<RssService>();
+
   var _isFetchAll = false;
   var progress = 0.0.obs; // 获取全部文章的进度, 用于对外暴露处理进度
 
@@ -42,7 +45,7 @@ class RssService extends GetxService {
 
     _isFetchAll = true; // 设置标志位，表明开始批量处理，避免调用多次后的重复执行
     progress.value = 0; // 初始化进度条为 0
-    var articleSources = await ArticleSourceProvider().findAll();
+    var articleSources = await ArticleSourceProvider.to.findAll();
 
     var sourceCount = articleSources.length;
     var index = 0;

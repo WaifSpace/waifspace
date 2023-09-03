@@ -6,9 +6,21 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:waifspace/app/global.dart';
 
-class DatabaseService extends GetxService {
+class DatabaseService {
+  static const String _database = 'waifspace.db';
+
+  DatabaseService._build();
+
+  static Future<DatabaseService> build() async {
+    var databaseService = DatabaseService._build();
+    await databaseService.init();
+    return databaseService;
+  }
+
+  static get to => Get.find<DatabaseService>();
+
   late Database db;
-  final String _database = 'waifspace.db';
+
   Future<DatabaseService> init() async {
     logger.i("开始启动数据库服务");
     var dbPath = path.join(await getDatabasesPath(), _database);

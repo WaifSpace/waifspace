@@ -2,6 +2,8 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 
 class DreamBrowserController extends GetxController {
+  static DreamBrowserController get to => Get.find<DreamBrowserController>();
+
   final initUrl = 'https://twitter.com/home';
   // final initUrl = 'https://www.163.com/';
 

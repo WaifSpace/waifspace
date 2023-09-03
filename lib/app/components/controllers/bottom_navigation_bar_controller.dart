@@ -2,6 +2,9 @@ import 'package:get/get.dart';
 
 
 class BottomNavigationBarController extends GetxController {
+
+  static BottomNavigationBarController get to => Get.find<BottomNavigationBarController>();
+
   final _currentIndex = 0.obs;
 
   void selectScreen(int index) {

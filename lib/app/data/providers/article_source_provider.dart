@@ -6,11 +6,28 @@ import 'package:waifspace/app/services/database_service.dart';
 
 class ArticleSourceProvider {
   static String table = "article_sources";
+
+  ArticleSourceProvider._build();
+
+  static Future<ArticleSourceProvider> build() async {
+    var articleSource = ArticleSourceProvider._build();
+    await articleSource.reloadArticleSources();
+    return articleSource;
+  }
+
+  static ArticleSourceProvider get to => Get.find<ArticleSourceProvider>();
+
+  final _cacheArticleSources = <ArticleSource>[].obs;
+  List<ArticleSource> get cacheArticleSources => _cacheArticleSources.value;
+
   final Database db = Get.find<DatabaseService>().db;
+
+  reloadArticleSources() async {
+    _cacheArticleSources.assignAll(await findAll());
+  }
 
   // ArticleSource 添加 lang 字段，用来判断这个rss的语言, 例如 feed.language
   Future<ArticleSource> create(ArticleSource articleSource) async {
-
     // 判断数据库里面是否已经存在这个URL的订阅
     var maps = await db.query(
       table,

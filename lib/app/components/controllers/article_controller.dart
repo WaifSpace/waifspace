@@ -6,6 +6,8 @@ import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 
 class ArticleController extends GetxController {
+  static ArticleController get to => Get.find<ArticleController>();
+
   final ChromeSafariBrowser _browser = _NewsBrowser();
   ArticleProvider articleProvider = Get.find<ArticleProvider>();
   ArticleListController articleListController = Get.find<ArticleListController>();

@@ -5,6 +5,9 @@ import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 
 class ArticleListController extends GetxController {
+
+  static ArticleListController get to => Get.find<ArticleListController>();
+
   bool _isLoadMore = false;
   var showSearch = false.obs;
 
