@@ -7,6 +7,7 @@ import 'package:waifspace/app/components/views/homepage_appbar_view.dart';
 import 'package:waifspace/app/modules/home/views/apps_view.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/views/left_drawer_view.dart';
+import 'package:waifspace/app/modules/home/views/my_page_view.dart';
 
 class HomeView extends GetView<HomeController> {
   const HomeView({Key? key}) : super(key: key);
@@ -29,6 +30,7 @@ class HomeView extends GetView<HomeController> {
           children: const [
             ArticleListView(),
             AppsView(),
+            MyPageView(),
           ],
         )),
       ),

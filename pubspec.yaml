@@ -7,15 +7,10 @@ environment:
 
 dependencies: 
   cupertino_icons: ^1.0.2
-  get:
-    git:
-      url: https://github.com/jonataslaw/getx.git
-      ref: master
   logger: 2.0.1
   sqflite: 2.3.0
   path: 1.8.3
-  path_provider: 2.1.0
-  dart_rss: 3.0.1
+  rss_dart: ^1.0.4
   adaptive_dialog: 1.9.0
   fluttertoast: 8.2.2
   jiffy: 6.2.1
@@ -23,6 +18,14 @@ dependencies:
   timeago: 3.5.0
   intl: 0.18.1
   html: 0.15.4
+  hive: ^4.0.0-dev.2
+  isar_flutter_libs: ^4.0.0-dev.13
+  path_provider: ^2.1.0
+  http: 1.1.0
+  get: 
+    git: 
+      url: https://github.com/jonataslaw/getx.git
+      ref: master
   flutter: 
     sdk: flutter
 

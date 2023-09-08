@@ -3,7 +3,9 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
+import 'package:waifspace/app/services/cubox_service.dart';
 
 class ArticleController extends GetxController {
   static ArticleController get to => Get.find<ArticleController>();
@@ -37,6 +39,12 @@ class ArticleController extends GetxController {
   void filterSource(int sourceID, String sourceName) {
     articleProvider.updateSourceIDFilter(sourceID, sourceName);
     articleListController.reloadData();
+  }
+
+  void bookmark(Article article) {
+    if(article.title != null && article.url != null) {
+      CuboxService.save(article.title ?? '', article.url ?? '', htmlToText(article.content ?? "").trim());
+    }
   }
 }
 

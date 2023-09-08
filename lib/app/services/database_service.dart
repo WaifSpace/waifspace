@@ -17,7 +17,7 @@ class DatabaseService {
     return databaseService;
   }
 
-  static get to => Get.find<DatabaseService>();
+  static DatabaseService get to => Get.find<DatabaseService>();
 
   late Database db;
 

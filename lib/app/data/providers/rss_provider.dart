@@ -17,6 +17,5 @@ class RssProvider extends GetConnect {
     logger.i("[$url] 获取错误");
     response.printError();
     return null;
-
   }
 }

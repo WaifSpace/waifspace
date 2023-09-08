@@ -50,6 +50,8 @@ class ArticleView extends GetView<ArticleController> {
             )),
             const SizedBox(width: 10),
             RawChip(label: Text(controller.articleTime(article))),
+            const Spacer(),
+            IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add)),
           ],
         ),
         Container(
