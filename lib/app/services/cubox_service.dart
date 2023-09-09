@@ -1,32 +1,40 @@
 import 'dart:convert';
+import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 
 class CuboxService {
-  static save(String title, String url, String description) async {
+  static const _urlConfigName = 'cubox_url';
+  static String get url => HiveService.to.box.get(_urlConfigName, defaultValue: '');
+  static set url(String value) => HiveService.to.box.put(_urlConfigName, value);
+
+  static final _dio = Dio();
+
+  static save(String title, String articleUrl, String description) async {
     try {
-      var response = await http.post(
-          Uri.parse(HiveService.to.box.get('cubox_url')),
-          headers: <String, String>{
-            'Content-Type': 'application/json; charset=UTF-8',
-          },
-          body: jsonEncode(<String, String>{
+      var response = await _dio.post(
+          url,
+          options: Options(
+            headers: {
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+          ),
+          data: jsonEncode({
             'type': 'url',
-            'content': url,
+            'content': articleUrl,
             'description': description,
             'title': title,
             'folder': 'waifspace',
           }));
-      var jsonResponse =
-      json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-      if (response.statusCode == 200 && jsonResponse['code'] == 200) {
-        _showMsg("Cubox $title 保存成功");
+      if (response.statusCode == 200 && response.data['code'] == 200) {
+        _showMsg("Cubox 保存成功 $title ");
       } else {
-        _showMsg("Cubox $title 保存失败");
+        _showMsg("Cubox 保存失败 $title ");
       }
     } catch (e) {
-      _showMsg("Cubox $title 保存失败");
+      _showMsg("Cubox 保存失败 $title ");
     }
   }
 

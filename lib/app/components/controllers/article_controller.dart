@@ -5,6 +5,7 @@ import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
+import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/cubox_service.dart';
 
 class ArticleController extends GetxController {
@@ -45,6 +46,10 @@ class ArticleController extends GetxController {
     if(article.title != null && article.url != null) {
       CuboxService.save(article.title ?? '', article.url ?? '', htmlToText(article.content ?? "").trim());
     }
+  }
+
+  void translate(String text) {
+    AIService.to.readAndTranslate(text);
   }
 }
 

@@ -52,6 +52,7 @@ class ArticleView extends GetView<ArticleController> {
             RawChip(label: Text(controller.articleTime(article))),
             const Spacer(),
             IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add)),
+            IconButton(onPressed: () => controller.translate(article.content ?? ''), icon: const Icon(Icons.translate)),
           ],
         ),
         Container(

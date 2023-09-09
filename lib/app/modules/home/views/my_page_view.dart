@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -16,8 +17,29 @@ class MyPageView extends GetView<MyPageController> {
               controller: controller.cuboxUrlController,
               decoration: const InputDecoration(
                   labelText: 'Cubox API URL',
-                  hintText: '输入Cubox调用地址',
-                  prefixIcon: Icon(Icons.bookmark_add))),
+                  hintText: '输入 Cubox 接口地址',
+                  prefixIcon: Icon(Icons.bookmark_add))
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
+          child: TextField(
+              controller: controller.openAIUrlController,
+              decoration: const InputDecoration(
+                  labelText: 'OpenAI API URL',
+                  hintText: '输入 OpenAI 接口地址',
+                  prefixIcon: Icon(CupertinoIcons.rays))
+          ),
+        ),
+        Container(
+          margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
+          child: TextField(
+              controller: controller.openAITokenController,
+              decoration: const InputDecoration(
+                  labelText: 'OpenAI API token',
+                  hintText: '输入 OpenAI token',
+                  prefixIcon: Icon(Icons.security))
+          ),
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),

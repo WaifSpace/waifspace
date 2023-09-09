@@ -1,16 +1,23 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:waifspace/app/services/hive_service.dart';
+import 'package:waifspace/app/services/ai_service.dart';
+import 'package:waifspace/app/services/cubox_service.dart';
 
 class MyPageController extends GetxController {
   TextEditingController cuboxUrlController = TextEditingController();
+  TextEditingController openAIUrlController = TextEditingController();
+  TextEditingController openAITokenController = TextEditingController();
 
   @override
   void onInit() {
-    cuboxUrlController.text = HiveService.to.box.get('cubox_url', defaultValue: '');
+    cuboxUrlController.text = CuboxService.url;
+    openAIUrlController.text = AIService.url;
+    openAITokenController.text = AIService.token;
   }
 
   void saveSetting() {
-    HiveService.to.box.put("cubox_url", cuboxUrlController.text);
+    CuboxService.url = cuboxUrlController.text;
+    AIService.url = openAIUrlController.text;
+    AIService.token = openAITokenController.text;
   }
 }
