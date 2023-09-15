@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/helper/sql_builder.dart';
+import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/database_service.dart';
 import '../models/article_model.dart';
 
@@ -80,6 +82,10 @@ class ArticleProvider {
 
     // 如果数据库里面没有重复的这条记录，才创建并写入
     if (maps.isEmpty) {
+
+      // 在保存进数据库的时候，调用chatgpt 提取文章的内容
+      article.cnContent = await AIService.to.readAndTranslate(htmlToText(article.content ?? ''));
+
       article.createdAt ??= AppTime.now().dbFormat();
       article.updatedAt ??= AppTime.now().dbFormat();
       // source_name 是链表查询获得的字段，保存的时候要删除

@@ -52,15 +52,15 @@ class ArticleView extends GetView<ArticleController> {
             RawChip(label: Text(controller.articleTime(article))),
             const Spacer(),
             IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add)),
-            IconButton(onPressed: () => controller.translate(article.content ?? ''), icon: const Icon(Icons.translate)),
+            // IconButton(onPressed: () => controller.translate(article.content ?? ''), icon: const Icon(Icons.translate)),
           ],
         ),
         Container(
           margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
           alignment: Alignment.topLeft,
           child: SelectableText(
-            htmlToText(article.content ?? "").trim(),
-            maxLines: 10,
+            _showArticleContent(article),
+            maxLines: 20,
             minLines: 2,
             textAlign: TextAlign.left,
             scrollPhysics: const NeverScrollableScrollPhysics(),
@@ -81,4 +81,12 @@ class ArticleView extends GetView<ArticleController> {
       ],
     );
   }
+}
+
+String _showArticleContent(Article article) {
+  var content = article.cnContent;
+  if(content == null || content.trim().isEmpty) {
+    content = article.content;
+  }
+  return htmlToText(content ?? '').trim();
 }

@@ -30,24 +30,24 @@ class AIService {
     OpenAI.baseUrl = url;
   }
 
-  Future<void> readAndTranslate(String text) async {
+  Future<String> readAndTranslate(String text) async {
     if(text.isEmpty) {
-      return;
+      return '';
     }
     // 控制文本长度，确保不要把token撑爆了
-    if(text.length >= 500) {
-      text = text.substring(0, 500);
+    if(text.length >= 200) {
+      text = text.substring(0, 200);
     }
     OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
-      // model: "gpt-3.5-turbo",
-      model: "gpt-4",
+      model: "gpt-3.5-turbo",
+      // model: "gpt-4",
       messages: [
         OpenAIChatCompletionChoiceMessageModel(
-          content: "假如我是一个编辑，我会读懂文章的内容然后以记者的角度把关键点重新用中文写出来，要求总数控制在300字以内，输出内容要简洁清晰, 语句通顺好读: 内容如下 $text",
+          content: "请将文章的核心内容总结出来并转成中文，要求总数控制在200字以内，输出内容要简洁清晰, 语句通顺好读, 内容如下: $text",
           role: OpenAIChatMessageRole.user,
         ),
       ],
     );
-    print(chatCompletion.choices.first.message.content);
+    return chatCompletion.choices.first.message.content;
   }
 }

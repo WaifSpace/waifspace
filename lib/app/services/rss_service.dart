@@ -8,6 +8,7 @@ import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/rss_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
+import 'package:waifspace/app/services/ai_service.dart';
 
 class RssService extends GetxService {
 
@@ -37,6 +38,7 @@ class RssService extends GetxService {
     ));
   }
 
+  // 这个地方可以改成异步的处理，来加快网络的并发请求
   Future<void> fetchAllArticles() async {
     if(_isFetchAll) {
       logger.i("正在全量获取新闻，请稍后");
@@ -79,6 +81,7 @@ class RssService extends GetxService {
 
       for(var item in rssFeed.items) {
         logger.i(item.title);
+
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,

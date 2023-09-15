@@ -49,7 +49,7 @@ class ArticleController extends GetxController {
   }
 
   void translate(String text) {
-    AIService.to.readAndTranslate(text);
+    // AIService.to.readAndTranslate(text);
   }
 }
 
