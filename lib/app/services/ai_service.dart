@@ -71,7 +71,7 @@ class AIService {
       model: model,
       messages: [
         OpenAIChatCompletionChoiceMessageModel(
-          content: "$text \n 提取上面文字的核心内容，并通过 $maxLength 个字的中文总结出来",
+          content: "$text \n 提取上面文字的核心内容，并通过尽可能短的，不超过 $maxLength 个字的中文总结出来",
           role: OpenAIChatMessageRole.user,
         ),
       ],
