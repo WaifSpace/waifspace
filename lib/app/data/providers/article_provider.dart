@@ -83,8 +83,15 @@ class ArticleProvider {
     // 如果数据库里面没有重复的这条记录，才创建并写入
     if (maps.isEmpty) {
 
+      if(!isChinese(article.title ?? '')) { // 只对英文处理
+        article.cnTitle = await AIService.to.readAndTranslate(article.title ?? '', maxLength: 20);
+      }
+
       // 在保存进数据库的时候，调用chatgpt 提取文章的内容
-      article.cnContent = await AIService.to.readAndTranslate(htmlToText(article.content ?? ''));
+      var textContent = htmlToText(article.content ?? '');
+      if(!isChinese(textContent)) { // 只对英文处理
+        article.cnContent = await AIService.to.readAndTranslate(textContent);
+      }
 
       article.createdAt ??= AppTime.now().dbFormat();
       article.updatedAt ??= AppTime.now().dbFormat();

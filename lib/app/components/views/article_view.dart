@@ -30,10 +30,10 @@ class ArticleView extends GetView<ArticleController> {
             child: GestureDetector(
               onTap: () { controller.openBrowser(article.url); },
               child: Text(
-                article.title ?? "",
+                _showArticleTitle(article),
                 softWrap: false,
                 overflow: TextOverflow.ellipsis,
-                maxLines: 2,
+                maxLines: 3,
                 textAlign: TextAlign.left,
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
@@ -52,7 +52,7 @@ class ArticleView extends GetView<ArticleController> {
             RawChip(label: Text(controller.articleTime(article))),
             const Spacer(),
             IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add)),
-            // IconButton(onPressed: () => controller.translate(article.content ?? ''), icon: const Icon(Icons.translate)),
+            IconButton(onPressed: () => controller.translate(htmlToText(article.content ?? '').trim()), icon: const Icon(Icons.translate)),
           ],
         ),
         Container(
@@ -89,4 +89,12 @@ String _showArticleContent(Article article) {
     content = article.content;
   }
   return htmlToText(content ?? '').trim();
+}
+
+String _showArticleTitle(Article article) {
+  var title = article.cnTitle;
+  if(title == null || title.trim().isEmpty) {
+    title = article.title;
+  }
+  return htmlToText(title ?? '').trim();
 }

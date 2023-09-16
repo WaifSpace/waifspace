@@ -8,7 +8,6 @@ import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/rss_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
-import 'package:waifspace/app/services/ai_service.dart';
 
 class RssService extends GetxService {
 

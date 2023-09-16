@@ -48,8 +48,8 @@ class ArticleController extends GetxController {
     }
   }
 
-  void translate(String text) {
-    // AIService.to.readAndTranslate(text);
+  Future<void> translate(String text) async {
+    await AIService.to.readAndTranslate(text);
   }
 }
 

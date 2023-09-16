@@ -1,5 +1,6 @@
 import 'package:dart_openai/dart_openai.dart';
 import 'package:get/get.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 
 class AIService {
@@ -30,24 +31,28 @@ class AIService {
     OpenAI.baseUrl = url;
   }
 
-  Future<String> readAndTranslate(String text) async {
+  Future<String> readAndTranslate(String text, {String model = 'gpt-4', int maxLength = 200 }) async {
     if(text.isEmpty) {
       return '';
     }
     // 控制文本长度，确保不要把token撑爆了
-    if(text.length >= 200) {
-      text = text.substring(0, 200);
+    if(text.length >= 400) {
+      text = text.substring(0, 400);
     }
+    logger.i('开始给AI处理文本 $text');
     OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
-      model: "gpt-3.5-turbo",
+      // model: "gpt-3.5-turbo",
       // model: "gpt-4",
+      model: model,
       messages: [
         OpenAIChatCompletionChoiceMessageModel(
-          content: "请将文章的核心内容总结出来并转成中文，要求总数控制在200字以内，输出内容要简洁清晰, 语句通顺好读, 内容如下: $text",
+          content: "请将后面文章的核心内容用中文总结出来，总字数在 $maxLength 字以内, 文章内容如下: $text",
           role: OpenAIChatMessageRole.user,
         ),
       ],
     );
-    return chatCompletion.choices.first.message.content;
+    var result = chatCompletion.choices.first.message.content;
+    logger.i('AI处理的结果是 $result');
+    return result;
   }
 }
