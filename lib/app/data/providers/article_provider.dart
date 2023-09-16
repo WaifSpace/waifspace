@@ -84,7 +84,7 @@ class ArticleProvider {
     if (maps.isEmpty) {
 
       if(!isChinese(article.title ?? '')) { // 只对英文处理
-        article.cnTitle = await AIService.to.readAndTranslate(article.title ?? '', maxLength: 20);
+        article.cnTitle = await AIService.to.translate(article.title ?? '');
       }
 
       // 在保存进数据库的时候，调用chatgpt 提取文章的内容
