@@ -47,6 +47,7 @@ dependencies:
 
   # 网路请求
   dio: ^5.3.2
+  talker_dio_logger: ^2.3.0
 
   # 状态管理
   get: ^5.0.0-release-candidate-5

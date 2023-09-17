@@ -79,8 +79,6 @@ class RssService extends GetxService {
       }
 
       for(var item in rssFeed.items) {
-        logger.i(item.title);
-
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,

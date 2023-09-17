@@ -1,9 +1,6 @@
-import 'package:dio/dio.dart';
 import 'package:waifspace/app/global.dart';
 
 class RssProvider {
-  final dio = Dio();
-
   Future<String?> getRssXmlString(String url) async {
     var response = await dio.get(url);
     if(response.statusCode == 200) {

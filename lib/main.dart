@@ -9,7 +9,7 @@ Future<void> main() async {
 
   runApp(
     GetMaterialApp(
-      title: "Application",
+      title: "WaifSpace",
       theme: ThemeData.dark(useMaterial3: true),
       enableLog: false,
       initialRoute: AppPages.INITIAL,

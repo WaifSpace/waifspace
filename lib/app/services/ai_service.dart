@@ -29,6 +29,7 @@ class AIService {
   void init() {
     OpenAI.apiKey = token;
     OpenAI.baseUrl = url;
+    OpenAI.showLogs =false;
   }
 
   Future<String> translate(String text, {String model = 'gpt-4'}) async {
@@ -64,7 +65,7 @@ class AIService {
     if(text.length >= 400) {
       text = text.substring(0, 400);
     }
-    logger.i('开始给AI处理文本 $text');
+
     OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
       // model: "gpt-3.5-turbo",
       // model: "gpt-4",
@@ -77,7 +78,6 @@ class AIService {
       ],
     );
     var result = chatCompletion.choices.first.message.content;
-    logger.i('AI处理的结果是 $result');
     return result;
   }
 }

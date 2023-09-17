@@ -82,7 +82,7 @@ class ArticleProvider {
 
     // 如果数据库里面没有重复的这条记录，才创建并写入
     if (maps.isEmpty) {
-
+      logger.i("插入文章 ${article.title}");
       if(!isChinese(article.title ?? '')) { // 只对英文处理
         article.cnTitle = await AIService.to.translate(article.title ?? '');
       }
