@@ -51,6 +51,13 @@ class ArticleController extends GetxController {
   Future<void> translate(String text) async {
     await AIService.to.readAndTranslate(text);
   }
+
+  Future<void> readArticle(int? articleID) async {
+    if(articleID == null) {
+      return;
+    }
+    await ArticleProvider.to.readArticle(articleID);
+  }
 }
 
 

@@ -36,14 +36,20 @@ class ArticleProvider {
 
     var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
     sqlBuilder.limit(_queryLimit)
-        .where("source_id = ?", [_sourceIDCondition])
+        .where("a.source_id = ?", [_sourceIDCondition])
         .orderBy("a.id", desc: true)
-        .like('(a.title like ? or a.content like ?)', [_searchCondition, _searchCondition]);
+        .like('(a.title like ? or a.cn_title like ? or a.content like ? or a.cn_content like ?)', [_searchCondition, _searchCondition, _searchCondition, _searchCondition]);
     if(id > 0) {
       sqlBuilder.where("a.id < ?", [id]);
     }
 
+    // 如果是全部列表的时候，并且没有搜索条件的时候, 只显示未读的文章
+    if(_sourceIDCondition == null && _searchCondition == null) {
+      sqlBuilder.where("a.is_read = ?", [0]);
+    }
+
     var (sql, arguments) = sqlBuilder.done();
+    logger.i("执行sql => $sql");
     List<Map<String, Object?>> articlesMap = await _db.rawQuery(
       sql,
       arguments,
@@ -64,7 +70,7 @@ class ArticleProvider {
     _searchCondition = text;
   }
 
-  create(Article article) async {
+  Future<void> create(Article article) async {
     // 如果内容为空，就不存入数据库
     if (article.title == null &&
         article.sourceId == null &&
@@ -100,5 +106,16 @@ class ArticleProvider {
       articleJson.remove('source_name');
       await _db.insert(table, articleJson);
     }
+  }
+
+  Future<int> readArticle(int articleID) async {
+    if(articleID <= -1) {
+      return 0;
+    }
+    logger.i('阅读文章ID => $articleID');
+    return await _db.rawUpdate(
+      'update $table set is_read = 1 where id = ?',
+      [articleID]
+    );
   }
 }

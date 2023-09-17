@@ -6,8 +6,8 @@ class Article {
   String? cnContent;
   String? url;
   String? imageUrl;
-  bool? isRead;
-  bool? isFavorite;
+  int? isRead;
+  int? isFavorite;
   int? sourceId;
   String? sourceName;
   String? sourceUid;

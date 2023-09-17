@@ -55,6 +55,8 @@ dependencies:
   # chatgpt 库
   dart_openai: ^4.0.0
 
+  visibility_detector: ^0.4.0+2
+
   flutter: 
     sdk: flutter
 

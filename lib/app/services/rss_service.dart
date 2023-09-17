@@ -85,6 +85,7 @@ class RssService extends GetxService {
           imageUrl: _getImageUrlFromContent(item.description),
           url: item.link,
           sourceId: articleSource.id,
+          isRead: 0,
           sourceUid: item.guid,
           pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!).dbFormat() : '',
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),

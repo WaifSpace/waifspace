@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import 'package:waifspace/app/components/controllers/article_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/global.dart';
@@ -8,9 +9,22 @@ class ArticleView extends GetView<ArticleController> {
   final Article article;
 
   const ArticleView({Key? key, required this.article}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return VisibilityDetector(
+      key: Key("article_view_${article.id}"),
+      onVisibilityChanged: (visibilityInfo) {
+        if(article.isRead == 1) {
+          return;
+        }
+        var visiblePercentage = visibilityInfo.visibleFraction * 100;
+        if(visiblePercentage >= 20) {
+          controller.readArticle(article.id);
+          article.isRead = 1;
+        }
+      },
+      child: Column(
       children: [
         GestureDetector(
           onTap: () { controller.openBrowser(article.url); },
@@ -79,6 +93,7 @@ class ArticleView extends GetView<ArticleController> {
           margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
         ),
       ],
+    )
     );
   }
 }
