@@ -38,8 +38,8 @@ class ArticleSourceProvider {
 
     // 只有数据库里面不存在的时候才保存
     if(maps.isEmpty) {
-      articleSource.createdAt ??= AppTime.now().dbFormat();;
-      articleSource.updatedAt ??= AppTime.now().dbFormat();;
+      articleSource.createdAt ??= AppTime.now().dbFormat();
+      articleSource.updatedAt ??= AppTime.now().dbFormat();
       articleSource.id = await db.insert(table, articleSource.toJson());
       return articleSource;
     } else {

@@ -118,4 +118,14 @@ class ArticleProvider {
       [articleID]
     );
   }
+
+  Future<Map> sourceCount() async {
+    var countInfo = await _db.rawQuery('select source_id, count(id) as count from $table group by source_id');
+    return { for (var e in countInfo) e['source_id'] : e['count'] };
+  }
+
+  Future<Map> sourceUnreadCount() async {
+    var countInfo = await _db.rawQuery('select source_id, count(id) as count from $table where is_read = 0 group by source_id');
+    return { for (var e in countInfo) e['source_id'] : e['count'] };
+  }
 }

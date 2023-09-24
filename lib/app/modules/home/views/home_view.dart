@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/components/views/article_list_view.dart';
 import 'package:waifspace/app/components/views/bottom_navigation_bar_view.dart';
 import 'package:waifspace/app/components/views/homepage_appbar_view.dart';
@@ -15,8 +14,8 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
 
-    return WillPopScope(
-      onWillPop: controller.onWillPop,
+    return BackButtonListener(
+      onBackButtonPressed: controller.onBackPressed,
       child: Scaffold(
         key: controller.scaffoldKey,
         appBar: HomepageAppbarView(

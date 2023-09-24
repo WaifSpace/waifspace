@@ -4,6 +4,7 @@ import 'package:waifspace/app/components/controllers/article_list_controller.dar
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomeController extends GetxController {
@@ -38,10 +39,11 @@ class HomeController extends GetxController {
     await ArticleListController.to.reloadData();
   }
 
-  Future<bool> onWillPop() async {
+  Future<bool> onBackPressed() async {
+
     // 先关闭左侧的划窗
     if(HomeController.to.closeDrawer()) {
-      return false;
+      return Future.value(true);
     }
 
     switch(BottomNavigationBarController.to.currentIndex) {
@@ -49,16 +51,17 @@ class HomeController extends GetxController {
         if(ArticleProvider.to.filterSourceName.isNotEmpty) {
           ArticleProvider.to.updateSourceIDFilter(null, '');
           ArticleListController.to.reloadData();
-          return false;
+          return Future.value(true);
         }
       }
       break;
       case 1: { // 如果是应用页，目前主要是定位到浏览器的后退
         DreamBrowserController.to.goBack();
-        return false;
+        return Future.value(true);
       }
       break;
     }
-    return false;
+    // 这里可以添加一个触发时间，如果连续两次返回再退出应用，目前是先全部都不返回
+    return Future.value(true);
   }
 }
