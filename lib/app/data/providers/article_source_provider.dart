@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
+import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/database_service.dart';
 
@@ -66,6 +68,16 @@ class ArticleSourceProvider {
       return ArticleSource.fromJson(maps.first);
     }
     return null;
+  }
+
+  Future<void> delete(int id) async {
+    if(id < 0) {
+      return;
+    }
+    logger.i('删除 source => $id');
+    await db.rawDelete('delete from $table where id = ?', [id]);
+    await ArticleProvider.to.deleteBySourceID(id);
+    await reloadArticleSources();
   }
 }
 

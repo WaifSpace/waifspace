@@ -128,4 +128,28 @@ class ArticleProvider {
     var countInfo = await _db.rawQuery('select source_id, count(id) as count from $table where is_read = 0 group by source_id');
     return { for (var e in countInfo) e['source_id'] : e['count'] };
   }
+
+  Future<int> makeAllRead() async {
+    logger.i('标记所有文章已读');
+    return await _db.rawUpdate('update $table set is_read = 1 where is_read = 0');
+  }
+
+  Future<int> makeAllReadBySourceID(int sourceID) async {
+    if(sourceID <= -1) {
+      return 0;
+    }
+    logger.i('标记所有source id 为 $sourceID 文章已读');
+    return await _db.rawUpdate(
+        'update $table set is_read = 1 where source_id = ? and is_read = 0',
+        [sourceID]
+    );
+  }
+
+  Future<int> deleteBySourceID(int sourceID) async {
+    logger.i('删除所有source id 为 $sourceID 文章');
+    return await _db.rawDelete(
+        'delete from $table where source_id = ?',
+        [sourceID]
+    );
+  }
 }

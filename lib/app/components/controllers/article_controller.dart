@@ -1,5 +1,6 @@
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
@@ -57,6 +58,12 @@ class ArticleController extends GetxController {
       return;
     }
     await ArticleProvider.to.readArticle(articleID);
+  }
+
+  void share(Article article) {
+    var url = article.url ?? '';
+    var title = article.cnTitle ?? article.title;
+    Share.share('$title: $url', subject: title);
   }
 }
 

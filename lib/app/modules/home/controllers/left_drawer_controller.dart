@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
+import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 
@@ -47,6 +48,26 @@ class LeftDrawerController extends GetxController {
     });
     info[-1] = '$allUnreadArticleCount/$allArticleCount'; // -1 的索引用来保存所有文章的数量和未读的数量
     articleSourceCountInfo.assignAll(info);
+  }
+
+  Future<void> makeAllRead() async {
+    await ArticleProvider.to.makeAllRead();
+    await updateArticleSourceCount();
+  }
+
+  Future<void> makeSourceRead(int? sourceID) async {
+    if(sourceID == null || sourceID < 0) {
+      return;
+    }
+    await ArticleProvider.to.makeAllReadBySourceID(sourceID);
+    await updateArticleSourceCount();
+  }
+
+  void removeSource(int? sourceID) {
+    if(sourceID == null || sourceID < 0) {
+      return;
+    }
+    ArticleSourceProvider.to.delete(sourceID);
   }
 
 }
