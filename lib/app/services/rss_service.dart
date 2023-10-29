@@ -111,4 +111,19 @@ class RssService extends GetxService {
     return null;
 
   }
+
+// 用于更新网站的logo
+// Future<void> fetchAllLogos() async {
+//   var sources = await ArticleSourceProvider.to.findAll();
+//
+//   for (var source in sources) {
+//     if(source.image == null || source.image!.isEmpty) {
+//       var response = await dio.get(source.url!);
+//       var doc = html_parser.parse(response.data.toString());
+//       source.image = doc.querySelector('selector');
+//       logger.i('更新 ${source.name} 的 logo => ${source.image}');
+//       await ArticleSourceProvider.to.update(source);
+//     }
+//   }
+// }
 }

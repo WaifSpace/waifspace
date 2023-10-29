@@ -6,6 +6,7 @@ import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
+import 'package:waifspace/app/services/rss_service.dart';
 
 class LeftDrawerController extends GetxController {
   static LeftDrawerController get to => Get.find<LeftDrawerController>();
@@ -14,6 +15,7 @@ class LeftDrawerController extends GetxController {
   var articleSourceCountInfo = <int, String>{}.obs;
 
   void fetchAllArticles() {
+    // RssService.to.fetchAllLogos();
     selectedArticle = -1;
     HomeController.to.fetchAllArticles();
     HomeController.to.closeDrawer();

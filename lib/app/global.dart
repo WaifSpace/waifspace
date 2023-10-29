@@ -35,3 +35,4 @@ RegExp _exp = RegExp(r"[\u4e00-\u9fa5]");
 bool isChinese(String input) {
   return _exp.hasMatch(input);
 }
+

@@ -11,13 +11,13 @@ class MyPageController extends GetxController {
   @override
   void onInit() {
     cuboxUrlController.text = CuboxService.url;
-    openAIUrlController.text = AIService.url;
-    openAITokenController.text = AIService.token;
+    openAIUrlController.text = AIService.to.url;
+    openAITokenController.text = AIService.to.token;
   }
 
   void saveSetting() {
     CuboxService.url = cuboxUrlController.text;
-    AIService.url = openAIUrlController.text;
-    AIService.token = openAITokenController.text;
+    AIService.to.url = openAIUrlController.text;
+    AIService.to.token = openAITokenController.text;
   }
 }

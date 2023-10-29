@@ -79,5 +79,12 @@ class ArticleSourceProvider {
     await ArticleProvider.to.deleteBySourceID(id);
     await reloadArticleSources();
   }
+
+  Future<int> update(ArticleSource source) async {
+    if(source.id == null) {
+      return 0;
+    }
+    return await db.update(table, source.toJson(), where: 'id = ?', whereArgs: [source.id]);
+  }
 }
 
