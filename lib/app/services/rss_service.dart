@@ -37,7 +37,9 @@ class RssService extends GetxService {
     ));
   }
 
-  // 这个地方可以改成异步的处理，来加快网络的并发请求
+  // 用于记录所有的任务
+  List<Future<Null> Function()> tasks = [];
+  var sourceCount = 0;
   Future<void> fetchAllArticles() async {
     if(_isFetchAll) {
       logger.i("正在全量获取新闻，请稍后");
@@ -45,40 +47,38 @@ class RssService extends GetxService {
     }
 
     _isFetchAll = true; // 设置标志位，表明开始批量处理，避免调用多次后的重复执行
-    progress.value = 0; // 初始化进度条为 0
+    tasks.clear(); // 清空任务
+    progress.value = 0.01; // 先把进度条显示出来
     var articleSources = await ArticleSourceProvider.to.findAll();
-
-    var sourceCount = articleSources.length;
-    var index = 0;
+    sourceCount = articleSources.length;
 
     for(var articleSource in articleSources) {
-      index += 1;
-      progress.value = index / sourceCount;
-      logger.i("处理进度 ${progress.value}");
-      try {
-        await _fetchArticles(articleSource);
-      } catch (e, stack) {
-        logger.i("获取文章错误 ${e.toString()}");
-      }
+      _fetchArticles(articleSource);
     }
-    _isFetchAll = false;
-    progress.value = 0.0;
+
   }
 
-  Future<void> fetchArticles(int id) async {
-    ArticleSource? articleSource = await articleSourceProvider.findByID(id);
-    await _fetchArticles(articleSource);
+  // Future<void> fetchArticles(int id) async {
+  //   ArticleSource? articleSource = await articleSourceProvider.findByID(id);
+  //   await _fetchArticles(articleSource);
+  // }
+
+  int taskCount = 0;
+  int taskIndex = 0;
+  void startTask() {
+    taskCount = tasks.length;
+    taskIndex = 0;
+
+    logger.i("一共获取 $taskCount 篇新文章");
+
+    for(var task in tasks) {
+      task();
+    }
   }
 
-  Future<void> _fetchArticles(ArticleSource? articleSource) async {
-    if(articleSource != null && articleSource.url != null) {
-      var rssFeed = await _getRssFeedByUrl(articleSource.url!);
-
-      if(rssFeed == null) {
-        return;
-      }
-
-      for(var item in rssFeed.items) {
+  void addTask(ArticleSource articleSource, RssItem item) {
+    tasks.add(() async {
+      try {
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,
@@ -87,10 +87,47 @@ class RssService extends GetxService {
           sourceId: articleSource.id,
           isRead: 0,
           sourceUid: item.guid,
-          pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!).dbFormat() : '',
+          pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!)
+              .dbFormat() : '',
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),
         ));
+      } catch (e, stack) {
+        logger.i("保存文章错误 ${e.toString()}");
       }
+      logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
+      taskIndex += 1;
+      progress.value = taskIndex / taskCount;
+
+      // 如果索引大于总任务，那就说明已经处理完了
+      if(taskIndex >= taskCount) {
+        _isFetchAll = false;
+        progress.value = 0.0;
+      }
+    });
+  }
+
+  Future<void> _fetchArticles(ArticleSource? articleSource) async {
+    logger.i("> 开始获取文章 ${articleSource?.name} ${articleSource?.url}");
+    try {
+      if (articleSource != null && articleSource.url != null) {
+        var rssFeed = await _getRssFeedByUrl(articleSource.url!);
+
+        if (rssFeed == null) {
+          return;
+        }
+
+        for (var item in rssFeed.items) {
+          addTask(articleSource, item);
+        }
+      }
+      logger.i("< 取文章完成 ${articleSource?.name} ${articleSource?.url}");
+    } catch (e, _) {
+      logger.i("获取文章错误 ${articleSource?.name} ${articleSource?.url} ${e.toString()}");
+    }
+    sourceCount -= 1;
+    // 说明所有的 source 已经处理完了
+    if(sourceCount <= 0) {
+      startTask();
     }
   }
 
