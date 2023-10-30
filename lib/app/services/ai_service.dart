@@ -74,7 +74,9 @@ class AIService {
 
     if(response.statusCode == 200) {
       var result = response.data;
-      logger.i(result["choices"][0]["message"]["content"]);
+      var content = result["choices"][0]["message"]["content"];
+      // logger.i("AI返回结果是 $content");
+      return content;
     }
     return "";
   }

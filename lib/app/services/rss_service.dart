@@ -92,7 +92,7 @@ class RssService extends GetxService {
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),
         ));
       } catch (e, stack) {
-        logger.i("保存文章错误 ${e.toString()}");
+        logger.i("保存文章错误 ${e.toString()} $stack");
       }
       logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
       taskIndex += 1;
