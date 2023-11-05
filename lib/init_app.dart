@@ -23,4 +23,6 @@ void _initDio() {
       ),
     ),
   );
+  dio.options.connectTimeout = const Duration(seconds: 5);
+  dio.options.receiveTimeout = const Duration(seconds: 5);
 }

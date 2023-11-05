@@ -17,10 +17,7 @@ class AIService {
 
   static AIService get to => Get.find<AIService>();
 
-  late final Dio _dio;
-
   void init() {
-    _dio = Dio();
   }
 
   String get token =>
@@ -75,7 +72,6 @@ class AIService {
     if(response.statusCode == 200) {
       var result = response.data;
       var content = result["choices"][0]["message"]["content"];
-      // logger.i("AI返回结果是 $content");
       return content;
     }
     return "";

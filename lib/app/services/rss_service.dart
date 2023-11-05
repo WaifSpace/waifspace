@@ -39,7 +39,8 @@ class RssService extends GetxService {
 
   // 用于记录所有的任务
   List<Future<Null> Function()> tasks = [];
-  var sourceCount = 0;
+  int sourceCount = 0; // 用于记录源的总数
+  int sourceIndex = 0; // 用于记录完成了的源的数量
   Future<void> fetchAllArticles() async {
     if(_isFetchAll) {
       logger.i("正在全量获取新闻，请稍后");
@@ -50,21 +51,18 @@ class RssService extends GetxService {
     tasks.clear(); // 清空任务
     progress.value = 0.01; // 先把进度条显示出来
     var articleSources = await ArticleSourceProvider.to.findAll();
+
+    // 初始化索引，用于后面记录处理的进度
     sourceCount = articleSources.length;
+    sourceIndex = 0;
 
     for(var articleSource in articleSources) {
       _fetchArticles(articleSource);
     }
-
   }
 
-  // Future<void> fetchArticles(int id) async {
-  //   ArticleSource? articleSource = await articleSourceProvider.findByID(id);
-  //   await _fetchArticles(articleSource);
-  // }
-
-  int taskCount = 0;
-  int taskIndex = 0;
+  int taskCount = 0; // 用于记录任务的总数
+  int taskIndex = 0; // 用于记录完成了的任务数量
   void startTask() {
     taskCount = tasks.length;
     taskIndex = 0;
@@ -92,16 +90,17 @@ class RssService extends GetxService {
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),
         ));
       } catch (e, stack) {
-        logger.i("保存文章错误 ${e.toString()} $stack");
-      }
-      logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
-      taskIndex += 1;
-      progress.value = taskIndex / taskCount;
+        logger.i("保存文章错误 ${item.title} ${e.toString()} $stack");
+      } finally {
+        taskIndex += 1;
+        logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
+        progress.value = taskIndex / taskCount * 0.8 + 0.2; // 子任务的处理占总数的 80%
 
-      // 如果索引大于总任务，那就说明已经处理完了
-      if(taskIndex >= taskCount) {
-        _isFetchAll = false;
-        progress.value = 0.0;
+        // 如果索引大于总任务，那就说明已经处理完了
+        if (taskIndex >= taskCount) {
+          _isFetchAll = false;
+          progress.value = 0.0;
+        }
       }
     });
   }
@@ -124,9 +123,10 @@ class RssService extends GetxService {
     } catch (e, _) {
       logger.i("获取文章错误 ${articleSource?.name} ${articleSource?.url} ${e.toString()}");
     }
-    sourceCount -= 1;
+    sourceIndex += 1;
+    progress.value = sourceIndex / sourceCount * 0.2; // 源地址的获取占总进度的 20%
     // 说明所有的 source 已经处理完了
-    if(sourceCount <= 0) {
+    if(sourceIndex >= sourceCount) {
       startTask();
     }
   }
