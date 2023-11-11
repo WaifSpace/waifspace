@@ -88,7 +88,7 @@ class RssService extends GetxService {
         await articleProvider.create(Article(
           title: item.title,
           content: item.description,
-          imageUrl: _getImageUrlFromContent(item.description),
+          imageUrl: await getRssItemImage(item),
           url: item.link,
           sourceId: articleSource.id,
           isRead: 0,
@@ -138,12 +138,41 @@ class RssService extends GetxService {
     }
   }
 
-  String? _getImageUrlFromContent(String? content) {
+  Future<String?> getRssItemImage(RssItem item) async {
+    var imageUrl = getImageUrlFromContent(item.description);
+    if(imageUrl == null || imageUrl == '') {
+      imageUrl = await getImageUrlFromUrl(item.link);
+      logger.i("从网页直接获取了图片 $imageUrl");
+    }
+    return imageUrl;
+  }
+
+  String? getImageUrlFromContent(String? content) {
     if(content == null || content.trim() == "") {
       return null;
     }
     var document = parse(content);
     return document.querySelector("img")?.attributes['src'];
+  }
+
+  // TODO: 文章的内容，我可以自己来解析，不一定要用 rss 返回的
+  Future<String?> getImageUrlFromUrl(String? url) async {
+    if(url == null || url.trim() == "") {
+      return null;
+    }
+    try {
+      var html = await dio.get(url);
+      if (html.statusCode == 200) {
+        var document = parse(html.data.toString());
+        var images = document.querySelectorAll("body img");
+        if(images.isNotEmpty) {
+          return images[images.length ~/ 2].attributes['src'];
+        }
+      }
+    } catch (e) {
+      logger.i("获取网页信息错误");
+    }
+    return null;
   }
 
   Future<RssFeed?> _getRssFeedByUrl(String url) async {

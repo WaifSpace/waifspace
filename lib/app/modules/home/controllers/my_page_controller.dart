@@ -9,6 +9,7 @@ import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/cubox_service.dart';
+import 'package:waifspace/app/services/rss_service.dart';
 
 class MyPageController extends GetxController {
   TextEditingController cuboxUrlController = TextEditingController();
@@ -30,10 +31,12 @@ class MyPageController extends GetxController {
     debugApp();
   }
 
-  void debugApp() {
+  Future<void> debugApp() async {
     if (isProduction) {
       return;
     }
+    var url = await RssService.to.getImageUrlFromUrl("https://blog.cloudflare.com/cyber-attacks-in-the-israel-hamas-war/");
+    logger.i("获取到的图片是 $url");
   }
 
   Future<void> exportSettings() async {
