@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
 
@@ -36,3 +37,7 @@ bool isChinese(String input) {
   return _exp.hasMatch(input);
 }
 
+void showMsg(String msg) {
+  Fluttertoast.showToast(
+      msg: msg, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.TOP);
+}

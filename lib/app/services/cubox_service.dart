@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 

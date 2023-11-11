@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 
 class BottomNavigationBarView extends GetView<BottomNavigationBarController> {
-  const BottomNavigationBarView({Key? key}) : super(key: key);
+  const BottomNavigationBarView({super.key});
   @override
   Widget build(BuildContext context) {
     return Obx(() => BottomNavigationBar(

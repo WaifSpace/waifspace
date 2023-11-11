@@ -8,8 +8,7 @@ import 'package:waifspace/app/services/rss_service.dart';
 class HomepageAppbarView extends GetView<HomepageAppbarController>
     implements PreferredSizeWidget {
   final VoidCallback onDoubleTap;
-  const HomepageAppbarView({Key? key, required this.onDoubleTap})
-      : super(key: key);
+  const HomepageAppbarView({super.key, required this.onDoubleTap});
   @override
   Widget build(BuildContext context) {
     var titleInfo = Obx(() {

@@ -6,7 +6,7 @@ import 'package:waifspace/app/components/controllers/article_list_controller.dar
 import 'package:waifspace/app/components/views/article_view.dart';
 
 class ArticleListView extends GetView<ArticleListController> {
-  const ArticleListView({Key? key}) : super(key: key);
+  const ArticleListView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
 import 'package:rss_dart/dart_rss.dart';
+import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
@@ -74,6 +75,13 @@ class RssService extends GetxService {
     }
   }
 
+  void taskDone() {
+    // 重新初始化状态
+    _isFetchAll = false;
+    progress.value = 0.0;
+    ArticleListController.to.reloadData();
+  }
+
   void addTask(ArticleSource articleSource, RssItem item) {
     tasks.add(() async {
       try {
@@ -98,8 +106,7 @@ class RssService extends GetxService {
 
         // 如果索引大于总任务，那就说明已经处理完了
         if (taskIndex >= taskCount) {
-          _isFetchAll = false;
-          progress.value = 0.0;
+          taskDone();
         }
       }
     });

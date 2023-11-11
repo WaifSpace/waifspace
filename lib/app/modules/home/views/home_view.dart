@@ -9,7 +9,7 @@ import 'package:waifspace/app/modules/home/views/left_drawer_view.dart';
 import 'package:waifspace/app/modules/home/views/my_page_view.dart';
 
 class HomeView extends GetView<HomeController> {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {

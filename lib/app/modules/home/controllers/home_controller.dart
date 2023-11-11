@@ -4,7 +4,6 @@ import 'package:waifspace/app/components/controllers/article_list_controller.dar
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
-import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomeController extends GetxController {

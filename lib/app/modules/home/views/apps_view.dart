@@ -4,7 +4,7 @@ import 'package:waifspace/app/components/views/dream_browser_view.dart';
 import '../controllers/apps_controller.dart';
 
 class AppsView extends GetView<AppsController> {
-  const AppsView({Key? key}) : super(key: key);
+  const AppsView({super.key});
   @override
   Widget build(BuildContext context) {
     return const Stack(

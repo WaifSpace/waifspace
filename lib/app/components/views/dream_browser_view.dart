@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 
 class DreamBrowserView extends GetView<DreamBrowserController> {
-  const DreamBrowserView({Key? key}) : super(key: key);
+  const DreamBrowserView({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -8,7 +8,7 @@ import 'package:waifspace/app/global.dart';
 class ArticleView extends GetView<ArticleController> {
   final Article article;
 
-  const ArticleView({Key? key, required this.article}) : super(key: key);
+  const ArticleView({super.key, required this.article});
 
   @override
   Widget build(BuildContext context) {

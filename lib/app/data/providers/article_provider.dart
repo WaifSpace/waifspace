@@ -109,6 +109,10 @@ class ArticleProvider {
   }
 
   Future<int> readArticle(int articleID) async {
+    // debug 环境下不把文章标记为已读
+    if(!isProduction) {
+      return 0;
+    }
     if(articleID <= -1) {
       return 0;
     }
