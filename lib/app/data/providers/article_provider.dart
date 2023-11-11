@@ -156,4 +156,27 @@ class ArticleProvider {
         [sourceID]
     );
   }
+
+
+  Future<void> refreshTitleTranslation(int sourceID) async {
+    logger.i('刷新所有source id 为 $sourceID 文章, 标题的翻译');
+
+    List<Map> maps = await _db.query(
+        table,
+        columns: ['id', 'title'],
+        where: 'source_id = ?',
+        whereArgs: [sourceID]);
+    if (maps.isNotEmpty) {
+      for(final articleMap in maps) {
+        if(!isChinese(articleMap['title'] ?? '')) { // 只对英文处理
+          logger.i("更新文章 ${articleMap['title']} 的中文翻译");
+          var cnTitle = await AIService.to.translate(articleMap['title'] ?? '');
+          await _db.rawUpdate(
+              'update $table set cn_title = ? where id = ?',
+              [cnTitle, articleMap['id']]
+          );
+        }
+      }
+    }
+  }
 }

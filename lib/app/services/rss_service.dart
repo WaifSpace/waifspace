@@ -92,7 +92,7 @@ class RssService extends GetxService {
           url: item.link,
           sourceId: articleSource.id,
           isRead: 0,
-          sourceUid: item.guid,
+          sourceUid: item.guid ?? item.link, // 有的 rss 订阅没有 guid 字段，就用 link 代替
           pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!)
               .dbFormat() : '',
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),

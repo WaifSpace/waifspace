@@ -96,6 +96,6 @@ class DatabaseService {
     ],
     "03_给ArticleSources表添加 homepage 字段": [
       'alter table article_sources add homepage text;'
-    ]
+    ],
   });
 }
