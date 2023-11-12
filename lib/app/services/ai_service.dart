@@ -47,7 +47,7 @@ class AIService {
   }
 
   Future<String> readAndTranslate(String text,
-      {String model = 'gpt-4', int maxLength = 200}) async {
+      {String model = 'gpt-3.5-turbo', int maxLength = 200}) async {
     if (text.isEmpty) {
       return '';
     }
