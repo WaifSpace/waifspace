@@ -7,6 +7,7 @@ import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/cubox_service.dart';
 import 'package:waifspace/app/services/rss_service.dart';
@@ -35,7 +36,7 @@ class MyPageController extends GetxController {
     if (isProduction) {
       return;
     }
-    var url = await RssService.to.getImageUrlFromUrl("https://blog.cloudflare.com/cyber-attacks-in-the-israel-hamas-war/");
+    var url = await RssService.to.getImageUrlFromUrl("https://www.bbc.co.uk/news/world-67396773?at_medium=RSS&at_campaign=KARANGA");
     logger.i("获取到的图片是 $url");
   }
 

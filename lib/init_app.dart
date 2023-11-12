@@ -1,3 +1,4 @@
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:waifspace/app/global.dart';
@@ -23,6 +24,11 @@ void _initDio() {
       ),
     ),
   );
-  dio.options.connectTimeout = const Duration(seconds: 5);
-  dio.options.receiveTimeout = const Duration(seconds: 5);
+  dio.interceptors.add(RetryInterceptor(
+    dio: dio,
+    logPrint: print, // specify log function (optional)
+    retries: 3, // retry count (optional)
+  ));
+  dio.options.connectTimeout = const Duration(seconds: 10);
+  dio.options.receiveTimeout = const Duration(seconds: 10);
 }

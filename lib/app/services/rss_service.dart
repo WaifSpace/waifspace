@@ -93,8 +93,7 @@ class RssService extends GetxService {
           sourceId: articleSource.id,
           isRead: 0,
           sourceUid: item.guid ?? item.link, // 有的 rss 订阅没有 guid 字段，就用 link 代替
-          pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!)
-              .dbFormat() : '',
+          pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!).dbFormat() : '',
           // pubDate: AppTime.parseGMT(item.pubDate ?? "").dbFormat(),
         ));
       } catch (e, stack) {
@@ -170,7 +169,7 @@ class RssService extends GetxService {
         }
       }
     } catch (e) {
-      logger.i("获取网页信息错误");
+      logger.i("获取网页信息错误 $url $e");
     }
     return null;
   }

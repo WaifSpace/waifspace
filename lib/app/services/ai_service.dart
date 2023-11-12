@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/hive_service.dart';
@@ -20,7 +21,12 @@ class AIService {
   final openaiClient = Dio();
   void init() {
     openaiClient.options.connectTimeout = const Duration(seconds: 5);
-    openaiClient.options.receiveTimeout = const Duration(seconds: 30);
+    openaiClient.options.receiveTimeout = const Duration(seconds: 10);
+    openaiClient.interceptors.add(RetryInterceptor(
+      dio: dio,
+      logPrint: print, // specify log function (optional)
+      retries: 3, // retry count (optional)
+    ));
   }
 
   String get token =>

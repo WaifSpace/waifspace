@@ -1,27 +1,34 @@
+import 'dart:io';
+
 import 'package:timeago/timeago.dart' as timeago;
-import 'package:jiffy/jiffy.dart';
 
 class AppTime {
   final String _gmtFormat = 'E, d MMM yyyy HH:mm:ss';
-  late Jiffy _datetime;
+  late DateTime _datetime;
 
   AppTime.parseGMT(String datetimeStr) {
-    _datetime = Jiffy.parse(datetimeStr, pattern: _gmtFormat);
+    try {
+      _datetime = HttpDate.parse(datetimeStr);
+    } catch (e) {
+      // 如果文章的日期格式不对，默认使用 当前时间。但是这个逻辑处理不是合理
+      // https://androidweekly.net/rss.xml, 他返回的日期格式是 Sun, 15 Oct 2023 10:14:41 +0000, 目前解析不了
+      _datetime = DateTime.tryParse(datetimeStr) ?? DateTime.now();
+    }
   }
 
   AppTime.parse(String datetimeStr) {
-    _datetime = Jiffy.parse(datetimeStr);
+    _datetime = DateTime.parse(datetimeStr);
   }
 
   AppTime.now() {
-    _datetime = Jiffy.now();
+    _datetime = DateTime.now();
   }
 
   String dbFormat() {
-    return _datetime.format();
+    return _datetime.toLocal().toString();
   }
 
   String viewFormat() {
-    return timeago.format(_datetime.dateTime, locale: 'zh_CN');
+    return timeago.format(_datetime, locale: 'zh_CN');
   }
 }
