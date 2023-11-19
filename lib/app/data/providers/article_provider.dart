@@ -88,7 +88,14 @@ class ArticleProvider {
 
     // 如果数据库里面没有重复的这条记录，才创建并写入
     if (maps.isEmpty) {
-      logger.i("插入文章 ${article.title}");
+      logger.i("[插入文章] ${article.title}");
+
+      // 处理特殊情况，防止文章的内容过大， infoq 有一个文章 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》
+      // 里面竟然把一个二进制的图片包含了进去，导致数据库的存储的内容过大，最后 查询的时候会查询不出来报错。
+      if(article.content != null && article.content!.length >= 2000) {
+        article.content = article.content?.substring(0, 20000);
+      }
+
       if(!isChinese(article.title ?? '')) { // 只对英文处理
         article.cnTitle = await AIService.to.translate(article.title ?? '');
       }

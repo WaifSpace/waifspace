@@ -35,7 +35,7 @@ class HomeController extends GetxController {
 
   Future<void> fetchAllArticles() async {
     await RssService.to.fetchAllArticles();
-    await ArticleListController.to.reloadData();
+    // await ArticleListController.to.reloadData();
   }
 
   Future<bool> onBackPressed() async {

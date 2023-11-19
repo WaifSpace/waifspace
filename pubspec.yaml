@@ -26,10 +26,10 @@ dependencies:
   rss_dart: ^1.0.4
 
   # 对话框
-  adaptive_dialog: 1.9.0+2
+  adaptive_dialog: 2.0.0
 
   # 通知库
-  fluttertoast: 8.2.2
+  fluttertoast: 8.2.4
 
   # 日期处理
   timeago: 3.6.0
@@ -71,7 +71,7 @@ dependencies:
 
 
 dev_dependencies: 
-  flutter_lints: 3.0.0
+  flutter_lints: 3.0.1
   flutter_test: 
     sdk: flutter
 

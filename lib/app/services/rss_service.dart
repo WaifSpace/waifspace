@@ -100,7 +100,7 @@ class RssService extends GetxService {
         logger.i("保存文章错误 ${item.title} ${e.toString()} $stack");
       } finally {
         taskIndex += 1;
-        logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
+        // logger.i("保存文章 ${item.title} taskIndex => $taskIndex, taskCount => $taskCount");
         progress.value = taskIndex / taskCount * 0.8 + 0.2; // 子任务的处理占总数的 80%
 
         // 如果索引大于总任务，那就说明已经处理完了
@@ -141,7 +141,12 @@ class RssService extends GetxService {
     var imageUrl = getImageUrlFromContent(item.description);
     if(imageUrl == null || imageUrl == '') {
       imageUrl = await getImageUrlFromUrl(item.link);
-      logger.i("从网页直接获取了图片 $imageUrl");
+      logger.i("从网页直接获取了图片  ${item.title} => $imageUrl");
+      // 从图片中如果取出来的不是链接，而是图片的内容就可能导致超长，从而导致数据库读取报错
+      // 例如 infoq 里面的 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》的rss 地址就把二进制图片放在了 image 标签里面
+      if(imageUrl != null && imageUrl.length >= 1000) {
+        imageUrl = "";
+      }
     }
     return imageUrl;
   }
@@ -151,7 +156,13 @@ class RssService extends GetxService {
       return null;
     }
     var document = parse(content);
-    return document.querySelector("img")?.attributes['src'];
+    var imageUrl =  document.querySelector("img")?.attributes['src'];
+
+    // 从图片中如果取出来的不是链接，而是图片的内容就可能导致超长，从而导致数据库读取报错
+    // 例如 infoq 里面的 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》的rss 地址就把二进制图片放在了 image 标签里面
+    if(imageUrl != null && imageUrl.length >= 1000) {
+      imageUrl = "";
+    }
   }
 
   // TODO: 文章的内容，我可以自己来解析，不一定要用 rss 返回的
