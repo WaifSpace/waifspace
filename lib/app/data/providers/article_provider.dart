@@ -219,14 +219,11 @@ class ArticleProvider {
           }
         }
 
-        // 针对 infoq 特殊处理，直接找 class=article-cover 下面的 img
-        var coverImage = document.querySelector(".article-cover img");
-        if(coverImage != null) {
-          var image =  coverImage.attributes["src"];
-          if(image != null) {
-            return image;
-          }
-        }
+        // // 针对 infoq 特殊处理，直接找 class=article-cover 下面的 img, 目前还不行，infoq 的文章用 js 渲染的，有反扒
+        // var coverImage = document.querySelector(".article-cover img");
+        // if(coverImage != null) {
+        //   return coverImage.attributes["src"];
+        // }
 
         // 先找标准的 og:image 内容
         var metaImage = document.querySelector("meta[property='og:image']");
