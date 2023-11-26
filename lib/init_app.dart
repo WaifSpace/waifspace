@@ -29,6 +29,6 @@ void _initDio() {
     logPrint: print, // specify log function (optional)
     retries: 3, // retry count (optional)
   ));
-  dio.options.connectTimeout = const Duration(seconds: 10);
-  dio.options.receiveTimeout = const Duration(seconds: 10);
+  dio.options.connectTimeout = const Duration(seconds: 5);
+  dio.options.receiveTimeout = const Duration(seconds: 5);
 }

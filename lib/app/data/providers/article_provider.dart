@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:html/parser.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
@@ -93,10 +94,10 @@ class ArticleProvider {
       // 处理特殊情况，防止文章的内容过大， infoq 有一个文章 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》
       // 里面竟然把一个二进制的图片包含了进去，导致数据库的存储的内容过大，最后 查询的时候会查询不出来报错。
       if(article.content != null && article.content!.length >= 2000) {
-        article.content = article.content?.substring(0, 20000);
+        article.content = article.content?.substring(0, 2000);
       }
 
-      if(!isChinese(article.title ?? '')) { // 只对英文处理
+      if(!isChinese(article.title ?? '') && !article.sourceName!.toLowerCase().contains("github")) { // 只对英文处理, github的标题不处理
         article.cnTitle = await AIService.to.translate(article.title ?? '');
       }
 
@@ -104,6 +105,17 @@ class ArticleProvider {
       var textContent = htmlToText(article.content ?? '');
       if(!isChinese(textContent)) { // 只对英文处理
         article.cnContent = await AIService.to.readAndTranslate(textContent);
+      }
+
+      if(article.imageUrl == null || article.imageUrl == '') {
+        var imageUrl = await _getImageUrlFromUrl(article.url);
+        logger.i("从网页直接获取了图片  ${article.title} => $imageUrl");
+        // 从图片中如果取出来的不是链接，而是图片的内容就可能导致超长，从而导致数据库读取报错
+        // 例如 infoq 里面的 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》的rss 地址就把二进制图片放在了 image 标签里面
+        if(imageUrl != null && imageUrl.length >= 1000) {
+          imageUrl = "";
+        }
+        article.imageUrl = imageUrl;
       }
 
       article.createdAt ??= AppTime.now().dbFormat();
@@ -185,5 +197,56 @@ class ArticleProvider {
         }
       }
     }
+  }
+
+  // TODO: 文章的内容，我可以自己来解析，不一定要用 rss 返回的
+  Future<String?> _getImageUrlFromUrl(String? url) async {
+    if(url == null || url.trim() == "") {
+      return null;
+    }
+    try {
+      var html = await dio.get(url);
+      if (html.statusCode == 200) {
+        var document = parse(html.data.toString());
+
+        // 针对 github 特殊处理，直接找 readme-toc 下面的 第二张img
+        var githubImages = document.querySelectorAll("readme-toc img");
+        if(githubImages.isNotEmpty) {
+          if(githubImages.length >= 2) {
+            return githubImages[1].attributes['src'];
+          } else {
+            return githubImages[0].attributes['src'];
+          }
+        }
+
+        // 针对 infoq 特殊处理，直接找 class=article-cover 下面的 img
+        var coverImage = document.querySelector(".article-cover img");
+        if(coverImage != null) {
+          var image =  coverImage.attributes["src"];
+          if(image != null) {
+            return image;
+          }
+        }
+
+        // 先找标准的 og:image 内容
+        var metaImage = document.querySelector("meta[property='og:image']");
+        if(metaImage != null) {
+          var image =  metaImage.attributes["content"];
+          // infoq 的文章返回的都是他们网站的 icon，而不是网页的内容，这种情况的需要特殊处理
+          if(image != null && !image.contains("icon")) {
+            return image;
+          }
+        }
+
+        // 默认选网站中间的图
+        var images = document.querySelectorAll("body img");
+        if(images.isNotEmpty) {
+          return images[images.length ~/ 2].attributes['src'];
+        }
+      }
+    } catch (e) {
+      logger.i("获取网页信息错误 $url $e");
+    }
+    return null;
   }
 }

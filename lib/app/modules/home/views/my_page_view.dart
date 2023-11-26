@@ -38,6 +38,24 @@ class MyPageView extends GetView<MyPageController> {
                   hintText: '输入 OpenAI token',
                   prefixIcon: Icon(Icons.security))),
         ),
+        // Container(
+        //   margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
+        //   child: TextField(
+        //       controller: controller.deeplxUrlController,
+        //       decoration: const InputDecoration(
+        //           labelText: 'Deeplx Service url',
+        //           hintText: '输入 Deeplx 服务地址',
+        //           prefixIcon: Icon(Icons.security))),
+        // ),
+        // Container(
+        //   margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
+        //   child: TextField(
+        //       controller: controller.deeplxCodeController,
+        //       decoration: const InputDecoration(
+        //           labelText: 'Deeplx Service code',
+        //           hintText: '输入 Deeplx 认证码',
+        //           prefixIcon: Icon(Icons.security))),
+        // ),
         Container(
             margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
             child: Column(

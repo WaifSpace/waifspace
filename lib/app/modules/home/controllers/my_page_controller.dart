@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
@@ -10,12 +11,15 @@ import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/cubox_service.dart';
+import 'package:waifspace/app/services/deeplx_service.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class MyPageController extends GetxController {
   TextEditingController cuboxUrlController = TextEditingController();
   TextEditingController openAIUrlController = TextEditingController();
   TextEditingController openAITokenController = TextEditingController();
+  TextEditingController deeplxUrlController = TextEditingController();
+  TextEditingController deeplxCodeController = TextEditingController();
 
   @override
   void onInit() {
@@ -28,6 +32,8 @@ class MyPageController extends GetxController {
     CuboxService.url = cuboxUrlController.text;
     AIService.to.url = openAIUrlController.text;
     AIService.to.token = openAITokenController.text;
+    DeeplxService.to.url = deeplxUrlController.text;
+    DeeplxService.to.code = deeplxCodeController.text;
 
     debugApp();
   }
@@ -36,8 +42,7 @@ class MyPageController extends GetxController {
     if (isProduction) {
       return;
     }
-    var url = await RssService.to.getImageUrlFromUrl("https://www.bbc.co.uk/news/world-67396773?at_medium=RSS&at_campaign=KARANGA");
-    logger.i("获取到的图片是 $url");
+    AIService.to.translate(" Do hackers eat turkey? And other Thanksgiving Internet trends ");
   }
 
   Future<void> exportSettings() async {
@@ -47,6 +52,8 @@ class MyPageController extends GetxController {
       "openai_url": AIService.to.url,
       "openai_token": AIService.to.token,
       "article_sources": sources.map((e) => e.toJson()).toList(),
+      "deeplx_url": DeeplxService.to.url,
+      "deeplx_code": DeeplxService.to.code,
     };
     var settingsStr = base64Encode(utf8.encode(jsonEncode(settings)));
     logger.i("导出配置到剪切板: $settingsStr");
@@ -68,6 +75,9 @@ class MyPageController extends GetxController {
       CuboxService.url = settings["cubox_url"];
       AIService.to.url = settings["openai_url"];
       AIService.to.token = settings["openai_token"];
+      DeeplxService.to.url = settings["deeplx_url"];
+      DeeplxService.to.code = settings["deeplx_code"];
+
       for (final source in settings["article_sources"]) {
         await ArticleSourceProvider.to.create(ArticleSource(
           name: source["name"],

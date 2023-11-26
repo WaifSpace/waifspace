@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/services/deeplx_service.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 
 class AIService {
@@ -46,8 +47,8 @@ class AIService {
     if (text.length >= 200) {
       text = text.substring(0, 200);
     }
-    var result = await openChatRequest(model,
-        "翻译 $text 到中文, 注意: 如果是一个项目名或者是一个GitHub仓库，就不翻译，直接返回原始的内容就可以，不要输出任何其他的解释。");
+    var result = await openChatRequest(model, "翻译 $text 到中文");
+    // var result = await DeeplxService.to.translate(text);
     logger.i('[AI 翻译] $text => $result');
     return result;
   }
@@ -61,6 +62,7 @@ class AIService {
     if (text.length >= maxLength) {
       text = text.substring(0, maxLength);
     }
+    // var result = await DeeplxService.to.translate(text);
     var result = await openChatRequest(
         model, "$text \n 提取上面文字的核心内容，并通过尽可能短的，不超过 $maxLength 个字的中文总结出来");
     return result;

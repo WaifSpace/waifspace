@@ -64,7 +64,7 @@ class RssService extends GetxService {
 
   int taskCount = 0; // 用于记录任务的总数
   int taskIndex = 0; // 用于记录完成了的任务数量
-  void startTask() {
+  Future<void> startTask() async {
     taskCount = tasks.length;
     taskIndex = 0;
 
@@ -91,6 +91,7 @@ class RssService extends GetxService {
           imageUrl: await getRssItemImage(item),
           url: item.link,
           sourceId: articleSource.id,
+          sourceName: articleSource.name,
           isRead: 0,
           sourceUid: item.guid ?? item.link, // 有的 rss 订阅没有 guid 字段，就用 link 代替
           pubDate: item.pubDate != null ? AppTime.parseGMT(item.pubDate!).dbFormat() : '',
@@ -139,15 +140,6 @@ class RssService extends GetxService {
 
   Future<String?> getRssItemImage(RssItem item) async {
     var imageUrl = getImageUrlFromContent(item.description);
-    if(imageUrl == null || imageUrl == '') {
-      imageUrl = await getImageUrlFromUrl(item.link);
-      logger.i("从网页直接获取了图片  ${item.title} => $imageUrl");
-      // 从图片中如果取出来的不是链接，而是图片的内容就可能导致超长，从而导致数据库读取报错
-      // 例如 infoq 里面的 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》的rss 地址就把二进制图片放在了 image 标签里面
-      if(imageUrl != null && imageUrl.length >= 1000) {
-        imageUrl = "";
-      }
-    }
     return imageUrl;
   }
 
@@ -163,26 +155,7 @@ class RssService extends GetxService {
     if(imageUrl != null && imageUrl.length >= 1000) {
       imageUrl = "";
     }
-  }
-
-  // TODO: 文章的内容，我可以自己来解析，不一定要用 rss 返回的
-  Future<String?> getImageUrlFromUrl(String? url) async {
-    if(url == null || url.trim() == "") {
-      return null;
-    }
-    try {
-      var html = await dio.get(url);
-      if (html.statusCode == 200) {
-        var document = parse(html.data.toString());
-        var images = document.querySelectorAll("body img");
-        if(images.isNotEmpty) {
-          return images[images.length ~/ 2].attributes['src'];
-        }
-      }
-    } catch (e) {
-      logger.i("获取网页信息错误 $url $e");
-    }
-    return null;
+    return imageUrl;
   }
 
   Future<RssFeed?> _getRssFeedByUrl(String url) async {
@@ -192,7 +165,6 @@ class RssService extends GetxService {
       return rssFeed;
     }
     return null;
-
   }
 
 // 用于更新网站的logo
