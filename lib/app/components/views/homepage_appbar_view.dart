@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
+import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/controllers/homepage_appbar_controller.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
@@ -26,36 +27,46 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
       }
     });
 
+    var addNewsBtn = IconButton(
+      onPressed: () async {
+        var results =
+        await showTextInputDialog(context: context, textFields: [
+          const DialogTextField(
+            hintText: '地址',
+          ),
+          const DialogTextField(
+            hintText: '名字',
+          ),
+        ]);
+        if (results != null) {
+          controller.add(results.first, results.last);
+        }
+      },
+      icon: const Icon(Icons.add),
+    );
+
+    var searchNewsBtn = IconButton(
+      onPressed: () {
+        ArticleListController.to.showSearch.value =
+        !ArticleListController.to.showSearch.value;
+      },
+      icon: const Icon(Icons.search),
+    );
+
+    var appBookmarkBtn = IconButton(
+      onPressed: controller.doWebScript,
+      icon: const Icon(Icons.bookmark_add),
+    );
+
     return AppBar(
-        title: titleInfo,
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () async {
-              var results =
-                  await showTextInputDialog(context: context, textFields: [
-                const DialogTextField(
-                  hintText: '地址',
-                ),
-                const DialogTextField(
-                  hintText: '名字',
-                ),
-              ]);
-              if (results != null) {
-                controller.add(results.first, results.last);
-              }
-            },
-            icon: const Icon(Icons.add),
-          ),
-          IconButton(
-            onPressed: () {
-              ArticleListController.to.showSearch.value =
-                  !ArticleListController.to.showSearch.value;
-            },
-            icon: const Icon(Icons.search),
-          ),
-        ],
-      );
+      title: titleInfo,
+      centerTitle: true,
+      actions: [
+        Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? addNewsBtn : Container()),
+        Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? searchNewsBtn : Container()),
+        Obx(() => BottomNavigationBarController.to.currentIndex == 1 ? appBookmarkBtn : Container()),
+      ],
+    );
   }
 
   @override

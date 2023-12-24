@@ -1,6 +1,7 @@
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
+import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
@@ -43,5 +44,9 @@ class HomepageAppbarController extends GetxController {
     } catch (e) {
       showMsg("添加网站错误 ${e.toString()}");
     }
+  }
+
+  void doWebScript() {
+    DreamBrowserController.to.doWebScript();
   }
 }

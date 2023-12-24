@@ -31,11 +31,10 @@ class ArticleController extends GetxController {
       return;
     }
     await _browser.open(
-        url: Uri.parse(url),
-        options: ChromeSafariBrowserClassOptions(
-            android: AndroidChromeCustomTabsOptions(
-                shareState: CustomTabsShareState.SHARE_STATE_OFF),
-            ios: IOSSafariOptions(barCollapsingEnabled: true)));
+        url: WebUri(url),
+        settings: ChromeSafariBrowserSettings(
+            shareState: CustomTabsShareState.SHARE_STATE_OFF,
+            barCollapsingEnabled: true));
   }
 
   void filterSource(int sourceID, String sourceName) {

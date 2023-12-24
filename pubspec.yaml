@@ -35,7 +35,7 @@ dependencies:
   timeago: 3.6.0
 
   # 浏览器
-  flutter_inappwebview: 5.8.0
+  flutter_inappwebview: ^6.0.0-rc.3
 
   # 多语言
   intl: 0.18.1
@@ -78,5 +78,6 @@ dev_dependencies:
 flutter: 
   assets: 
     - assets/images/
+    - assets/javascripts/
   uses-material-design: true
 

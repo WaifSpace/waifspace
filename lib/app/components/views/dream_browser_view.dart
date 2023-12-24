@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
+import 'package:waifspace/app/global.dart';
 
 class DreamBrowserView extends GetView<DreamBrowserController> {
   const DreamBrowserView({super.key});
@@ -12,18 +13,25 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
 
     return InAppWebView(
       key: webViewKey,
-      initialOptions: controller.options,
-      initialUrlRequest: URLRequest(url: Uri.parse(controller.initUrl)),
+      initialSettings: controller.settings,
+      initialUrlRequest: URLRequest(url: WebUri(controller.initUrl)),
       onWebViewCreated: (c) {
         controller.webViewController = c;
       },
-      androidOnPermissionRequest: (controller, origin, resources) async {
-        return PermissionRequestResponse(
-            resources: resources,
-            action: PermissionRequestResponseAction.GRANT);
+      onPermissionRequest: (controller, request) async {
+        return PermissionResponse(
+            resources: request.resources,
+            action: PermissionResponseAction.GRANT);
+      },
+      onConsoleMessage: (controller, consoleMessage) {
+        if (!isProduction) {
+          print("[webview console] $consoleMessage");
+        }
+      },
+      onLoadStop: (controller, url) async {
+        await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/jquery-3.7.1.min.js");
+        await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/twitter.js");
       },
     );
   }
 }
-
-

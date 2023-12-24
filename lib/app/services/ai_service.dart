@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/global.dart';
-import 'package:waifspace/app/services/deeplx_service.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 
 class AIService {
@@ -47,7 +46,7 @@ class AIService {
     if (text.length >= 200) {
       text = text.substring(0, 200);
     }
-    var result = await openChatRequest(model, "翻译 $text 到中文");
+    var result = await openChatRequest(model, "翻译 $text 到中文, 直接给翻译结果就行，不要给其他任何的解释");
     // var result = await DeeplxService.to.translate(text);
     logger.i('[AI 翻译] $text => $result');
     return result;
