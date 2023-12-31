@@ -33,3 +33,4 @@ class DreamBrowserController extends GetxController {
     print(result); // 2
   }
 }
+  

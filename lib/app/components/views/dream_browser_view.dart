@@ -3,6 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/services/cubox_service.dart';
 
 class DreamBrowserView extends GetView<DreamBrowserController> {
   const DreamBrowserView({super.key});
@@ -17,6 +18,12 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
       initialUrlRequest: URLRequest(url: WebUri(controller.initUrl)),
       onWebViewCreated: (c) {
         controller.webViewController = c;
+        c.addJavaScriptHandler(handlerName: 'saveTweetLink', callback: (args) {
+          logger.i("saveTweetLink => $args");
+          var title = args[0].split("\n")[0];
+          CuboxService.save(title, args[1], args[0]);
+          return {'code': 0};
+        });
       },
       onPermissionRequest: (controller, request) async {
         return PermissionResponse(
@@ -25,10 +32,15 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
       },
       onConsoleMessage: (controller, consoleMessage) {
         if (!isProduction) {
-          print("[webview console] $consoleMessage");
+          // logger.i("[webview console] $consoleMessage");
         }
       },
-      onLoadStop: (controller, url) async {
+      onLoadStart: (controller, url) async {
+        var bookmarkTimeout = 1000;
+        if(!isProduction) {
+          bookmarkTimeout = 5000;
+        }
+        await controller.evaluateJavascript(source: "var bookmarkTimeout = $bookmarkTimeout");
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/jquery-3.7.1.min.js");
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/twitter.js");
       },

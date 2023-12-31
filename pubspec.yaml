@@ -23,7 +23,7 @@ dependencies:
   path_provider: ^2.1.1
 
   # rss 处理库
-  rss_dart: ^1.0.4
+  rss_dart: ^1.0.5
 
   # 对话框
   adaptive_dialog: 2.0.0
@@ -35,10 +35,10 @@ dependencies:
   timeago: 3.6.0
 
   # 浏览器
-  flutter_inappwebview: ^6.0.0-rc.3
+  flutter_inappwebview: ^6.0.0
 
   # 多语言
-  intl: 0.18.1
+  intl: 0.18.0
 
   # html 处理
   html: 0.15.4
@@ -48,8 +48,8 @@ dependencies:
   isar_flutter_libs: ^4.0.0-dev.13
 
   # 网路请求
-  dio: ^5.3.2
-  talker_dio_logger: 2.3.1
+  dio: ^5.4.0
+  talker_dio_logger: 2.4.0
 
   # 状态管理
   get: ^5.0.0-release-candidate-5

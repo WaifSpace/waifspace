@@ -13,6 +13,8 @@ Future<void> main() async {
       title: "WaifSpace",
       // 暂时下你使用明亮模式，避免rss 添加输入框的文字颜色错误
       theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
+      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
+      themeMode: ThemeMode.system,
       enableLog: false,
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
