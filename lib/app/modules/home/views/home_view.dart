@@ -22,7 +22,7 @@ class HomeView extends GetView<HomeController> {
           onDoubleTap: controller.onDoubleTap,
         ),
         drawer: const LeftDrawerView(),
-        bottomNavigationBar: const BottomNavigationBarView(),
+        // bottomNavigationBar: const BottomNavigationBarView(),
         body: Obx(() => IndexedStack(
           alignment: Alignment.center,
           index: controller.currentNavIndex,

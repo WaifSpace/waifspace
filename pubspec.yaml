@@ -69,6 +69,9 @@ dependencies:
   flex_color_scheme: ^7.3.1
   dio_smart_retry: ^6.0.0
 
+  # 应用图标
+  font_awesome_flutter: ^10.6.0
+
 
 dev_dependencies: 
   flutter_lints: 3.0.1

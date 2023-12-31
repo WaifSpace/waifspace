@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
+import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/controllers/left_drawer_controller.dart';
 
 class LeftDrawerView extends GetView<LeftDrawerController> {
@@ -17,19 +20,40 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
       child: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-            child: ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('设置'),
-              onTap: () {},
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-            child: ListTile(
-              leading: const Icon(Icons.refresh),
-              title: const Text('获取所有新闻'),
-              onTap: controller.fetchAllArticles,
+            padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
+            child: Row(
+              children: [
+                IconButton(
+                  iconSize: 30,
+                  icon: const FaIcon(FontAwesomeIcons.newspaper),
+                  onPressed: () {
+                    BottomNavigationBarController.to.selectScreen(0);
+                    HomeController.to.closeDrawer();
+                  },
+                ),
+                IconButton(
+                  iconSize: 30,
+                  icon: const FaIcon(FontAwesomeIcons.twitter),
+                  onPressed: () {
+                    BottomNavigationBarController.to.selectScreen(1);
+                    HomeController.to.closeDrawer();
+                  },
+                ),
+                IconButton(
+                  iconSize: 30,
+                  icon: const Icon(Icons.settings),
+                  onPressed: () {
+                    BottomNavigationBarController.to.selectScreen(2);
+                    HomeController.to.closeDrawer();
+                  },
+                ),
+                Expanded(child: Container(),),
+                IconButton(
+                  iconSize: 30,
+                  icon: const Icon(Icons.refresh),
+                  onPressed: controller.fetchAllArticles,
+                ),
+              ],
             ),
           ),
           const Divider(
