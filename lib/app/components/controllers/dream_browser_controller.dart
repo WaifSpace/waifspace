@@ -8,6 +8,8 @@ class DreamBrowserController extends GetxController {
   final initUrl = 'https://twitter.com/home';
   // final initUrl = 'https://www.163.com/';
 
+  final ChromeSafariBrowser _browser = _Browser();
+
   InAppWebViewController? webViewController;
   InAppWebViewSettings settings = InAppWebViewSettings(
       isInspectable: false,
@@ -32,5 +34,18 @@ class DreamBrowserController extends GetxController {
     print(result.runtimeType); // int
     print(result); // 2
   }
+
+  Future<void> openBrowser(String? url) async {
+    if(url == null || url.isEmpty) {
+      return;
+    }
+    await _browser.open(
+        url: WebUri(url),
+        settings: ChromeSafariBrowserSettings(
+            shareState: CustomTabsShareState.SHARE_STATE_OFF,
+            barCollapsingEnabled: true));
+  }
 }
-  
+
+class _Browser extends ChromeSafariBrowser {
+}

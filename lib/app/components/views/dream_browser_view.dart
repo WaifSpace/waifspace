@@ -35,6 +35,22 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
           // logger.i("[webview console] $consoleMessage");
         }
       },
+      onScrollChanged: (InAppWebViewController controller, int x, int y) {
+        if (!isProduction) {
+          // logger.i("onScrollChanged => $x, $y");
+        }
+      },
+      shouldOverrideUrlLoading: (c, navigationAction) async {
+        var uri = navigationAction.request.url;
+
+        if (navigationAction.isForMainFrame && navigationAction.targetFrame == null) {
+          logger.i("shouldOverrideUrlLoading CANCEL => $uri");
+          controller.openBrowser(uri.toString());
+          return NavigationActionPolicy.CANCEL;
+        }
+        logger.i("shouldOverrideUrlLoading ALLOW => $uri");
+        return NavigationActionPolicy.ALLOW;
+      },
       onLoadStart: (controller, url) async {
         var bookmarkTimeout = 1000;
         if(!isProduction) {
