@@ -4,6 +4,7 @@ import 'package:rss_dart/dart_rss.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
+import 'package:waifspace/app/data/models/universal_rss_feed.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/rss_provider.dart';
@@ -21,20 +22,20 @@ class RssService extends GetxService {
   var articleSourceProvider = Get.find<ArticleSourceProvider>();
 
   Future<ArticleSource?> addSource(String url, String name) async {
-    var rssFeed = await _getRssFeedByUrl(url);
+    var feed = await _getRssFeedByUrl(url);
 
-    if(rssFeed == null) {
+    if(feed == null) {
       return null;
     }
 
     // TODO: 判断 URL 不能重复，另外name可以修改
     return await articleSourceProvider.create(ArticleSource(
-      name: name.isEmpty ? rssFeed.title : name,
-      description: rssFeed.description,
+      name: name.isEmpty ? feed.title : name,
+      description: feed.description,
       url: url,
-      homepage: rssFeed.link,
+      homepage: feed.link,
       type: 'rss',
-      image: rssFeed.image?.link,
+      image: feed.image,
     ));
   }
 
@@ -82,7 +83,7 @@ class RssService extends GetxService {
     ArticleListController.to.reloadData();
   }
 
-  void addTask(ArticleSource articleSource, RssItem item) {
+  void addTask(ArticleSource articleSource, UniversalRssItem item) {
     tasks.add(() async {
       try {
         await articleProvider.create(Article(
@@ -116,13 +117,13 @@ class RssService extends GetxService {
     logger.i("> 开始获取文章 ${articleSource?.name} ${articleSource?.url}");
     try {
       if (articleSource != null && articleSource.url != null) {
-        var rssFeed = await _getRssFeedByUrl(articleSource.url!);
+        var feed = await _getRssFeedByUrl(articleSource.url!);
 
-        if (rssFeed == null) {
+        if (feed == null) {
           return;
         }
 
-        for (var item in rssFeed.items) {
+        for (var item in feed.items) {
           addTask(articleSource, item);
         }
       }
@@ -138,7 +139,7 @@ class RssService extends GetxService {
     }
   }
 
-  Future<String?> getRssItemImage(RssItem item) async {
+  Future<String?> getRssItemImage(UniversalRssItem item) async {
     var imageUrl = getImageUrlFromContent(item.description);
     return imageUrl;
   }
@@ -158,11 +159,16 @@ class RssService extends GetxService {
     return imageUrl;
   }
 
-  Future<RssFeed?> _getRssFeedByUrl(String url) async {
+  Future<UniversalRssFeed?> _getRssFeedByUrl(String url) async {
     String? xmlString = await RssProvider().getRssXmlString(url);
     if(xmlString != null) {
-      RssFeed rssFeed = RssFeed.parse(xmlString);
-      return rssFeed;
+      try {
+        RssFeed rssFeed = RssFeed.parse(xmlString);
+        return UniversalRssFeed.fromRssFeed(rssFeed);
+      } catch (e) {
+        AtomFeed atomFeed = AtomFeed.parse(xmlString); ;
+        return UniversalRssFeed.fromAtomFeed(atomFeed);
+      }
     }
     return null;
   }

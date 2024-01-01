@@ -23,7 +23,7 @@ dependencies:
   path_provider: ^2.1.1
 
   # rss 处理库
-  rss_dart: ^1.0.5
+  rss_dart: ^1.0.6
 
   # 对话框
   adaptive_dialog: 2.0.0

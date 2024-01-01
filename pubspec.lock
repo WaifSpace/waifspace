@@ -636,10 +636,10 @@ packages:
     dependency: "direct main"
     description:
       name: rss_dart
-      sha256: "8f4880148852ed11b25c84fcc65968fd3e52d8403816a8958faba7207db9f0c1"
+      sha256: "863c9133b43ef0f9ece4e6d02b1cc090937650aaa1e4d52ec79e4f46c3f4a420"
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.5"
+    version: "1.0.6"
   rxdart:
     dependency: transitive
     description:
