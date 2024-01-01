@@ -32,7 +32,7 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
       },
       onConsoleMessage: (controller, consoleMessage) {
         if (!isProduction) {
-          // logger.i("[webview console] $consoleMessage");
+          logger.i("[DreamBrowserView console] $consoleMessage");
         }
       },
       onScrollChanged: (InAppWebViewController controller, int x, int y) {
@@ -52,11 +52,6 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
         return NavigationActionPolicy.ALLOW;
       },
       onLoadStart: (controller, url) async {
-        var bookmarkTimeout = 1000;
-        if(!isProduction) {
-          bookmarkTimeout = 5000;
-        }
-        await controller.evaluateJavascript(source: "var bookmarkTimeout = $bookmarkTimeout");
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/jquery-3.7.1.min.js");
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/twitter.js");
       },

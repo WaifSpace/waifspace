@@ -1,4 +1,5 @@
 import 'package:dio_smart_retry/dio_smart_retry.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:talker_dio_logger/talker_dio_logger.dart';
 import 'package:timeago/timeago.dart' as timeago;
 import 'package:waifspace/app/global.dart';
@@ -8,6 +9,9 @@ Future<void> initApp() async {
   _initTimeago();
   _initDio();
   await register();
+
+  // 关闭 inappwebview 的调试信息的输出
+  PlatformInAppWebViewController.debugLoggingSettings.enabled = false;
 }
 
 void _initTimeago() {

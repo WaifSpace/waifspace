@@ -161,6 +161,7 @@ class RssService extends GetxService {
 
   Future<UniversalRssFeed?> _getRssFeedByUrl(String url) async {
     String? xmlString = await RssProvider().getRssXmlString(url);
+    // 通过异常捕获，来兼容不同的 rss 类型。
     if(xmlString != null) {
       try {
         RssFeed rssFeed = RssFeed.parse(xmlString);

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/global.dart';
@@ -6,7 +8,6 @@ class DreamBrowserController extends GetxController {
   static DreamBrowserController get to => Get.find<DreamBrowserController>();
 
   final initUrl = 'https://twitter.com/home';
-  // final initUrl = 'https://www.163.com/';
 
   final ChromeSafariBrowser _browser = _Browser();
 
@@ -16,7 +17,29 @@ class DreamBrowserController extends GetxController {
       mediaPlaybackRequiresUserGesture: false,
       allowsInlineMediaPlayback: true,
       iframeAllow: "camera; microphone",
-      iframeAllowFullscreen: true);
+      iframeAllowFullscreen: true,
+  );
+
+  late Timer _timer;
+
+  @override
+  void onReady() {
+    if(isProduction) {
+      _timer = Timer.periodic(const Duration(milliseconds: 1000), onTimer);
+    } else {
+      _timer = Timer.periodic(const Duration(milliseconds: 5000), onTimer);
+    }
+  }
+
+  @override
+  void onClose() {
+    _timer.cancel();
+  }
+
+  Future<void> onTimer(Timer timer) async {
+    // logger.i("DreamBrowserController timer callback");
+    await webViewController?.evaluateJavascript(source: "registerBookmarkClickEvent();");
+  }
 
   void goBack() {
     webViewController?.goBack();
@@ -45,6 +68,8 @@ class DreamBrowserController extends GetxController {
             shareState: CustomTabsShareState.SHARE_STATE_OFF,
             barCollapsingEnabled: true));
   }
+
+
 }
 
 class _Browser extends ChromeSafariBrowser {
