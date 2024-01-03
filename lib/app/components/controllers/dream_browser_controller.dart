@@ -37,7 +37,7 @@ class DreamBrowserController extends GetxController {
   }
 
   Future<void> onTimer(Timer timer) async {
-    // logger.i("DreamBrowserController timer callback");
+    logger.i("DreamBrowserController timer callback");
     await webViewController?.evaluateJavascript(source: "registerBookmarkClickEvent();");
   }
 

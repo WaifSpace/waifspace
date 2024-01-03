@@ -51,7 +51,7 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
         logger.i("shouldOverrideUrlLoading ALLOW => $uri");
         return NavigationActionPolicy.ALLOW;
       },
-      onLoadStart: (controller, url) async {
+      onLoadStop: (controller, url) async {
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/jquery-3.7.1.min.js");
         await controller.injectJavascriptFileFromAsset(assetFilePath: "assets/javascripts/twitter.js");
       },

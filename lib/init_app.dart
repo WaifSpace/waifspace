@@ -11,7 +11,9 @@ Future<void> initApp() async {
   await register();
 
   // 关闭 inappwebview 的调试信息的输出
-  PlatformInAppWebViewController.debugLoggingSettings.enabled = false;
+  if(!isProduction) {
+    PlatformInAppWebViewController.debugLoggingSettings.enabled = false;
+  }
 }
 
 void _initTimeago() {

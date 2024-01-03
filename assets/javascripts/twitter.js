@@ -4,16 +4,17 @@ function getFistArticle() {
     return articles.length;
 }
 
-var isFlutterInAppWebViewReady = false;
-window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
-    isFlutterInAppWebViewReady = true;
-});
+//var isFlutterInAppWebViewReady = false;
+//window.addEventListener("flutterInAppWebViewPlatformReady", function(event) {
+//    isFlutterInAppWebViewReady = true;
+//});
 
 function registerBookmarkClickEvent() {
-    if (!isFlutterInAppWebViewReady) {
+    console.log("需要注册的节点数量:" + $('div[data-testid="bookmark"]:not(.-tmp-click)').length);
+    if (window.flutter_inappwebview == null) {
+        console.log("flutter 组件没有加载完")
         return;
      }
-    //  console.log("需要注册的节点数量:" + $('div[data-testid="bookmark"]:not(.-tmp-click)').length);
      $('div[data-testid="bookmark"]:not(.-tmp-click)').on("click", function () {
              var tweetLink = $(this).parents('article').find('a:has(time)').attr("href");
              var tweetText = $(this).parents('article').find('div[data-testid="tweetText"] span').text();
