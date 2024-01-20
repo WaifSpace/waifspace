@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
@@ -47,7 +49,9 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                     HomeController.to.closeDrawer();
                   },
                 ),
-                Expanded(child: Container(),),
+                Expanded(
+                  child: Container(),
+                ),
                 IconButton(
                   iconSize: 30,
                   icon: const Icon(Icons.refresh),
@@ -118,7 +122,24 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                       ],
                     ),
                     child: ListTile(
-                      leading: const Icon(Icons.web_stories),
+                      leading: Image(
+                        image: CachedNetworkImageProvider(controller
+                            .iconHorseImageUrl(articleSource.homepage ?? "")),
+                        height: 30,
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Image(
+                              image: CachedNetworkImageProvider(
+                                  controller.googleImageUrl(
+                                      articleSource.homepage ?? "")),
+                              height: 30,
+                              errorBuilder: (BuildContext context,
+                                  Object exception, StackTrace? stackTrace) {
+                                return Image.asset("assets/images/web_logo.png",
+                                    height: 30);
+                              });
+                        },
+                      ),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

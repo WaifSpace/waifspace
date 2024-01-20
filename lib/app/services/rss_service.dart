@@ -35,7 +35,7 @@ class RssService extends GetxService {
       url: url,
       homepage: feed.link,
       type: 'rss',
-      image: feed.image,
+      // image: feed.image,
     ));
   }
 
@@ -167,25 +167,34 @@ class RssService extends GetxService {
         RssFeed rssFeed = RssFeed.parse(xmlString);
         return UniversalRssFeed.fromRssFeed(rssFeed);
       } catch (e) {
-        AtomFeed atomFeed = AtomFeed.parse(xmlString); ;
+        AtomFeed atomFeed = AtomFeed.parse(xmlString);
         return UniversalRssFeed.fromAtomFeed(atomFeed);
       }
     }
     return null;
   }
 
-// 用于更新网站的logo
-// Future<void> fetchAllLogos() async {
-//   var sources = await ArticleSourceProvider.to.findAll();
-//
-//   for (var source in sources) {
-//     if(source.image == null || source.image!.isEmpty) {
-//       var response = await dio.get(source.url!);
-//       var doc = html_parser.parse(response.data.toString());
-//       source.image = doc.querySelector('selector');
-//       logger.i('更新 ${source.name} 的 logo => ${source.image}');
-//       await ArticleSourceProvider.to.update(source);
-//     }
-//   }
-// }
+  // 用于更新网站的logo
+  // Future<void> fetchAllLogos() async {
+  //   var sources = await ArticleSourceProvider.to.findAll();
+  //
+  //   for (var source in sources) {
+  //     if(source.image == null || source.image!.isEmpty) {
+  //
+  //       if(source.homepage!.startsWith("//")) {
+  //         source.homepage = "https:${source.homepage}";
+  //       }
+  //       try {
+  //
+  //         final uri = Uri.parse(source.homepage!);
+  //         source.image = "https://icon.horse/icon/${uri.host}";
+  //         logger.i('更新 ${source.name} 的 logo => ${source.image}');
+  //
+  //         await ArticleSourceProvider.to.update(source);
+  //       } catch (e) {
+  //         logger.i("获取网站 ${source.name} logo 失败 ${e}");
+  //       }
+  //     }
+  //   }
+  // }
 }

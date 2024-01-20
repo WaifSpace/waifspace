@@ -3,6 +3,7 @@ import 'package:waifspace/app/components/controllers/article_list_controller.dar
 import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 
 class LeftDrawerController extends GetxController {
@@ -67,6 +68,20 @@ class LeftDrawerController extends GetxController {
       return;
     }
     ArticleSourceProvider.to.delete(sourceID);
+  }
+
+  String iconHorseImageUrl(String url) {
+    final uri = Uri.parse(url);
+    final logo = "https://icon.horse/icon/${uri.host}?size=medium";
+    // logger.i("网站的 logo [$url] => $logo");
+    return logo;
+  }
+
+  String googleImageUrl(String url) {
+    final uri = Uri.parse(url);
+    final logo = "https://www.google.com/s2/favicons?sz=64&domain=${uri.host}";
+    // logger.i("网站的 logo [$url] => $logo");
+    return logo;
   }
 
 }

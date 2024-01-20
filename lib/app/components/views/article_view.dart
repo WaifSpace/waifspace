@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -30,14 +31,7 @@ class ArticleView extends GetView<ArticleController> {
           onTap: () { controller.openBrowser(article.url); },
           child: article.imageUrl == null
               ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
-              : Image.network(
-                  article.imageUrl!,
-                  height: 200,
-                  errorBuilder: (BuildContext context, Object exception,
-                      StackTrace? stackTrace) {
-                    return Image.asset("assets/images/image_error.jpg");
-                  },
-                ),
+              : Image(image: CachedNetworkImageProvider(article.imageUrl!)),
         ),
         Container(
             padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
@@ -113,4 +107,12 @@ String _showArticleTitle(Article article) {
     title = article.title;
   }
   return htmlToText(title ?? '').trim();
+}
+
+CachedNetworkImage _cacheImage(String url) {
+  return CachedNetworkImage(
+    imageUrl: url,
+    placeholder: (context, url) => const CircularProgressIndicator(),
+    errorWidget: (context, url, error) => Image.asset("assets/images/image_error.jpg"),
+  );
 }
