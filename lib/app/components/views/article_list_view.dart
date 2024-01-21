@@ -19,14 +19,8 @@ class ArticleListView extends GetView<ArticleListController> {
         if(index == controller.articleCount() - 1) {
           controller.loadMore();
         }
-        return Container(
-          padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-          decoration: BoxDecoration(
-              border: Border.all(color: Theme.of(context).dividerColor),
-          ),
-          child: ArticleView(
-              article: controller.getArticle(index)
-          ),
+        return ArticleView(
+            article: controller.getArticle(index)
         );
       },
     ));

@@ -122,7 +122,11 @@ class ArticleProvider {
       article.updatedAt ??= AppTime.now().dbFormat();
       // source_name 是链表查询获得的字段，保存的时候要删除
       var articleJson = article.toJson();
+
+      // 删除表里面没有的字段
       articleJson.remove('source_name');
+      articleJson.remove('homepage');
+
       await _db.insert(table, articleJson);
     }
   }

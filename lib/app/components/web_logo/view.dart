@@ -17,13 +17,16 @@ class WebLogoComponent extends StatelessWidget {
 
     final uri = Uri.parse(url);
 
-    return Image(
-        image: CachedNetworkImageProvider(logic.googleImageUrl(uri.host)),
-        height: 30,
-        fit: BoxFit.fill,
-        errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-          return Image.asset("assets/images/web_logo.png", height: 30, fit: BoxFit.fill);
-        }
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(5),
+      child: Image(
+          image: CachedNetworkImageProvider(logic.googleImageUrl(uri.host)),
+          height: 30,
+          fit: BoxFit.fill,
+          errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+            return Image.asset("assets/images/web_logo.png", height: 30, fit: BoxFit.fill);
+          }
+      ),
     );
 
     // return Image(

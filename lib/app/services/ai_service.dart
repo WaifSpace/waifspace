@@ -63,7 +63,7 @@ class AIService {
     }
     // var result = await DeeplxService.to.translate(text);
     var result = await openChatRequest(
-        model, "$text \n 提取上面文字的核心内容，并通过尽可能短的，不超过 $maxLength 个字的中文总结出来");
+        model, "$text \n 提取上面文字的核心内容，并通过尽可能短的，不超过 $maxLength 个字的中文总结出来, 直接给结果，不要给其他任何的解释");
     return result;
   }
 

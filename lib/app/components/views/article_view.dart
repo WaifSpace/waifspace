@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:waifspace/app/components/controllers/article_controller.dart';
@@ -14,88 +15,149 @@ class ArticleView extends GetView<ArticleController> {
 
   @override
   Widget build(BuildContext context) {
+    final articleImageComponent = GestureDetector(
+      onTap: () {
+        controller.openBrowser(article.url);
+      },
+      child: article.imageUrl == null
+          ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
+          : Image(
+              image: CachedNetworkImageProvider(article.imageUrl!),
+              errorBuilder: (BuildContext context, Object exception,
+                  StackTrace? stackTrace) {
+                return Image.asset("assets/images/blank_banner.jpeg",
+                    height: 200);
+              },
+            ),
+    );
+
+    final articleTitleComponent = GestureDetector(
+      onTap: () {
+        controller.openBrowser(article.url);
+      },
+      child: Text(
+        _showArticleTitle(article),
+        softWrap: true,
+        textAlign: TextAlign.left,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    );
+
+    final logoComponent = GestureDetector(
+      onTap: () =>
+          controller.filterSource(article.sourceId!, article.sourceName ?? ''),
+      child: WebLogoComponent(url: article.homepage ?? ""),
+    );
+
+    final articleActionsComponent = Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Text("@${article.sourceName}·${controller.articleTime(article)}",
+            style: const TextStyle(color: Colors.grey)),
+        const Spacer(),
+        IconButton(
+          onPressed: () => controller.bookmark(article),
+          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+          icon: const Icon(Icons.bookmark_add_outlined, size: 20),
+          constraints: const BoxConstraints(),
+          color: Colors.grey,
+        ),
+        IconButton(
+          onPressed: () => controller.share(article),
+          icon: const FaIcon(
+            FontAwesomeIcons.arrowUpFromBracket,
+            size: 15,
+          ),
+          padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
+          constraints: const BoxConstraints(),
+          color: Colors.grey,
+        ),
+        // IconButton(onPressed: () => controller.translate(htmlToText(article.content ?? '').trim()), icon: const Icon(Icons.translate)),
+      ],
+    );
+
+    final articleContentComponent = GestureDetector(
+      onTap: () {
+        controller.openBrowser(article.url);
+      },
+      child: Text(
+        _showArticleContent(article),
+        maxLines: 20,
+        textAlign: TextAlign.left,
+        style: const TextStyle(
+          letterSpacing: 0.5,
+          wordSpacing: 1,
+          height: 1.6,
+          fontSize: 16,
+        ),
+      ),
+    );
+
     return VisibilityDetector(
       key: Key("article_view_${article.id}"),
       onVisibilityChanged: (visibilityInfo) {
-        if(article.isRead == 1) {
+        if (article.isRead == 1) {
           return;
         }
         var visiblePercentage = visibilityInfo.visibleFraction * 100;
-        if(visiblePercentage >= 20) {
+        if (visiblePercentage >= 20) {
           controller.readArticle(article.id);
           article.isRead = 1;
         }
       },
       child: Column(
-      children: [
-        GestureDetector(
-          onTap: () { controller.openBrowser(article.url); },
-          child: article.imageUrl == null
-              ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
-              : Image(
-                  image: CachedNetworkImageProvider(article.imageUrl!),
-                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                    return Image.asset("assets/images/blank_banner.jpeg", height: 200);
-                  },
-                ),
-        ),
-        Container(
-            padding: const EdgeInsets.fromLTRB(10, 25, 10, 15),
-            child: GestureDetector(
-              onTap: () { controller.openBrowser(article.url); },
-              child: Text(
-                _showArticleTitle(article),
-                softWrap: false,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 3,
-                textAlign: TextAlign.left,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                margin: const EdgeInsets.fromLTRB(10, 5, 0, 0),
+                alignment: Alignment.topLeft,
+                child: logoComponent,
+              ),
+              Expanded(
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      alignment: Alignment.topLeft,
+                      child: articleActionsComponent,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      alignment: Alignment.topLeft,
+                      child: articleTitleComponent,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      alignment: Alignment.topLeft,
+                      child: articleContentComponent,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 5, 10, 15),
+                      alignment: Alignment.topLeft,
+                      child: articleImageComponent,
+                    ),
+                  ],
                 ),
               ),
-            )),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            GestureDetector(
-              onTap: () => controller.filterSource(article.sourceId!, article.sourceName ?? ''),
-              child: WebLogoComponent(url: article.homepage ?? ""),
-            ),
-            const SizedBox(width: 10),
-            RawChip(label: Text(controller.articleTime(article))),
-            const Spacer(),
-            IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add), padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), constraints: const BoxConstraints()),
-            IconButton(onPressed: () => controller.share(article), icon: const Icon(Icons.share), padding: const EdgeInsets.fromLTRB(10, 10, 10, 10), constraints: const BoxConstraints()),
-            // IconButton(onPressed: () => controller.translate(htmlToText(article.content ?? '').trim()), icon: const Icon(Icons.translate)),
-          ],
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(10, 5, 10, 5),
-          alignment: Alignment.topLeft,
-          child: SelectableText(
-            _showArticleContent(article),
-            maxLines: 20,
-            minLines: 2,
-            textAlign: TextAlign.left,
-            scrollPhysics: const NeverScrollableScrollPhysics(),
-            style: const TextStyle(
-              letterSpacing: 0.5,
-              wordSpacing: 1,
-              height: 1.6,
-              fontSize: 16,
-            ),
+            ],
           ),
-        ),
-      ],
-    )
+          const Divider(
+            thickness: 2,
+          ),
+        ],
+      ),
     );
   }
 }
 
 String _showArticleContent(Article article) {
   var content = article.cnContent;
-  if(content == null || content.trim().isEmpty) {
+  if (content == null || content.trim().isEmpty) {
     content = article.content;
   }
   return htmlToText(content ?? '').trim();
@@ -103,7 +165,7 @@ String _showArticleContent(Article article) {
 
 String _showArticleTitle(Article article) {
   var title = article.cnTitle;
-  if(title == null || title.trim().isEmpty) {
+  if (title == null || title.trim().isEmpty) {
     title = article.title;
   }
   return htmlToText(title ?? '').trim();
@@ -113,6 +175,7 @@ CachedNetworkImage _cacheImage(String url) {
   return CachedNetworkImage(
     imageUrl: url,
     placeholder: (context, url) => const CircularProgressIndicator(),
-    errorWidget: (context, url, error) => Image.asset("assets/images/image_error.jpg"),
+    errorWidget: (context, url, error) =>
+        Image.asset("assets/images/image_error.jpg"),
   );
 }
