@@ -35,7 +35,7 @@ class ArticleProvider {
   Future<List<Article>> latestArticles(int id) async {
     List<Article> articles = [];
 
-    var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
+    var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name, b.homepage as homepage FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
     sqlBuilder.limit(_queryLimit)
         .where("a.source_id = ?", [_sourceIDCondition])
         .orderBy("a.id", desc: true)

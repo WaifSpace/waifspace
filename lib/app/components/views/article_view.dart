@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:waifspace/app/components/controllers/article_controller.dart';
+import 'package:waifspace/app/components/web_logo/view.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/global.dart';
 
@@ -31,10 +32,15 @@ class ArticleView extends GetView<ArticleController> {
           onTap: () { controller.openBrowser(article.url); },
           child: article.imageUrl == null
               ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
-              : Image(image: CachedNetworkImageProvider(article.imageUrl!)),
+              : Image(
+                  image: CachedNetworkImageProvider(article.imageUrl!),
+                  errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
+                    return Image.asset("assets/images/blank_banner.jpeg", height: 200);
+                  },
+                ),
         ),
         Container(
-            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 25, 10, 15),
             child: GestureDetector(
               onTap: () { controller.openBrowser(article.url); },
               child: Text(
@@ -52,15 +58,15 @@ class ArticleView extends GetView<ArticleController> {
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            RawChip(label: GestureDetector(
+            GestureDetector(
               onTap: () => controller.filterSource(article.sourceId!, article.sourceName ?? ''),
-              child: Text(article.sourceName ?? ''),
-            )),
+              child: WebLogoComponent(url: article.homepage ?? ""),
+            ),
             const SizedBox(width: 10),
             RawChip(label: Text(controller.articleTime(article))),
             const Spacer(),
-            IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add)),
-            IconButton(onPressed: () => controller.share(article), icon: const Icon(Icons.share)),
+            IconButton(onPressed: () => controller.bookmark(article), icon: const Icon(Icons.bookmark_add), padding: const EdgeInsets.fromLTRB(0, 10, 0, 10), constraints: const BoxConstraints()),
+            IconButton(onPressed: () => controller.share(article), icon: const Icon(Icons.share), padding: const EdgeInsets.fromLTRB(10, 10, 10, 10), constraints: const BoxConstraints()),
             // IconButton(onPressed: () => controller.translate(htmlToText(article.content ?? '').trim()), icon: const Icon(Icons.translate)),
           ],
         ),
@@ -80,12 +86,6 @@ class ArticleView extends GetView<ArticleController> {
               fontSize: 16,
             ),
           ),
-        ),
-        const Divider(
-          thickness: 2,
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(0, 5, 0, 5),
         ),
       ],
     )

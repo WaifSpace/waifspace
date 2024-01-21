@@ -11,7 +11,7 @@ class ArticleListView extends GetView<ArticleListController> {
   @override
   Widget build(BuildContext context) {
     var listView = Obx(() => ListView.builder(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.all(8.0),
       physics: const BouncingScrollPhysics(),
       controller: controller.scrollController,
       itemCount: controller.articleCount(),
@@ -19,8 +19,14 @@ class ArticleListView extends GetView<ArticleListController> {
         if(index == controller.articleCount() - 1) {
           controller.loadMore();
         }
-        return ArticleView(
-            article: controller.getArticle(index)
+        return Container(
+          padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
+          decoration: BoxDecoration(
+              border: Border.all(color: Theme.of(context).dividerColor),
+          ),
+          child: ArticleView(
+              article: controller.getArticle(index)
+          ),
         );
       },
     ));

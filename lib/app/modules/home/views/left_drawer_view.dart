@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
+import 'package:waifspace/app/components/web_logo/view.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/controllers/left_drawer_controller.dart';
@@ -79,7 +79,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                 ],
               ),
               child: ListTile(
-                leading: const Icon(Icons.home_filled),
+                leading: const Icon(Icons.home_filled, size: 35),
                 // title: Obx(() => Text('所有新闻\n(${controller.articleSourceCountInfo[-1]})')),
                 title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -122,24 +122,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                       ],
                     ),
                     child: ListTile(
-                      leading: Image(
-                        image: CachedNetworkImageProvider(controller
-                            .iconHorseImageUrl(articleSource.homepage ?? "")),
-                        height: 30,
-                        errorBuilder: (BuildContext context, Object exception,
-                            StackTrace? stackTrace) {
-                          return Image(
-                              image: CachedNetworkImageProvider(
-                                  controller.googleImageUrl(
-                                      articleSource.homepage ?? "")),
-                              height: 30,
-                              errorBuilder: (BuildContext context,
-                                  Object exception, StackTrace? stackTrace) {
-                                return Image.asset("assets/images/web_logo.png",
-                                    height: 30);
-                              });
-                        },
-                      ),
+                      leading: WebLogoComponent(url: articleSource.homepage ?? ""),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

@@ -10,6 +10,7 @@ class Article {
   int? isFavorite;
   int? sourceId;
   String? sourceName;
+  String? homepage;
   String? sourceUid;
   String? pubDate;
   String? createdAt;
@@ -27,6 +28,7 @@ class Article {
       this.isFavorite,
       this.sourceId,
       this.sourceName,
+      this.homepage,
       this.sourceUid,
       this.pubDate,
       this.createdAt,
@@ -44,6 +46,7 @@ class Article {
     isFavorite = json['is_favorite'];
     sourceId = json['source_id'];
     sourceName = json['source_name'];
+    homepage = json['homepage'];
     sourceUid = json['source_uid'];
     pubDate = json['pub_date'];
     createdAt = json['created_at'];
@@ -63,6 +66,7 @@ class Article {
     data['is_favorite'] = isFavorite;
     data['source_id'] = sourceId;
     data['source_name'] = sourceName;
+    data['homepage'] = homepage;
     data['source_uid'] = sourceUid;
     data['pub_date'] = pubDate;
     data['created_at'] = createdAt;
