@@ -30,6 +30,11 @@ class ArticleController extends GetxController {
     if(url == null || url.isEmpty) {
       return;
     }
+    url = url.trim();
+
+    if(!url.startsWith("http")) {
+      return;
+    }
     await _browser.open(
         url: WebUri(url),
         settings: ChromeSafariBrowserSettings(
