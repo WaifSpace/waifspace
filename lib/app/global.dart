@@ -1,8 +1,9 @@
 import 'dart:developer';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
+import 'package:toastification/toastification.dart';
 
 final dio = Dio();
 
@@ -37,7 +38,15 @@ bool isChinese(String input) {
   return _exp.hasMatch(input);
 }
 
-void showMsg(String msg) {
-  Fluttertoast.showToast(
-      msg: msg, toastLength: Toast.LENGTH_LONG, gravity: ToastGravity.TOP);
+void showMsg(String msg, BuildContext context, {ToastificationType type = ToastificationType.success, int seconds = 3}) {
+  if (!context.mounted) return;
+  toastification.show(
+    context: context,
+    type: type,
+    style: ToastificationStyle.fillColored,
+    title: Text(msg),
+    autoCloseDuration: Duration(seconds: seconds),
+    showProgressBar: false,
+    alignment: Alignment.topCenter,
+  );
 }

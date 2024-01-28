@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:toastification/toastification.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
@@ -45,7 +46,7 @@ class MyPageController extends GetxController {
     AIService.to.translate(" Do hackers eat turkey? And other Thanksgiving Internet trends ");
   }
 
-  Future<void> exportSettings() async {
+  Future<void> exportSettings(BuildContext context) async {
     var sources = await ArticleSourceProvider.to.findAll();
     var settings = {
       "cubox_url": CuboxService.url,
@@ -58,10 +59,11 @@ class MyPageController extends GetxController {
     var settingsStr = base64Encode(utf8.encode(jsonEncode(settings)));
     logger.i("导出配置到剪切板: $settingsStr");
     Clipboard.setData(ClipboardData(text: settingsStr));
-    showMsg("导出配置到剪切板成功");
+    if (!context.mounted) return;
+    showMsg("导出配置到剪切板成功", context);
   }
 
-  Future<void> importSettings() async {
+  Future<void> importSettings(BuildContext context) async {
     var value = await Clipboard.getData(Clipboard.kTextPlain);
     if (value != null) {
       var settingsStr = base64Decode(value.text ?? "");
@@ -69,7 +71,8 @@ class MyPageController extends GetxController {
 
       // TODO: 需要加上一些配置检查，确保格式是正确的
       if (settings["cubox_url"] == null || settings["cubox_url"] == "") {
-        showMsg("配置信息格式错误");
+        if (!context.mounted) return;
+        showMsg("配置信息格式错误", context, type: ToastificationType.error);
         return;
       }
       CuboxService.url = settings["cubox_url"];
@@ -88,9 +91,11 @@ class MyPageController extends GetxController {
           image: source["image"],
         ));
       }
-      showMsg("从剪切板导入配置成功");
+      if (!context.mounted) return;
+      showMsg("从剪切板导入配置成功", context);
     } else {
-      showMsg("读取剪切板失败");
+      if (!context.mounted) return;
+      showMsg("读取剪切板失败", context, type: ToastificationType.error);
     }
   }
 }

@@ -65,11 +65,11 @@ class MyPageView extends GetView<MyPageController> {
                     icon: const Icon(Icons.save),
                     label: const Text('保存配置')),
                 ElevatedButton.icon(
-                    onPressed: controller.exportSettings,
+                    onPressed: () => controller.exportSettings(context),
                     icon: const Icon(Icons.save),
                     label: const Text('导出配置到剪切板')),
                 ElevatedButton.icon(
-                    onPressed: controller.importSettings,
+                    onPressed: () => controller.importSettings(context),
                     icon: const Icon(Icons.save),
                     label: const Text('从剪切板导入配置')),
               ],

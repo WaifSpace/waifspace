@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
+import 'package:toastification/toastification.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/hive_service.dart';
 
 class CuboxService {
@@ -10,7 +12,7 @@ class CuboxService {
 
   static final _dio = Dio();
 
-  static save(String title, String articleUrl, String description) async {
+  static save(String title, String articleUrl, String description, BuildContext context) async {
     try {
       var response = await _dio.post(
           url,
@@ -27,20 +29,16 @@ class CuboxService {
             'folder': 'waifspace',
           }));
       if (response.statusCode == 200 && response.data['code'] == 200) {
-        _showMsg("Cubox 保存成功 $title ");
+        if (!context.mounted) return;
+        showMsg("Cubox 保存成功 $title ", context);
       } else {
-        _showMsg("Cubox 保存失败 $title ");
+        if (!context.mounted) return;
+        showMsg("Cubox 保存失败 $title ", context, type: ToastificationType.error);
       }
     } catch (e) {
-      _showMsg("Cubox 保存失败 $title ");
+      if (!context.mounted) return;
+      showMsg("Cubox 保存失败 $title ", context, type: ToastificationType.error);
     }
   }
 
-  static void _showMsg(String msg) {
-    Fluttertoast.showToast(
-        msg: msg,
-        toastLength: Toast.LENGTH_LONG,
-        gravity: ToastGravity.TOP
-    );
-  }
 }

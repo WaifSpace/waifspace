@@ -39,7 +39,8 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
           ),
         ]);
         if (results != null) {
-          controller.add(results.first, results.last);
+          if (!context.mounted) return;
+          controller.add(results.first, results.last, context);
         }
       },
       icon: const Icon(Icons.add),

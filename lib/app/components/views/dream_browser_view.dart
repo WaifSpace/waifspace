@@ -21,7 +21,7 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
         c.addJavaScriptHandler(handlerName: 'saveTweetLink', callback: (args) {
           logger.i("saveTweetLink => $args");
           var title = args[0].split("\n")[0];
-          CuboxService.save(title, args[1], args[0]);
+          CuboxService.save(title, args[1], args[0], context);
           return {'code': 0};
         });
       },

@@ -1,5 +1,6 @@
-import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:toastification/toastification.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
@@ -32,17 +33,21 @@ class HomepageAppbarController extends GetxController {
     return 'WaifSpace';
   }
 
-  Future<void> add(String url, String name) async {
+  Future<void> add(String url, String name, BuildContext context) async {
     try {
       var article = await RssService.to.addSource(url, name);
       if (article != null) {
-        showMsg("添加网站成功 ${article.name}");
         await ArticleSourceProvider.to.reloadArticleSources();
+        if (!context.mounted) return;
+        showMsg("添加网站成功 ${article.name}", context);
+
       } else {
-        showMsg("添加网站错误 $url");
+        if (!context.mounted) return;
+        showMsg("添加网站错误 $url", context, type: ToastificationType.error);
       }
     } catch (e) {
-      showMsg("添加网站错误 ${e.toString()}");
+      if (!context.mounted) return;
+      showMsg("添加网站错误 ${e.toString()}", context, type: ToastificationType.error);
     }
   }
 

@@ -29,7 +29,8 @@ dependencies:
   adaptive_dialog: 2.0.0
 
   # 通知库
-  fluttertoast: 8.2.4
+
+  toastification: ^1.2.0
 
   # 日期处理
   timeago: 3.6.0

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:share_plus/share_plus.dart';
@@ -47,9 +48,9 @@ class ArticleController extends GetxController {
     articleListController.reloadData();
   }
 
-  void bookmark(Article article) {
+  void bookmark(Article article, BuildContext context) {
     if(article.title != null && article.url != null) {
-      CuboxService.save(article.title ?? '', article.url ?? '', htmlToText(article.content ?? "").trim());
+      CuboxService.save(article.title ?? '', article.url ?? '', htmlToText(article.content ?? "").trim(), context);
     }
   }
 
