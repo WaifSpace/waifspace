@@ -126,7 +126,9 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(articleSource.name!),
+                          Expanded(
+                            child: Text(articleSource.name!),
+                          ),
                           Obx(() => Text(controller
                                   .articleSourceCountInfo[articleSource.id!] ??
                               '0/0')),
