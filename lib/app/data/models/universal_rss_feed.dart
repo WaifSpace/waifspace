@@ -1,4 +1,4 @@
-import 'package:rss_dart/dart_rss.dart';
+import 'package:dart_rss/dart_rss.dart';
 
 class UniversalRssFeed {
   final String? title;

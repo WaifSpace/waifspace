@@ -28,7 +28,7 @@ class HomeView extends GetView<HomeController> {
           index: controller.currentNavIndex,
           children: const [
             ArticleListView(),
-            AppsView(),
+            // AppsView(),
             MyPageView(),
           ],
         )),

@@ -59,13 +59,13 @@ class ArticleView extends GetView<ArticleController> {
           child: Text("@${article.sourceName}·${controller.articleTime(article)}",
               style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis,),
         ),
-        IconButton(
-          onPressed: () => controller.bookmark(article, context),
-          padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
-          icon: const Icon(Icons.bookmark_add_outlined, size: 20),
-          constraints: const BoxConstraints(),
-          color: Colors.grey,
-        ),
+        // IconButton(
+        //   onPressed: () => controller.bookmark(article, context),
+        //   padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+        //   icon: const Icon(Icons.bookmark_add_outlined, size: 20),
+        //   constraints: const BoxConstraints(),
+        //   color: Colors.grey,
+        // ),
         IconButton(
           onPressed: () => controller.share(article),
           icon: const FaIcon(

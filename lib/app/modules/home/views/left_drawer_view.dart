@@ -33,19 +33,19 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                     HomeController.to.closeDrawer();
                   },
                 ),
-                IconButton(
-                  iconSize: 30,
-                  icon: const FaIcon(FontAwesomeIcons.twitter),
-                  onPressed: () {
-                    BottomNavigationBarController.to.selectScreen(1);
-                    HomeController.to.closeDrawer();
-                  },
-                ),
+                // IconButton(
+                //   iconSize: 30,
+                //   icon: const FaIcon(FontAwesomeIcons.twitter),
+                //   onPressed: () {
+                //     BottomNavigationBarController.to.selectScreen(1);
+                //     HomeController.to.closeDrawer();
+                //   },
+                // ),
                 IconButton(
                   iconSize: 30,
                   icon: const Icon(Icons.settings),
                   onPressed: () {
-                    BottomNavigationBarController.to.selectScreen(2);
+                    BottomNavigationBarController.to.selectScreen(1);
                     HomeController.to.closeDrawer();
                   },
                 ),

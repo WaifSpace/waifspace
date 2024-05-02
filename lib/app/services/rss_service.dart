@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:html/parser.dart';
-import 'package:rss_dart/dart_rss.dart';
+import 'package:dart_rss/dart_rss.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';

@@ -67,8 +67,10 @@ class ArticleController extends GetxController {
 
   void share(Article article) {
     var url = article.url ?? '';
-    var title = article.cnTitle ?? article.title;
-    Share.share('$title: $url', subject: title);
+    // var title = article.cnTitle ?? article.title;
+    // Share.share('$title: $url', subject: title);
+
+    Share.shareUri(Uri.parse(url));
   }
 }
 
