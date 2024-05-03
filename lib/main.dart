@@ -1,4 +1,5 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/init_app.dart';
@@ -8,12 +9,17 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
 
+  final darkTheme = FlexThemeData.dark(scheme: FlexScheme.aquaBlue).copyWith(
+    cupertinoOverrideTheme: const CupertinoThemeData(
+      textTheme: CupertinoTextThemeData(), // This is required
+    ),
+  );
+
   runApp(
     GetMaterialApp(
       title: "WaifSpace",
-      // 暂时下你使用明亮模式，避免rss 添加输入框的文字颜色错误
       theme: FlexThemeData.light(scheme: FlexScheme.aquaBlue),
-      darkTheme: FlexThemeData.dark(scheme: FlexScheme.aquaBlue),
+      darkTheme: darkTheme,
       themeMode: ThemeMode.system,
       enableLog: false,
       initialRoute: AppPages.INITIAL,
