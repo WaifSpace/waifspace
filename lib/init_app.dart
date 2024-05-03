@@ -23,18 +23,17 @@ void _initTimeago() {
 }
 
 void _initDio() {
-  dio.interceptors.add(
-    TalkerDioLogger(
+  dio.interceptors.add(TalkerDioLogger(
+      talker: talker,
       settings: const TalkerDioLoggerSettings(
-        printRequestHeaders: true,
-        printResponseHeaders: true,
-        printResponseMessage: false,
-      ),
-    ),
-  );
+        printRequestHeaders: false,
+        printResponseHeaders: false,
+        printResponseData: false,
+      )
+  ));
   dio.interceptors.add(RetryInterceptor(
     dio: dio,
-    logPrint: print, // specify log function (optional)
+    logPrint: null, // specify log function (optional)
     retries: 3, // retry count (optional)
   ));
   dio.options.connectTimeout = const Duration(seconds: 5);

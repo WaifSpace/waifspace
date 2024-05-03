@@ -27,7 +27,11 @@ class HomepageAppbarController extends GetxController {
         break;
       case 1:
         {
-          return "应用";
+          return "设置";
+        }
+      case 2:
+        {
+          return "日志";
         }
     }
     return 'WaifSpace';

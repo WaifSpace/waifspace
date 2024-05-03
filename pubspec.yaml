@@ -12,8 +12,11 @@ dependencies:
   # 图标库
   cupertino_icons: ^1.0.6
 
-  # 日志处理
+  # 程序调试日志处理
   logger: ^2.2.0
+
+  # 应用日志显示
+  talker_flutter: ^4.1.5
 
   # sqlite 数据库
   sqflite: ^2.3.3+1

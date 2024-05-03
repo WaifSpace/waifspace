@@ -1,12 +1,13 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/web_logo/view.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
+import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/controllers/left_drawer_controller.dart';
 
@@ -33,19 +34,19 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                     HomeController.to.closeDrawer();
                   },
                 ),
-                // IconButton(
-                //   iconSize: 30,
-                //   icon: const FaIcon(FontAwesomeIcons.twitter),
-                //   onPressed: () {
-                //     BottomNavigationBarController.to.selectScreen(1);
-                //     HomeController.to.closeDrawer();
-                //   },
-                // ),
                 IconButton(
                   iconSize: 30,
                   icon: const Icon(Icons.settings),
                   onPressed: () {
                     BottomNavigationBarController.to.selectScreen(1);
+                    HomeController.to.closeDrawer();
+                  },
+                ),
+                IconButton(
+                  iconSize: 30,
+                  icon: const Icon(Icons.info_outline),
+                  onPressed: () {
+                    BottomNavigationBarController.to.selectScreen(2);
                     HomeController.to.closeDrawer();
                   },
                 ),

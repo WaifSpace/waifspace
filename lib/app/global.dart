@@ -3,9 +3,19 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:intl/intl.dart';
+import 'package:talker_flutter/talker_flutter.dart';
 import 'package:toastification/toastification.dart';
 
 final dio = Dio();
+final talker = Talker(
+  settings: TalkerSettings(
+    enabled: true,
+    useHistory: true,
+    maxHistoryItems: 100,
+    useConsoleLogs: false,
+  ),
+  logger: TalkerLogger(),
+);
 
 Logger logger = Logger(
   printer: SimplePrinter(colors: false),

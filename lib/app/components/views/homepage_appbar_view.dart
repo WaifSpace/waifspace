@@ -65,7 +65,6 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
       actions: [
         Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? addNewsBtn : Container()),
         Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? searchNewsBtn : Container()),
-        Obx(() => BottomNavigationBarController.to.currentIndex == 1 ? appBookmarkBtn : Container()),
       ],
     );
   }
