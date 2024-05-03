@@ -91,6 +91,11 @@ class ArticleProvider {
     if (maps.isEmpty) {
       logger.i("[插入文章] ${article.title}");
 
+      // 把内容里面的 html 和 css 都去掉
+      var textContent = htmlToText(article.content ?? '');
+
+      article.content = textContent;
+
       // 处理特殊情况，防止文章的内容过大， infoq 有一个文章 《鲲鹏应用创新大赛 2023 金奖解读：openEuler 助力北大团队创新改进，网络性能再提升》
       // 里面竟然把一个二进制的图片包含了进去，导致数据库的存储的内容过大，最后 查询的时候会查询不出来报错。
       if(article.content != null && article.content!.length >= 2000) {
@@ -102,9 +107,8 @@ class ArticleProvider {
       }
 
       // 在保存进数据库的时候，调用chatgpt 提取文章的内容
-      var textContent = htmlToText(article.content ?? '');
-      if(!isChinese(textContent)) { // 只对英文处理
-        article.cnContent = await AIService.to.readAndTranslate(textContent);
+      if(!isChinese(article.content ?? "")) { // 只对英文处理
+        article.cnContent = await AIService.to.readAndTranslate(article.content ?? "");
       }
 
       if(article.imageUrl == null || article.imageUrl == '') {

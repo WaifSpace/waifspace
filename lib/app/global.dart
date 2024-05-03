@@ -2,9 +2,9 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
-import 'package:intl/intl.dart';
 import 'package:talker_flutter/talker_flutter.dart';
 import 'package:toastification/toastification.dart';
+import 'package:html/parser.dart' as html;
 
 final dio = Dio();
 final talker = Talker(
@@ -33,14 +33,13 @@ class _ConsoleOutput extends LogOutput {
 
 bool get isProduction => const bool.fromEnvironment("dart.vm.product");
 
-String htmlToText(String html) {
-  var text =
-      Bidi.stripHtmlIfNeeded(html.replaceAll(RegExp(r'<br\s*/?>|</p>'), "\n"));
-  return text
-      .split("\n")
-      .map((e) => e.trim())
-      .where((element) => element.isNotEmpty)
-      .join("\n\n");
+String htmlToText(String htmlText) {
+  // var text =
+  //     Bidi.stripHtmlIfNeeded(html.replaceAll(RegExp(r'<br\s*/?>|</p>'), "\n"));
+
+  var document = html.parse(htmlText);
+
+  return document.body!.text;
 }
 
 RegExp _exp = RegExp(r"[\u4e00-\u9fa5]");
