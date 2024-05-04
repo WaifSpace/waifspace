@@ -38,10 +38,15 @@ class ArticleProvider {
     var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name, b.homepage as homepage FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
     sqlBuilder.limit(_queryLimit)
         .where("a.source_id = ?", [_sourceIDCondition])
-        .orderBy("a.id", desc: true)
         .like('(a.title like ? or a.cn_title like ? or a.content like ? or a.cn_content like ?)', [_searchCondition, _searchCondition, _searchCondition, _searchCondition]);
     if(id > 0) {
       sqlBuilder.where("a.id < ?", [id]);
+    }
+
+    if(_sourceIDCondition == -1 || _sourceIDCondition == null) {
+      sqlBuilder.orderBy("a.id", desc: true);
+    } else {
+      sqlBuilder.orderBy("a.pub_date", desc: true);
     }
 
     // 如果是全部列表的时候，并且没有搜索条件的时候, 只显示未读的文章
