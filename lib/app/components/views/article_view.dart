@@ -21,13 +21,13 @@ class ArticleView extends GetView<ArticleController> {
         controller.openBrowser(article.url);
       },
       child: article.imageUrl == null
-          ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
+          // ? Image.asset("assets/images/blank_banner.jpeg", height: 200)
+          ? Container()
           : Image(
               image: CachedNetworkImageProvider(article.imageUrl!),
               errorBuilder: (BuildContext context, Object exception,
                   StackTrace? stackTrace) {
-                return Image.asset("assets/images/blank_banner.jpeg",
-                    height: 200);
+                return Container();
               },
             ),
     );
@@ -84,24 +84,8 @@ class ArticleView extends GetView<ArticleController> {
       ],
     );
 
-    // final articleContentComponent = GestureDetector(
-    //   onTap: () {
-    //     controller.openBrowser(article.url);
-    //   },
-    //   child: Text(
-    //     _showArticleContent(article),
-    //     maxLines: 20,
-    //     textAlign: TextAlign.left,
-    //     style: const TextStyle(
-    //       letterSpacing: 0.5,
-    //       wordSpacing: 1,
-    //       height: 1.6,
-    //       fontSize: 16,
-    //     ),
-    //   ),
-    // );
-
-    final articleContentComponent = ReadMoreText(
+    // 文章的内容
+    final readMoreArticleContentComponent = ReadMoreText(
       _showArticleContent(article),
       trimMode: TrimMode.Line,
       trimLines: 10,
@@ -117,6 +101,13 @@ class ArticleView extends GetView<ArticleController> {
           fontSize: 16, fontWeight: FontWeight.bold, color: Colors.teal),
       lessStyle: const TextStyle(
           fontSize: 16, fontWeight: FontWeight.bold, color: Colors.teal),
+    );
+
+    final articleContentComponent = GestureDetector(
+      onTap: () {
+        controller.openBrowser(article.url);
+      },
+      child: readMoreArticleContentComponent,
     );
 
     return VisibilityDetector(

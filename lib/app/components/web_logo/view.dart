@@ -21,6 +21,7 @@ class WebLogoComponent extends StatelessWidget {
       borderRadius: BorderRadius.circular(5),
       child: Image(
           image: CachedNetworkImageProvider(logic.googleImageUrl(uri.host)),
+          width: 30,
           height: 30,
           fit: BoxFit.fill,
           errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
