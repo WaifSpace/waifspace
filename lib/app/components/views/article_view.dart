@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
+import 'package:readmore/readmore.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import 'package:waifspace/app/components/controllers/article_controller.dart';
 import 'package:waifspace/app/components/web_logo/view.dart';
@@ -56,8 +57,11 @@ class ArticleView extends GetView<ArticleController> {
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Expanded(
-          child: Text("@${article.sourceName}·${controller.articleTime(article)}",
-              style: const TextStyle(color: Colors.grey), overflow: TextOverflow.ellipsis,),
+          child: Text(
+            "@${article.sourceName}·${controller.articleTime(article)}",
+            style: const TextStyle(color: Colors.grey),
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
         // IconButton(
         //   onPressed: () => controller.bookmark(article, context),
@@ -80,21 +84,39 @@ class ArticleView extends GetView<ArticleController> {
       ],
     );
 
-    final articleContentComponent = GestureDetector(
-      onTap: () {
-        controller.openBrowser(article.url);
-      },
-      child: Text(
-        _showArticleContent(article),
-        maxLines: 20,
-        textAlign: TextAlign.left,
-        style: const TextStyle(
-          letterSpacing: 0.5,
-          wordSpacing: 1,
-          height: 1.6,
-          fontSize: 16,
-        ),
+    // final articleContentComponent = GestureDetector(
+    //   onTap: () {
+    //     controller.openBrowser(article.url);
+    //   },
+    //   child: Text(
+    //     _showArticleContent(article),
+    //     maxLines: 20,
+    //     textAlign: TextAlign.left,
+    //     style: const TextStyle(
+    //       letterSpacing: 0.5,
+    //       wordSpacing: 1,
+    //       height: 1.6,
+    //       fontSize: 16,
+    //     ),
+    //   ),
+    // );
+
+    final articleContentComponent = ReadMoreText(
+      _showArticleContent(article),
+      trimMode: TrimMode.Line,
+      trimLines: 10,
+      trimCollapsedText: ' 更多',
+      trimExpandedText: ' 收起',
+      style: const TextStyle(
+        letterSpacing: 0.5,
+        wordSpacing: 1,
+        height: 1.6,
+        fontSize: 14,
       ),
+      moreStyle: const TextStyle(
+          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.teal),
+      lessStyle: const TextStyle(
+          fontSize: 16, fontWeight: FontWeight.bold, color: Colors.teal),
     );
 
     return VisibilityDetector(
@@ -128,7 +150,7 @@ class ArticleView extends GetView<ArticleController> {
                       child: articleActionsComponent,
                     ),
                     Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       alignment: Alignment.topLeft,
                       child: articleTitleComponent,
                     ),

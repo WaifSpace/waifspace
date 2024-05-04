@@ -39,7 +39,10 @@ String htmlToText(String htmlText) {
 
   var document = html.parse(htmlText);
 
-  return document.body!.text;
+  return document.body!.text.split("\n")
+      .map((e) => e.trim())
+      .where((element) => element.isNotEmpty)
+      .join("\n\n");;
 }
 
 RegExp _exp = RegExp(r"[\u4e00-\u9fa5]");

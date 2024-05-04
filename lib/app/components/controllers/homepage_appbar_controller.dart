@@ -49,8 +49,10 @@ class HomepageAppbarController extends GetxController {
         if (!context.mounted) return;
         showMsg("添加网站错误 $url", context, type: ToastificationType.error);
       }
-    } catch (e) {
+    } catch (e, stacktrace) {
       if (!context.mounted) return;
+      print(e);
+      print(stacktrace);
       showMsg("添加网站错误 ${e.toString()}", context, type: ToastificationType.error);
     }
   }
