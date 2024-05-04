@@ -80,11 +80,12 @@ class ArticleSourceProvider {
     await reloadArticleSources();
   }
 
-  Future<int> update(ArticleSource source) async {
+  Future<void> update(ArticleSource source) async {
     if(source.id == null) {
-      return 0;
+      return;
     }
-    return await db.update(table, source.toJson(), where: 'id = ?', whereArgs: [source.id]);
+    await db.update(table, source.toJson(), where: 'id = ?', whereArgs: [source.id]);
+    await reloadArticleSources();
   }
 }
 

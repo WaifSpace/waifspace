@@ -29,8 +29,7 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
 
     var addNewsBtn = IconButton(
       onPressed: () async {
-        var results =
-        await showTextInputDialog(context: context, textFields: [
+        var results = await showTextInputDialog(context: context, textFields: [
           const DialogTextField(
             hintText: '地址',
           ),
@@ -49,7 +48,7 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
     var searchNewsBtn = IconButton(
       onPressed: () {
         ArticleListController.to.showSearch.value =
-        !ArticleListController.to.showSearch.value;
+            !ArticleListController.to.showSearch.value;
       },
       icon: const Icon(Icons.search),
     );
@@ -63,8 +62,12 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
       title: titleInfo,
       centerTitle: true,
       actions: [
-        Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? addNewsBtn : Container()),
-        Obx(() => BottomNavigationBarController.to.currentIndex == 0 ? searchNewsBtn : Container()),
+        Obx(() => BottomNavigationBarController.to.currentIndex == 0
+            ? addNewsBtn
+            : Container()),
+        Obx(() => BottomNavigationBarController.to.currentIndex == 0
+            ? searchNewsBtn
+            : Container()),
       ],
     );
   }

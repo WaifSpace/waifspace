@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -103,6 +104,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                   return Slidable(
                     startActionPane: ActionPane(
                       motion: const ScrollMotion(),
+                      extentRatio: 0.7,
                       children: [
                         SlidableAction(
                           onPressed: (context) =>
@@ -120,10 +122,34 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                           icon: Icons.mark_chat_read,
                           label: '已读',
                         ),
+                        SlidableAction(
+                          onPressed: (context) async {
+                            var results = await showTextInputDialog(context: context, textFields: [
+                              DialogTextField(
+                                hintText: '地址',
+                                initialText: articleSource.url,
+                              ),
+                              DialogTextField(
+                                hintText: '名字',
+                                initialText: articleSource.name,
+                              ),
+                            ]);
+                            if (results != null) {
+                              articleSource.name = results.last;
+                              articleSource.url = results.first;
+                              controller.updateSourceInfo(articleSource);
+                            }
+                          },
+                          backgroundColor: const Color(0xFF21CA8F),
+                          foregroundColor: Colors.white,
+                          icon: Icons.drive_file_rename_outline,
+                          label: '改名',
+                        ),
                       ],
                     ),
                     child: ListTile(
-                      leading: WebLogoComponent(url: articleSource.homepage ?? ""),
+                      leading:
+                          WebLogoComponent(url: articleSource.homepage ?? ""),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

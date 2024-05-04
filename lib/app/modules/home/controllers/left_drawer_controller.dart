@@ -62,6 +62,10 @@ class LeftDrawerController extends GetxController {
     await updateArticleSourceCount();
   }
 
+  Future<void> updateSourceInfo(ArticleSource source) async {
+    await ArticleSourceProvider.to.update(source);
+  }
+
   void removeSource(int? sourceID) {
     if(sourceID == null || sourceID < 0) {
       return;
