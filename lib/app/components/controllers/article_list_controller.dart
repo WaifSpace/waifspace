@@ -13,6 +13,9 @@ class ArticleListController extends GetxController {
   bool _isLoadMore = false;
   var showSearch = false.obs;
 
+  // 如果加载了一次之后，内容不变，就说明没有更多了
+  bool _hasMore = true;
+
   final ScrollController scrollController = ScrollController();
   final TextEditingController textEditingController = TextEditingController();
 
@@ -33,7 +36,8 @@ class ArticleListController extends GetxController {
   }
 
   Future<void> reloadData() async {
-    _articles.assignAll(await articleProvider.latestArticles(-1));
+    _hasMore = true;
+    _articles.assignAll(await articleProvider.latestArticles(null));
     if(_articles.isNotEmpty) {
       jumpToTop();
     }
@@ -53,14 +57,21 @@ class ArticleListController extends GetxController {
 
   Future<void> loadMore() async {
     // 这里的触发机制有一个bug，如果只有一篇文章的时候，因为离列表的最后位置很近，所以会一直触发滑到底部加载更多文章的问题
-    if (_isLoadMore == true) {
+    if (_isLoadMore == true || _hasMore == false) {
       return;
     }
     _isLoadMore = true;
+    var count = _articles.length;
+
+    print("===================== ${_articles.last.id}");
+
     _articles
-        .addAll(await articleProvider.latestArticles(_articles.last.id ?? -1));
+        .addAll(await articleProvider.latestArticles(_articles.last));
+
+    // 如果加载了一次之后，内容不变，就说明没有更多了
+    if(count == _articles.length) {
+      _hasMore = false;
+    }
     _isLoadMore = false;
   }
-
-
 }

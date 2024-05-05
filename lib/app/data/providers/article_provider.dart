@@ -34,15 +34,22 @@ class ArticleProvider {
   final Database _db = Get.find<DatabaseService>().db;
 
   // 获取比参数 ID 新的文章
-  Future<List<Article>> latestArticles(int id) async {
+  Future<List<Article>> latestArticles(Article? article) async {
     List<Article> articles = [];
 
     var sqlBuilder = SqlBuilder("SELECT a.*, b.name as source_name, b.homepage as homepage FROM $table as a left join ${ArticleSourceProvider.table} as b on a.source_id = b.id");
     sqlBuilder.limit(_queryLimit)
         .where("a.source_id = ?", [_sourceIDCondition])
         .like('(a.title like ? or a.cn_title like ? or a.content like ? or a.cn_content like ?)', [_searchCondition, _searchCondition, _searchCondition, _searchCondition]);
-    if(id > 0) {
-      sqlBuilder.where("a.id < ?", [id]);
+    if(article != null) {
+
+      if(_pubDateCondition != null) {
+        // 如果是 24 小时新闻，那就要根据发布时间字段来翻页
+        sqlBuilder.where("a.pub_date < ?", [article.pubDate]);
+      } else {
+        // 如果不是 24 小时新闻，那就要根据 ID 字段来翻页
+        sqlBuilder.where("a.id < ?", [article.id]);
+      }
     }
 
     // 当选择某一个具体的分类或者 24小时的新闻时候，按照日期排序
