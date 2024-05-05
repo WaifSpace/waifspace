@@ -24,6 +24,11 @@ class AppTime {
     _datetime = DateTime.now();
   }
 
+  AppTime.fromNow(int hours) {
+    DateTime currentTime = DateTime.now();
+    _datetime = currentTime.subtract(Duration(hours: hours));
+  }
+
   String dbFormat() {
     return _datetime.toLocal().toString();
   }

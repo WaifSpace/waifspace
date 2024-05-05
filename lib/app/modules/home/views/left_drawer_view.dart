@@ -4,11 +4,9 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:get/get.dart';
-import 'package:talker_flutter/talker_flutter.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/web_logo/view.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
-import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/controllers/left_drawer_controller.dart';
 
@@ -23,6 +21,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
       width: Get.width * .9,
       child: Column(
         children: [
+          // 操作按钮
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 40, 10, 0),
             child: Row(
@@ -65,6 +64,37 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
           const Divider(
             thickness: 2,
           ),
+          // 查看24小时新闻
+          Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: Slidable(
+              startActionPane: ActionPane(
+                motion: const ScrollMotion(),
+                children: [
+                  SlidableAction(
+                    onPressed: (context) => {controller.makeAllRead()},
+                    backgroundColor: const Color(0xFF21B7CA),
+                    foregroundColor: Colors.white,
+                    icon: Icons.mark_chat_read,
+                    label: '已读',
+                  ),
+                ],
+              ),
+              child: ListTile(
+                leading: const Icon(Icons.sunny, size: 35),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('24小时新闻'),
+                    Obx(() => Text(controller.articleSourceCountInfo[-2] ?? "")),
+                  ],
+                ),
+                onTap: controller.show24HoursArticles,
+                selected: controller.selectedArticle == -2,
+              ),
+            ),
+          ),
+          // 查看所有新闻
           Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: Slidable(
@@ -87,7 +117,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     const Text('所有新闻'),
-                    Obx(() => Text(controller.articleSourceCountInfo[-1]!)),
+                    Obx(() => Text(controller.articleSourceCountInfo[-1] ?? "")),
                   ],
                 ),
                 onTap: controller.showAllArticles,
@@ -95,6 +125,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
               ),
             ),
           ),
+          // 订阅源列表
           Expanded(
             child: Obx(() {
               return ListView(

@@ -29,6 +29,8 @@ class ArticleProvider {
   int? _sourceIDCondition; // 用于根据数据源来显示
   int? get sourceIDCondition => _sourceIDCondition;
 
+  String? _pubDateCondition; // 用于根据时间范围来显示
+
   final Database _db = Get.find<DatabaseService>().db;
 
   // 获取比参数 ID 新的文章
@@ -43,7 +45,8 @@ class ArticleProvider {
       sqlBuilder.where("a.id < ?", [id]);
     }
 
-    if(_sourceIDCondition == -1 || _sourceIDCondition == null) {
+    // 当选择某一个具体的分类或者 24小时的新闻时候，按照日期排序
+    if((_sourceIDCondition == -1 || _sourceIDCondition == null) && _pubDateCondition == null) {
       sqlBuilder.orderBy("a.id", desc: true);
     } else {
       sqlBuilder.orderBy("a.pub_date", desc: true);
@@ -54,8 +57,13 @@ class ArticleProvider {
       sqlBuilder.where("a.is_read = ?", [0]);
     }
 
+    // 根据时间字段筛选
+    if(_pubDateCondition != null) {
+      sqlBuilder.where("a.pub_date > ?", [_pubDateCondition]);
+    }
+
     var (sql, arguments) = sqlBuilder.done();
-    logger.i("执行sql => $sql");
+    logger.i("执行sql => $sql, $arguments");
     List<Map<String, Object?>> articlesMap = await _db.rawQuery(
       sql,
       arguments,
@@ -74,6 +82,10 @@ class ArticleProvider {
 
   void updateSearchFilter(String text) {
     _searchCondition = text;
+  }
+
+  void updatePubDatedFilter(String? date) {
+    _pubDateCondition = date;
   }
 
   Future<void> create(Article article) async {
@@ -163,6 +175,16 @@ class ArticleProvider {
   Future<Map> sourceUnreadCount() async {
     var countInfo = await _db.rawQuery('select source_id, count(id) as count from $table where is_read = 0 group by source_id');
     return { for (var e in countInfo) e['source_id'] : e['count'] };
+  }
+
+  Future<String> source24HoursCount() async {
+    var countInfo = await _db.rawQuery('select count(id) as count from $table where pub_date > ?', [AppTime.fromNow(24).dbFormat()]);
+    return countInfo.first['count'].toString();
+  }
+
+  Future<String> source24HoursUnreadCount() async {
+    var countInfo = await _db.rawQuery('select count(id) as count from $table where is_read = 0 and pub_date > ?', [AppTime.fromNow(24).dbFormat()]);
+    return countInfo.first['count'].toString();
   }
 
   Future<int> makeAllRead() async {
