@@ -63,8 +63,6 @@ class ArticleListController extends GetxController {
     _isLoadMore = true;
     var count = _articles.length;
 
-    print("===================== ${_articles.last.id}");
-
     _articles
         .addAll(await articleProvider.latestArticles(_articles.last));
 
