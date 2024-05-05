@@ -30,6 +30,7 @@ class LeftDrawerController extends GetxController {
 
   void show24HoursArticles() {
     selectedArticle = -2;
+    ArticleProvider.to.updateSourceIDFilter(null, '');
     ArticleProvider.to.updatePubDatedFilter(AppTime.fromNow(24).dbFormat());
     ArticleListController.to.reloadData();
     HomeController.to.closeDrawer();
