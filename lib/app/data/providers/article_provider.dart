@@ -86,6 +86,11 @@ class ArticleProvider {
 
   void updatePubDatedFilter(String? date) {
     _pubDateCondition = date;
+    if(date != null) {
+      filterSourceName.value = "24小时新闻";
+    } else {
+      filterSourceName.value = "";
+    }
   }
 
   Future<void> create(Article article) async {
@@ -190,6 +195,11 @@ class ArticleProvider {
   Future<int> makeAllRead() async {
     logger.i('标记所有文章已读');
     return await _db.rawUpdate('update $table set is_read = 1 where is_read = 0');
+  }
+
+  Future<int> make24HoursRead() async {
+    logger.i('标记24小时文章已读');
+    return await _db.rawUpdate('update $table set is_read = 1 where is_read = 0 and pub_date > ?', [AppTime.fromNow(24).dbFormat()]);
   }
 
   Future<int> makeAllReadBySourceID(int sourceID) async {

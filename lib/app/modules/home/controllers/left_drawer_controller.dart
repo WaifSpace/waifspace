@@ -37,8 +37,8 @@ class LeftDrawerController extends GetxController {
 
   void showArticlesFromSource(ArticleSource source) {
     selectedArticle = source.id!;
-    ArticleProvider.to.updateSourceIDFilter(source.id, source.name!);
     ArticleProvider.to.updatePubDatedFilter(null);
+    ArticleProvider.to.updateSourceIDFilter(source.id, source.name!);
     ArticleListController.to.reloadData();
     HomeController.to.closeDrawer();
     // Get.back();
@@ -65,6 +65,11 @@ class LeftDrawerController extends GetxController {
 
   Future<void> makeAllRead() async {
     await ArticleProvider.to.makeAllRead();
+    await updateArticleSourceCount();
+  }
+
+  Future<void> make24HoursRead() async {
+    await ArticleProvider.to.make24HoursRead();
     await updateArticleSourceCount();
   }
 

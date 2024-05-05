@@ -72,7 +72,7 @@ class LeftDrawerView extends GetView<LeftDrawerController> {
                 motion: const ScrollMotion(),
                 children: [
                   SlidableAction(
-                    onPressed: (context) => {controller.makeAllRead()},
+                    onPressed: (context) => {controller.make24HoursRead()},
                     backgroundColor: const Color(0xFF21B7CA),
                     foregroundColor: Colors.white,
                     icon: Icons.mark_chat_read,

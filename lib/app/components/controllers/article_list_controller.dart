@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/helper/app_time.dart';
 
 class ArticleListController extends GetxController {
 
@@ -20,6 +21,7 @@ class ArticleListController extends GetxController {
 
   @override
   void onInit() {
+    ArticleProvider.to.updatePubDatedFilter(AppTime.fromNow(24).dbFormat()); // 默认显示 24 小时内的新闻
     reloadData();
     super.onInit();
   }
@@ -32,7 +34,9 @@ class ArticleListController extends GetxController {
 
   Future<void> reloadData() async {
     _articles.assignAll(await articleProvider.latestArticles(-1));
-    jumpToTop();
+    if(_articles.isNotEmpty) {
+      jumpToTop();
+    }
   }
 
   Article getArticle(index) {
