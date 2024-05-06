@@ -15,7 +15,11 @@ class LeftDrawerController extends GetxController {
 
   void fetchAllArticles() {
     // RssService.to.fetchAllLogos();
-    selectedArticle = -1;
+
+    // 如果是选择的某个具体的 源，那就打开 24 小时新闻，否则保持默认
+    if(selectedArticle >= 0) {
+      selectedArticle = -2;
+    }
     HomeController.to.fetchAllArticles();
     HomeController.to.closeDrawer();
   }

@@ -96,7 +96,7 @@ class ArticleProvider {
     if(date != null) {
       filterSourceName.value = "24小时新闻";
     } else {
-      filterSourceName.value = "";
+      filterSourceName.value = "新闻";
     }
   }
 

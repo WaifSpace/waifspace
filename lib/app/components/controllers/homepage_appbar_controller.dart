@@ -20,11 +20,8 @@ class HomepageAppbarController extends GetxController {
     switch (BottomNavigationBarController.to.currentIndex) {
       case 0:
         {
-          return ArticleProvider.to.filterSourceName.isEmpty
-              ? "新闻"
-              : ArticleProvider.to.filterSourceName.value;
+          return ArticleProvider.to.filterSourceName.value;
         }
-        break;
       case 1:
         {
           return "设置";
