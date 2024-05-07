@@ -175,27 +175,24 @@ class RssService extends GetxService {
     return null;
   }
 
-  // 用于更新网站的logo
-  // Future<void> fetchAllLogos() async {
-  //   var sources = await ArticleSourceProvider.to.findAll();
-  //
-  //   for (var source in sources) {
-  //     if(source.image == null || source.image!.isEmpty) {
-  //
-  //       if(source.homepage!.startsWith("//")) {
-  //         source.homepage = "https:${source.homepage}";
-  //       }
-  //       try {
-  //
-  //         final uri = Uri.parse(source.homepage!);
-  //         source.image = "https://icon.horse/icon/${uri.host}";
-  //         logger.i('更新 ${source.name} 的 logo => ${source.image}');
-  //
-  //         await ArticleSourceProvider.to.update(source);
-  //       } catch (e) {
-  //         logger.i("获取网站 ${source.name} logo 失败 ${e}");
-  //       }
-  //     }
-  //   }
-  // }
+//  用于更新网站的 logo
+  Future<void> fetchAllLogos() async {
+    var sources = await ArticleSourceProvider.to.findAll();
+
+    for (var source in sources) {
+      try {
+        var feed = await _getRssFeedByUrl(source.url!);
+
+        if(feed == null) {
+          return;
+        }
+
+        source.image = feed.image;
+        logger.i("获取网站 ${source.name} logo ${feed.image}");
+        await ArticleSourceProvider.to.update(source);
+      } catch (e) {
+        logger.i("获取网站 ${source.name} logo 失败 ${e}");
+      }
+    }
+  }
 }
