@@ -131,12 +131,13 @@ class RssService extends GetxService {
       logger.i("< 取文章完成 ${articleSource?.name} ${articleSource?.url}");
     } catch (e, _) {
       logger.i("获取文章错误 ${articleSource?.name} ${articleSource?.url} ${e.toString()}");
-    }
-    sourceIndex += 1;
-    progress.value = sourceIndex / sourceCount * 0.2; // 源地址的获取占总进度的 20%
-    // 说明所有的 source 已经处理完了
-    if(sourceIndex >= sourceCount) {
-      startTask();
+    } finally {
+      sourceIndex += 1;
+      progress.value = sourceIndex / sourceCount * 0.2; // 源地址的获取占总进度的 20%
+      // 说明所有的 source 已经处理完了
+      if(sourceIndex >= sourceCount) {
+        startTask();
+      }
     }
   }
 
