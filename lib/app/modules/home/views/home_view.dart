@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/views/article_list_view.dart';
-import 'package:waifspace/app/components/views/bottom_navigation_bar_view.dart';
 import 'package:waifspace/app/components/views/homepage_appbar_view.dart';
-import 'package:waifspace/app/modules/home/views/apps_view.dart';
 import 'package:waifspace/app/modules/home/controllers/home_controller.dart';
 import 'package:waifspace/app/modules/home/views/left_drawer_view.dart';
 import 'package:waifspace/app/modules/home/views/logs_view.dart';

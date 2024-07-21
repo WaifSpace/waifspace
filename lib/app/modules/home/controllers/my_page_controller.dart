@@ -1,19 +1,15 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:toastification/toastification.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
-import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/global.dart';
-import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/cubox_service.dart';
 import 'package:waifspace/app/services/deeplx_service.dart';
-import 'package:waifspace/app/services/rss_service.dart';
 
 class MyPageController extends GetxController {
   TextEditingController cuboxUrlController = TextEditingController();
@@ -27,6 +23,7 @@ class MyPageController extends GetxController {
     cuboxUrlController.text = CuboxService.url;
     openAIUrlController.text = AIService.to.url;
     openAITokenController.text = AIService.to.token;
+    super.onInit();
   }
 
   void saveSetting() {

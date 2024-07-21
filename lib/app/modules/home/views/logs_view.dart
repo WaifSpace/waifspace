@@ -5,7 +5,7 @@ import 'package:talker_flutter/talker_flutter.dart';
 import 'package:waifspace/app/global.dart';
 
 class LogsView extends GetView {
-  const LogsView({Key? key}) : super(key: key);
+  const LogsView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:timeago/timeago.dart' as timeago;
 
 class AppTime {
-  final String _gmtFormat = 'E, d MMM yyyy HH:mm:ss';
+  // final String _gmtFormat = 'E, d MMM yyyy HH:mm:ss';
   late DateTime _datetime;
 
   AppTime.parseGMT(String datetimeStr) {

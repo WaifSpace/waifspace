@@ -53,9 +53,7 @@ class DreamBrowserController extends GetxController {
     if (isProduction) {
       return;
     }
-    var result = await webViewController?.evaluateJavascript(source: "getFistArticle()");
-    print(result.runtimeType); // int
-    print(result); // 2
+    // var result = await webViewController?.evaluateJavascript(source: "getFistArticle()");
   }
 
   Future<void> openBrowser(String? url) async {

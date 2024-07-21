@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/components/controllers/bottom_navigation_bar_controller.dart';
 import 'package:waifspace/app/components/controllers/homepage_appbar_controller.dart';
-import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/global.dart';
+import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 class HomepageAppbarView extends GetView<HomepageAppbarController>
@@ -55,14 +55,16 @@ class HomepageAppbarView extends GetView<HomepageAppbarController>
       icon: const Icon(Icons.search),
     );
 
-    var appBookmarkBtn = IconButton(
-      onPressed: controller.doWebScript,
-      icon: const Icon(Icons.bookmark_add),
-    );
+    // var appBookmarkBtn = IconButton(
+    //   onPressed: controller.doWebScript,
+    //   icon: const Icon(Icons.bookmark_add),
+    // );
 
     var debugIcon = IconButton(
       onPressed: () {
-        RssService.to.fetchAllLogos();
+        // RssService.to.fetchAllLogos();
+        logger.i("点击 debug");
+        AIService.to.translate("hello world");
       },
       icon: const Icon(Icons.directions_run),
     );

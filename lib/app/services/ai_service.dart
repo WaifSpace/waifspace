@@ -36,9 +36,9 @@ class AIService {
   String get url => HiveService.to.box.get(_urlConfigName, defaultValue: '');
   set url(String value) => HiveService.to.box.put(_urlConfigName, value);
 
-  // 翻译默认使用 3.5, 能更节省钱
+  // 翻译默认使用 gpt-4o-mini, 能更节省钱
   Future<String> translate(String text,
-      {String model = 'gpt-3.5-turbo'}) async {
+      {String model = 'gpt-4o-mini'}) async {
 
     if (!isProduction) {
       return text;
@@ -59,7 +59,7 @@ class AIService {
   }
 
   Future<String> readAndTranslate(String text,
-      {String model = 'gpt-3.5-turbo', int maxLength = 200}) async {
+      {String model = 'gpt-4o-mini', int maxLength = 200}) async {
     if (!isProduction) {
       return text;
     }

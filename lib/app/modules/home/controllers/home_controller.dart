@@ -58,7 +58,6 @@ class HomeController extends GetxController {
         DreamBrowserController.to.goBack();
         return Future.value(true);
       }
-      break;
     }
     // 这里可以添加一个触发时间，如果连续两次返回再退出应用，目前是先全部都不返回
     return Future.value(true);
