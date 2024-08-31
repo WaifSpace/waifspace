@@ -10,10 +10,10 @@ import 'package:path/path.dart' as path;
 import 'package:toastification/toastification.dart';
 import 'package:waifspace/app/data/models/article_source_model.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
+import 'package:waifspace/app/data/providers/setting_provider.dart';
 import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 import 'package:waifspace/app/services/database_service.dart';
-import 'package:waifspace/app/services/hive_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MyPageController extends GetxController {
@@ -41,14 +41,12 @@ class MyPageController extends GetxController {
   Future<void> selectBackupDirectory(BuildContext context) async {
     if (!context.mounted) return;
 
-    // 请求存储权限
-    var status = await Permission.storage.request();
-    if (status.isGranted) {
+    if (await _requestDirectoryPermissions()) {
       String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
 
       if (selectedDirectory != null) {
         try {
-          HiveService.to.box.put('backupDirectory', selectedDirectory);
+          SettingProvider.to.setBackupDirectory(selectedDirectory);
           backupDirectory.value = selectedDirectory; // 更新备份目录
           showMsg("备份目录设置成功", context, type: ToastificationType.success);
         } catch (e) {
@@ -73,10 +71,18 @@ class MyPageController extends GetxController {
     try {
       final dbPath = await DatabaseService.to.getDatabasePath();
       final sourceFile = File(dbPath);
-      final destinationFile =
-          File(path.join(backupDirectory.value, _backupFileName()));
 
-      await sourceFile.copy(destinationFile.path);
+      final destinationPath =
+          path.join(backupDirectory.value, _backupFileName());
+
+      // 创建目标文件夹
+      final destinationDir = Directory(path.dirname(destinationPath));
+      if (!await destinationDir.exists()) {
+        await destinationDir.create(recursive: true);
+      }
+
+      // 拷贝文件
+      await sourceFile.copy(destinationPath);
 
       showMsg("数据备份成功", context, type: ToastificationType.success);
     } catch (e) {
@@ -85,13 +91,20 @@ class MyPageController extends GetxController {
     }
   }
 
-  void reloadBackupDirectory() {
-    backupDirectory.value = HiveService.to.box.get('backupDirectory');
+  Future<void> reloadBackupDirectory() async {
+    backupDirectory.value = await SettingProvider.to.getBackupDirectory() ?? "";
+  }
+
+  Future<bool> _requestDirectoryPermissions() async {
+    final manageExternalStoragePermission =
+        await Permission.manageExternalStorage.request();
+
+    return manageExternalStoragePermission.isGranted;
   }
 
   String _backupFileName() {
     final now = DateTime.now();
-    final formattedTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    final formattedTime = DateFormat('yyyy-MM-dd_HH-mm-ss').format(now);
     String fileName = '${formattedTime}_waifspace_backup.db';
     return fileName;
   }

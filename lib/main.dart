@@ -1,3 +1,5 @@
+import 'dart:isolate';
+
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,11 @@ import 'package:waifspace/init_app.dart';
 import 'app/routes/app_pages.dart';
 
 Future<void> main() async {
+
+  FlutterError.onError = (FlutterErrorDetails details) {
+    print(details);
+  };
+
   WidgetsFlutterBinding.ensureInitialized();
   await initApp();
 
@@ -26,4 +33,14 @@ Future<void> main() async {
       getPages: AppPages.routes,
     ),
   );
+
+  performBackgroundTask();
+}
+
+void performBackgroundTask() async {
+  Isolate.spawn(backgroundTask, 'Hello from the main thread');
+}
+
+void backgroundTask(String message) {
+  print("backgroundTask");
 }

@@ -4,13 +4,10 @@ import 'package:waifspace/app/data/providers/article_provider.dart';
 import 'package:waifspace/app/data/providers/article_source_provider.dart';
 import 'package:waifspace/app/data/providers/setting_provider.dart';
 import 'package:waifspace/app/services/ai_service.dart';
-import 'package:waifspace/app/services/hive_service.dart';
 import 'package:waifspace/app/services/database_service.dart';
 import 'package:waifspace/app/services/rss_service.dart';
 
 Future<void> register() async {
-  Get.put(await HiveService.build());
-
   // 初始化数据库服务
   Get.put(await DatabaseService.build());
 

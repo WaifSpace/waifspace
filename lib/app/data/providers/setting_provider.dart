@@ -2,12 +2,12 @@ import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:waifspace/app/data/models/setting_model.dart';
 import 'package:waifspace/app/services/database_service.dart';
-import 'package:waifspace/app/services/hive_service.dart';
 
 class SettingProvider {
   static String table = "settings";
   static String keyOpenAIUrl = "openai_url";
   static String keyOpenAIToken = "openai_token";
+  static String keyBackupDirectory = "backup_directory";
 
   static const _tokenConfigName = 'chatgpt_token';
   static const _urlConfigName = 'chatgpt_url';
@@ -16,7 +16,6 @@ class SettingProvider {
 
   static Future<SettingProvider> build() async {
     var articleSource = SettingProvider._build();
-    await articleSource.migrateFromHive();
     return articleSource;
   }
 
@@ -24,17 +23,13 @@ class SettingProvider {
 
   final Database db = Get.find<DatabaseService>().db;
 
-  Future<void> migrateFromHive() async {
-    var hive = Get.find<HiveService>();
-    var token = hive.box.get(_tokenConfigName);
-    var url = hive.box.get(_urlConfigName);
-    if (token != null && url != null) {
-      await saveOpenAIToken(token);
-      await saveOpenAIUrl(url);
-    }
-    // 清除 Hive 中的值
-    hive.box.delete(_tokenConfigName);
-    hive.box.delete(_urlConfigName);
+  Future<String?> getBackupDirectory() async {
+    var setting = await findByKey(keyBackupDirectory);
+    return setting?.value;
+  }
+
+  Future<void> setBackupDirectory(String directory) async {
+    await addOrUpdate(keyBackupDirectory, directory);
   }
 
   Future<String?> getOpenAIUrl() async {

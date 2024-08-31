@@ -7,6 +7,7 @@ import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/register.dart';
 
 Future<void> initApp() async {
+  logger.i("开始初始化app");
   _initTimeago();
   _initDio();
   await register();

@@ -3,7 +3,6 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:get/get.dart';
 import 'package:waifspace/app/components/controllers/dream_browser_controller.dart';
 import 'package:waifspace/app/global.dart';
-import 'package:waifspace/app/services/cubox_service.dart';
 
 class DreamBrowserView extends GetView<DreamBrowserController> {
   const DreamBrowserView({super.key});
@@ -21,7 +20,6 @@ class DreamBrowserView extends GetView<DreamBrowserController> {
         c.addJavaScriptHandler(handlerName: 'saveTweetLink', callback: (args) {
           logger.i("saveTweetLink => $args");
           var title = args[0].split("\n")[0];
-          CuboxService.save(title, args[1], args[0], context);
           return {'code': 0};
         });
       },
