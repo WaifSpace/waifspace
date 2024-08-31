@@ -21,6 +21,10 @@ class DatabaseService {
 
   late Database db;
 
+  Future<String> getDatabasePath() async {
+    return path.join(await getDatabasesPath(), _database);
+  }
+
   Future<DatabaseService> init() async {
     logger.i("开始启动数据库服务");
     var dbPath = path.join(await getDatabasesPath(), _database);
