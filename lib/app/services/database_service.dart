@@ -27,7 +27,7 @@ class DatabaseService {
     logger.d("打开数据库: $dbPath");
     db = await openDatabase(
       dbPath,
-      version: 3,
+      version: 4,
       onCreate: (db, version) async {
         logger.d("创建数据库 version: $version");
         var batch = db.batch();
@@ -71,7 +71,7 @@ class DatabaseService {
           cn_content TEXT,
           url TEXT,
           image_url TEXT,  -- 文章banner图片URL
-          image_path TEXT, -- 图片本地保存路径 
+          image_path TEXT, -- 图片本地保存路径
           is_read INTEGER DEFAULT 0,
           is_favorite INTEGER DEFAULT 0,
           source_id INTEGER,
@@ -96,6 +96,15 @@ class DatabaseService {
     ],
     "03_给ArticleSources表添加 homepage 字段": [
       'alter table article_sources add homepage text;'
+    ],
+    "04_创建配置表": [
+      '''CREATE TABLE IF NOT EXISTS settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        key TEXT UNIQUE,
+        value TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      )'''
     ],
   });
 }

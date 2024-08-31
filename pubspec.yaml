@@ -2,7 +2,7 @@ name: waifspace
 version: 1.0.0+1
 publish_to: none
 description: A new Flutter project.
-environment: 
+environment:
   sdk: '>=3.0.5 <4.0.0'
 
 dependencies:
@@ -64,13 +64,13 @@ dependencies:
   visibility_detector: ^0.4.0+2
 
   # app分享按钮
-  share_plus: ^9.0.0
+  share_plus: ^10.0.2
 
   # 左滑或者右划处理处理
   flutter_slidable: ^3.0.0
 
   # 可以缓存图片的image标签
-  cached_network_image: ^3.3.1
+  cached_network_image: ^3.4.1
 
   # 应用主题
   flex_color_scheme: ^7.3.1
@@ -90,13 +90,13 @@ dependencies:
   # 用于文字的 "更多" 显示
   readmore: ^3.0.0
 
-dev_dependencies: 
+dev_dependencies:
   flutter_lints: ^4.0.0
-  flutter_test: 
+  flutter_test:
     sdk: flutter
 
-flutter: 
-  assets: 
+flutter:
+  assets:
     - assets/images/
     - assets/javascripts/
   uses-material-design: true

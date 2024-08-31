@@ -14,15 +14,6 @@ class MyPageView extends GetView<MyPageController> {
         Container(
           margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
           child: TextField(
-              controller: controller.cuboxUrlController,
-              decoration: const InputDecoration(
-                  labelText: 'Cubox API URL',
-                  hintText: '输入 Cubox 接口地址',
-                  prefixIcon: Icon(Icons.bookmark_add))),
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
-          child: TextField(
               controller: controller.openAIUrlController,
               decoration: const InputDecoration(
                   labelText: 'OpenAI API URL',
@@ -38,30 +29,12 @@ class MyPageView extends GetView<MyPageController> {
                   hintText: '输入 OpenAI token',
                   prefixIcon: Icon(Icons.security))),
         ),
-        // Container(
-        //   margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
-        //   child: TextField(
-        //       controller: controller.deeplxUrlController,
-        //       decoration: const InputDecoration(
-        //           labelText: 'Deeplx Service url',
-        //           hintText: '输入 Deeplx 服务地址',
-        //           prefixIcon: Icon(Icons.security))),
-        // ),
-        // Container(
-        //   margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
-        //   child: TextField(
-        //       controller: controller.deeplxCodeController,
-        //       decoration: const InputDecoration(
-        //           labelText: 'Deeplx Service code',
-        //           hintText: '输入 Deeplx 认证码',
-        //           prefixIcon: Icon(Icons.security))),
-        // ),
         Container(
             margin: const EdgeInsets.fromLTRB(30, 15, 30, 15),
             child: Column(
               children: [
                 ElevatedButton.icon(
-                    onPressed: controller.saveSetting,
+                    onPressed: () => controller.saveSetting(context),
                     icon: const Icon(Icons.save),
                     label: const Text('保存配置')),
                 ElevatedButton.icon(

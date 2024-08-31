@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:get/get.dart';
+import 'package:waifspace/app/data/providers/setting_provider.dart';
 import 'package:waifspace/app/global.dart';
-import 'package:waifspace/app/services/hive_service.dart';
 
 class AIService {
-  static const _tokenConfigName = 'chatgpt_token';
-  static const _urlConfigName = 'chatgpt_url';
+  // 配置
+  String url = ''; // 地址
+  String token = ''; // 令牌
 
   AIService._build();
 
@@ -19,7 +20,7 @@ class AIService {
   static AIService get to => Get.find<AIService>();
 
   final openaiClient = Dio();
-  void init() {
+  Future<void> init() async {
     openaiClient.options.connectTimeout = const Duration(seconds: 5);
     openaiClient.options.receiveTimeout = const Duration(seconds: 10);
     openaiClient.interceptors.add(RetryInterceptor(
@@ -27,19 +28,25 @@ class AIService {
       logPrint: print, // specify log function (optional)
       retries: 3, // retry count (optional)
     ));
+
+    await reloadConfig();
   }
 
-  String get token =>
-      HiveService.to.box.get(_tokenConfigName, defaultValue: '');
-  set token(String value) => HiveService.to.box.put(_tokenConfigName, value);
+  Future<void> reloadConfig() async {
+    url = await SettingProvider.to.getOpenAIUrl() ?? '';
+    token = await SettingProvider.to.getOpenAIToken() ?? '';
+  }
 
-  String get url => HiveService.to.box.get(_urlConfigName, defaultValue: '');
-  set url(String value) => HiveService.to.box.put(_urlConfigName, value);
+  Future<void> saveConfig(String newUrl, String newToken) async {
+    logger.i("保存配置: $newUrl $newToken");
+    await SettingProvider.to.saveOpenAIUrl(newUrl);
+    await SettingProvider.to.saveOpenAIToken(newToken);
+    url = newUrl;
+    token = newToken;
+  }
 
   // 翻译默认使用 gpt-4o-mini, 能更节省钱
-  Future<String> translate(String text,
-      {String model = 'gpt-4o-mini'}) async {
-
+  Future<String> translate(String text, {String model = 'gpt-4o-mini'}) async {
     if (!isProduction) {
       return text;
     }
