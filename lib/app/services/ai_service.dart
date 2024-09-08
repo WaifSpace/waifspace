@@ -47,9 +47,9 @@ class AIService {
 
   // 翻译默认使用 gpt-4o-mini, 能更节省钱
   Future<String> translate(String text, {String model = 'gpt-4o-mini'}) async {
-    if (!isProduction) {
-      return text;
-    }
+    // if (!isProduction) {
+    //   return text;
+    // }
 
     if (text.isEmpty) {
       return '';
@@ -67,9 +67,9 @@ class AIService {
 
   Future<String> readAndTranslate(String text,
       {String model = 'gpt-4o-mini', int maxLength = 200}) async {
-    if (!isProduction) {
-      return text;
-    }
+    // if (!isProduction) {
+    //   return text;
+    // }
 
     if (text.isEmpty) {
       return '';
