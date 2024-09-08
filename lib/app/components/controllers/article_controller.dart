@@ -5,7 +5,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:waifspace/app/components/controllers/article_list_controller.dart';
 import 'package:waifspace/app/data/models/article_model.dart';
 import 'package:waifspace/app/data/providers/article_provider.dart';
-import 'package:waifspace/app/global.dart';
 import 'package:waifspace/app/helper/app_time.dart';
 import 'package:waifspace/app/services/ai_service.dart';
 
@@ -14,25 +13,26 @@ class ArticleController extends GetxController {
 
   final ChromeSafariBrowser _browser = _NewsBrowser();
   ArticleProvider articleProvider = Get.find<ArticleProvider>();
-  ArticleListController articleListController = Get.find<ArticleListController>();
+  ArticleListController articleListController =
+      Get.find<ArticleListController>();
 
   String articleTime(Article article) {
-    if(article.pubDate != null && article.pubDate != "") {
+    if (article.pubDate != null && article.pubDate != "") {
       return AppTime.parse(article.pubDate!).viewFormat();
     }
-    if(article.createdAt != null && article.createdAt != "") {
+    if (article.createdAt != null && article.createdAt != "") {
       return AppTime.parse(article.createdAt!).viewFormat();
     }
     return "";
   }
 
   Future<void> openBrowser(String? url) async {
-    if(url == null || url.isEmpty) {
+    if (url == null || url.isEmpty) {
       return;
     }
     url = url.trim();
 
-    if(!url.startsWith("http")) {
+    if (!url.startsWith("http")) {
       return;
     }
     await _browser.open(
@@ -48,8 +48,7 @@ class ArticleController extends GetxController {
   }
 
   void bookmark(Article article, BuildContext context) {
-    if(article.title != null && article.url != null) {
-    }
+    if (article.title != null && article.url != null) {}
   }
 
   Future<void> translate(String text) async {
@@ -57,7 +56,7 @@ class ArticleController extends GetxController {
   }
 
   Future<void> readArticle(int? articleID) async {
-    if(articleID == null) {
+    if (articleID == null) {
       return;
     }
     await ArticleProvider.to.readArticle(articleID);
@@ -72,6 +71,4 @@ class ArticleController extends GetxController {
   }
 }
 
-
-class _NewsBrowser extends ChromeSafariBrowser {
-}
+class _NewsBrowser extends ChromeSafariBrowser {}

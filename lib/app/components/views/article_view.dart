@@ -42,7 +42,7 @@ class ArticleView extends GetView<ArticleController> {
         textAlign: TextAlign.left,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 16,
+          fontSize: 20,
         ),
       ),
     );
@@ -58,7 +58,7 @@ class ArticleView extends GetView<ArticleController> {
       children: [
         Expanded(
           child: Text(
-            "@${article.sourceName}·${controller.articleTime(article)}",
+            "@${article.sourceName} -- ${controller.articleTime(article)}",
             style: const TextStyle(color: Colors.grey),
             overflow: TextOverflow.ellipsis,
           ),
@@ -73,7 +73,7 @@ class ArticleView extends GetView<ArticleController> {
         IconButton(
           onPressed: () => controller.share(article),
           icon: const FaIcon(
-            FontAwesomeIcons.arrowUpFromBracket,
+            FontAwesomeIcons.shareNodes,
             size: 15,
           ),
           padding: const EdgeInsets.fromLTRB(0, 0, 10, 0),
@@ -136,11 +136,6 @@ class ArticleView extends GetView<ArticleController> {
                 child: Column(
                   children: [
                     Container(
-                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      alignment: Alignment.topLeft,
-                      child: articleActionsComponent,
-                    ),
-                    Container(
                       margin: const EdgeInsets.fromLTRB(10, 0, 10, 10),
                       alignment: Alignment.topLeft,
                       child: articleTitleComponent,
@@ -154,6 +149,11 @@ class ArticleView extends GetView<ArticleController> {
                       margin: const EdgeInsets.fromLTRB(10, 5, 10, 15),
                       alignment: Alignment.topLeft,
                       child: articleImageComponent,
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      alignment: Alignment.topLeft,
+                      child: articleActionsComponent,
                     ),
                   ],
                 ),
