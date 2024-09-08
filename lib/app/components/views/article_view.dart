@@ -42,7 +42,7 @@ class ArticleView extends GetView<ArticleController> {
         textAlign: TextAlign.left,
         style: const TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 20,
+          fontSize: 18,
         ),
       ),
     );
